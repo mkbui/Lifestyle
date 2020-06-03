@@ -27,6 +27,7 @@ Quick note: after seting up Android Studio, you may want to move *.gradle* and *
 Since these two folders can occupy a lot of disk storage as projects grow, it is advised to move the folder to another secondary disk.
 Follow closely this link if you wish to do so: 
 <a href="https://www.littlecpu.com/android-studio-c-drive" target="_blank">Moving Android Studio Folder</a>
+
 Note: if the android setup is not working after moving folders, you may have to add *ANDROID_AVD_HOME* and *JAVA_HOME* to environment 
 variables (similar to *ANDROID_SDK_HOME*) to the folders containing your 
 ### Code Editor set-up
@@ -40,9 +41,9 @@ For Visual Studio Code, you first need to download from the official website:
 
 After installing, open VSCode and download these extensions:
 
-- GitHub Pull Requests and Issues (GitHub) *github.vscode-pull-request-github*
+- GitHub Pull Requests and Issues (GitHub) - *github.vscode-pull-request-github*
 
-- React Native Tools (Microsoft) *msjsdiag.vscode-react-native*
+- React Native Tools (Microsoft) - *msjsdiag.vscode-react-native*
 
 ### Clone repository
 You can choose two options to clone and run the original repository:
@@ -53,7 +54,6 @@ You can choose two options to clone and run the original repository:
 git clone https://github.com/mkbui/Lifestyle.git
 cd Lifestyle
 yarn
-
 ```
 - Download this repository as zipped file. On your Powershell, at local project folder:
 ```
@@ -92,4 +92,9 @@ Virtual Device screen. Sometimes the build takes too long for the first time, so
 do *npx react-native run-android* again.
 
 ### Editing the projects and push to Github
+After making sure the project runs as expected, open VSCode make some changes to the code in project (some text output if first time). 
+
+After making some changes to the project, you may want to commit the changes to Github. In the tab *Source Control* on the left side bar,
+comment on your changes and choose commit to save your changes. You may also want to create a new branch for your own source, and only
+pull request when confirming changes to the master route.
 
