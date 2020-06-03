@@ -1,4 +1,5 @@
 import React from 'react';
+import {View, Text} from 'react-native';
 import Root from 'native-base';
 
 /* React-navigation necessities import */
@@ -9,9 +10,10 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 /* Import screens */
 import SplashScreen from '../screens/Splash';
 import HomeScreen from '../screens/Home';
+import SettingsScreen from '../screens/Settings';
 
+/* Drawer navigator containing side list of main screens and stack navigator itself */
 const Drawer = createDrawerNavigator();
-
 function DrawerNavigator() {
   return(
     <Drawer.Navigator
@@ -24,13 +26,15 @@ function DrawerNavigator() {
         activeTintColor: "#e91e63"
       }}
     >
-      <Drawer.Screen name='Home' component={DetailsScreen} />
+      <Drawer.Screen name = 'Home' component = { StackNavigator } />
+      <Drawer.Screen name='Details' component={ DetailsScreen } />
+      <Drawer.Screen name = 'Settings' component = { SettingsScreen } />
     </Drawer.Navigator>
   )
 } 
 
-const Stack = createStackNavigator();
 
+/* Test screen sample */
 function DetailsScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -39,22 +43,26 @@ function DetailsScreen() {
   );
 }
 
-function AppNavigator() {
+/* Stack navigator used to contain screens navigatable within the app */
+const Stack = createStackNavigator();
+function StackNavigator() {
   return(
     <Stack.Navigator
       initialRouteName = 'Splash'
+      headerMode = 'none'
     >
-      <Stack.Screen name = 'Home' component = {HomeScreen} />
       <Stack.Screen name = 'Splash' component = {SplashScreen}/>
-      
+      <Stack.Screen name = 'Home' component = {HomeScreen} />
+      <Stack.Screen name = 'Settings' component = { SettingsScreen } />
     </Stack.Navigator>
   )
 };
 
+/* Main Container with Drawer Navigator as root navigator */
 function AppContainer() {
   return (
     <NavigationContainer>
-      <AppNavigator/>
+      <DrawerNavigator/>
     </NavigationContainer>
   )
 };

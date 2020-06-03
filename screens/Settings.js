@@ -13,7 +13,7 @@ import {
   Text
 } from "native-base";
 
-class HomeScreen extends Component {
+class SettingsScreen extends Component {
   render() {
     return (
       <Container style={styles.container}>
@@ -24,19 +24,19 @@ class HomeScreen extends Component {
             </Button>
           </Left>
           <Body style = {{flex: 1}}>
-            <Title style={styles.headerText}>Home</Title>
+            <Title style = {styles.headerText}>Settings</Title>
           </Body>
           <Right style = {{flex: 1}}>
             <Button 
               transparent 
               onPress={() => this.props.navigation.goBack()}>
-              <Icon name = "paper-plane" />
+              <Icon name = "arrow-back" />
             </Button>
           </Right>
         </Header>
 
         <Content padder>
-          <Text>Default screen with header and drawer menu</Text>
+          <Text>Setting screen</Text>
         </Content>
       </Container>
     );
@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontWeight: 'bold',
-    justifyContent: 'center',
   },
 });
-export default HomeScreen;
+export default SettingsScreen;

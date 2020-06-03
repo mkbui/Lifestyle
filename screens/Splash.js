@@ -20,19 +20,19 @@ export default class SplashScreen extends React.Component {
           <View
             style={{
               alignItems: "center",
-              marginBottom: 50,
+              marginBottom: 60,
               backgroundColor: "transparent"
             }}
           >
-            <Text style={styles.text}>Lifestyle Application</Text>
+            <Text style={styles.text}>Monitor and improve your health today</Text>
             <View style={{ marginTop: 8 }} />
-            <Text style={styles.text}>for health monitoring and advice</Text>
+            <Text style={styles.text}>with Lifestyle Application!</Text>
             <View style={{ marginTop: 8 }} />
           </View>
           <View style={{ marginBottom: 80 }}>
             <Button
               style={{ backgroundColor: "purple", alignSelf: "center" }}
-              onPress={() => this.props.navigation.openDrawer()}
+              onPress={() => this.props.navigation.navigate('Home')}
             >
               <Text>Proceed</Text>
             </Button>
@@ -58,8 +58,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     position: "absolute",
-    left: Platform.OS === "android" ? 135 : 180,
-    top: Platform.OS === "android" ? 125 : 180,
+    left: 135,
+    top: 125,
     width: 150,
     height: 150
   },
