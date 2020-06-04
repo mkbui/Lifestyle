@@ -20,7 +20,7 @@ import {
 class UsernameForm extends Component {
 
   state = {
-    userText: '',
+    userText: '' ,
   }
 
   handlePress = () => {
