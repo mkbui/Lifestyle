@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import { View, StyleSheet, Platform, ImageBackground, StatusBar } from 'react-native';
 import { Container, Button, Text, Header, Body, Title } from 'native-base';
 
-const splashBackground = require('../assets/launchscreen-bg.png');
-const splashLogo = require('../assets/bootLogo.jpg');
+const splashBackground = require('../../assets/launchscreen-bg.png');
+const splashLogo = require('../../assets/bootLogo.jpg');
 
 //const { Dimensions, Platform } = require('react-native');
 //const deviceHeight = Dimensions.get("window").height;
@@ -32,7 +32,7 @@ export default class SplashScreen extends React.Component {
           <View style={{ marginBottom: 80 }}>
             <Button
               style={{ backgroundColor: "purple", alignSelf: "center" }}
-              onPress={() => this.props.navigation.navigate('Home')}
+              onPress={() => this.props.navigation.navigate('Firstform')}
             >
               <Text>Proceed</Text>
             </Button>
