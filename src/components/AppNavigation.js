@@ -11,6 +11,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import SplashScreen from '../screens/Splash';
 import HomeScreen from '../screens/Home';
 import SettingsScreen from '../screens/Settings';
+import FirstformScreen from '../screens/Firstform';
 
 /* Drawer navigator containing side list of main screens and stack navigator itself */
 const Drawer = createDrawerNavigator();
@@ -54,6 +55,7 @@ function StackNavigator() {
       <Stack.Screen name = 'Splash' component = {SplashScreen}/>
       <Stack.Screen name = 'Home' component = {HomeScreen} />
       <Stack.Screen name = 'Settings' component = { SettingsScreen } />
+      <Stack.Screen name = 'Firstform' component = {FirstformScreen} />
     </Stack.Navigator>
   )
 };
