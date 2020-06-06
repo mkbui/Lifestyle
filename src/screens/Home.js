@@ -13,7 +13,13 @@ import {
   Text
 } from "native-base";
 
+// Database import (mock)
+//import Realm from 'realm';
+//let realm;
+
+
 class HomeScreen extends Component {
+
   render() {
     return (
       <Container style={styles.container}>
