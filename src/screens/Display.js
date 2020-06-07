@@ -21,6 +21,7 @@ import {
 } from "native-base";
 import {connect} from "react-redux";
 import {foodOperate} from "../reducers";
+import FoodList from "../components/FoodList";
 
 const default_image = require("../../assets/default_image.png");
 
@@ -77,34 +78,13 @@ class FoodTab extends Component {
           <Icon name = "paper"/>
           <Text style = {{fontSize:15, textAlign: 'justify'}}>Add new custom food</Text>
         </Button>
-        <List
-          dataArray={food}
-          renderRow={data =>
-            <ListItem thumbnail>
-              <Left>
-                <Thumbnail square source={data.image} />
-              </Left>
-              <Body>
-                <Text>
-                  {data.name}
-                </Text>
-                <Text numberOfLines={1} note>
-                  {data.category}
-                </Text>
-              </Body>
-              <Right>
-                <Button transparent>
-                  <Text>View</Text>
-                </Button>
-              </Right>
-            </ListItem>}
-        />
+        <FoodList/>
       </Content>
     )
   }
 }
 
-connect(mapStateToProps)(FoodTab);
+//connect(mapStateToProps)(FoodTab);
 
 class ExTab extends Component {
   handleAddEx = () => {
