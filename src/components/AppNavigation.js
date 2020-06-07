@@ -23,7 +23,7 @@ function DrawerNavigator() {
       drawerStyle={{
         width: 250,
         backgroundColor: '#c6cbef'
-      }}
+      }}  
       drawerContentOptions = {{
         activeTintColor: "#e91e63"
       }}
@@ -51,9 +51,10 @@ const Stack = createStackNavigator();
 function StackNavigator() {
   return(
     <Stack.Navigator
-      initialRouteName = 'Splash'
+      initialRouteName = 'Suggestion List'
       headerMode = 'none'
     >
+      <Stack.Screen name = 'Suggestion List' component = { ListScreen } />
       <Stack.Screen name = 'Splash' component = {SplashScreen}/>
       <Stack.Screen name = 'Home' component = {HomeScreen} />
       <Stack.Screen name = 'Settings' component = { SettingsScreen } />
