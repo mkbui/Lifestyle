@@ -20,8 +20,8 @@ export const actionCreators = {
 }
 */
 
-export function addFood(food){
-  return { type: ADD_FOOD, food };
+export function addFood(name, category){
+  return { type: ADD_FOOD, name, category };
 }
 
 export function removeFood(id){
