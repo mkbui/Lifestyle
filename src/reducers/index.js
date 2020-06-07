@@ -103,8 +103,8 @@ export function foodDisplay(state = initialState, action) {
 
 /* make a combination reducer for all sep. type */
 const appReducer = combineReducers({
-  foodFilter,
-  foodOperate,
+  foodFilter: foodFilter,
+  foodList: foodOperate,
 })
 
 export default appReducer;

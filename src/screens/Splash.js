@@ -32,7 +32,7 @@ export default class SplashScreen extends React.Component {
           <View style={{ marginBottom: 80 }}>
             <Button
               style={{ backgroundColor: "purple", alignSelf: "center" }}
-              onPress={() => this.props.navigation.navigate('Firstform')}
+              onPress={() => this.props.navigation.navigate('Home')}
             >
               <Text>Proceed</Text>
             </Button>
