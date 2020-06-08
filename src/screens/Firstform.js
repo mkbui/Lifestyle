@@ -21,6 +21,12 @@ import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import {createUser} from "../actions";
 
+const  mapDispatchToProps = dispatch => {
+  return {
+    createUser: (name, age, height) => dispatch(createUser(name, age, height))
+  }
+}
+
 class UsernameForm extends Component {
 
   state = {
@@ -124,7 +130,7 @@ class FitnessForm extends Component {
 class FirstformScreen extends Component {
   state = {
     step: 0,
-    name: '',
+    name: 'Default',
     initInfo: {
       height: 100,
       weight: 100,
@@ -141,12 +147,23 @@ class FirstformScreen extends Component {
   callSave(){
     const {dispatch} = this.props;
     const {name, initInfo} = this.state;
-    dispatch(createUser(name, initInfo.age, initInfo.height));
+    //dispatch(createUser(name, initInfo.age, initInfo.height));
+    this.props.createUser(name, initInfo.age, initInfo.height, initInfo.weight);
   }
 
   saveUserInfo = ({userInfo}) => {
     const {step} = this.state;
-    this.setState({step: step + 1, initInfo: userInfo});
+    this.setState(prevState => ({
+      ...prevState,
+      step: step + 1, 
+      initInfo: {
+        ...prevState.initInfo,
+        height: userInfo.height,
+        weight: userInfo.weight,
+        age: userInfo.age,
+      }
+    }))
+
     this.callSave();
     this.props.navigation.navigate('Home');
   }
@@ -181,4 +198,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect()(FirstformScreen);
+export default connect(null, mapDispatchToProps)(FirstformScreen);

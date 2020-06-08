@@ -14,13 +14,13 @@ const initialState = {
   viewFilters:  ViewFilters.VIEW_ALL,
   food: [
     {
-      name: 'egg',
+      name: 'Egg',
       category: 'protein',
       image: default_image,
       id: 1,
     },
     {
-      name: 'potato',
+      name: 'Potato',
       category: 'vegetable',
       image: default_image,
       id: 2,
@@ -42,12 +42,12 @@ export function foodOperate(state = initialState.food, action){
   const {food} = state; 
   switch (action.type){
     case ADD_FOOD:
-      const newId = state.length() + 1;
+      const newId = state.length + 1;
       return [
           ...state,
           {
-            name: 'new',
-            category: 'cat',
+            name: action.name,
+            category: action.category,
             image: default_image,
             id: newId,
           }

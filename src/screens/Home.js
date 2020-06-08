@@ -14,10 +14,13 @@ import {
 } from "native-base";
 
 import {connect} from "react-redux";
-
-const mapStateToProps = (state) => ({
+import {userAccess} from "../reducers/userReducer"
+function mapStateToProps(state) {
+  console.log(state.user);
+  return{
   userInfo: state.user,
-})
+  }
+}
 
 class HomeScreen extends Component {
 
@@ -26,15 +29,15 @@ class HomeScreen extends Component {
     return (
       <Container style={styles.container}>
         <Header>
-          <Left style = {{flex: 1}}>
+          <Left style = {{flex: 0.5}}>
             <Button transparent onPress={() => this.props.navigation.openDrawer()}>
               <Icon name="menu" />
             </Button>
           </Left>
           <Body style = {{flex: 1}}>
-            <Title style={styles.headerText}>Home, {userInfo.Info.name}</Title>
+            <Title style={styles.headerText}>Hello, {userInfo.Info.name}</Title>
           </Body>
-          <Right style = {{flex: 1}}>
+          <Right style = {{flex: 0.5}}>
             <Button 
               transparent 
               onPress={() => this.props.navigation.goBack()}>
@@ -60,4 +63,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
 export default connect(mapStateToProps)(HomeScreen);
