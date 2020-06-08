@@ -19,7 +19,7 @@ const User = {
 export function userAccess(state = User, action){
   switch (action.type){
     case CREATE_USER:
-      return {
+      /*return {
         ...state,
         Info: {
           name: action.name,
@@ -28,7 +28,17 @@ export function userAccess(state = User, action){
           weight: 150,
           registered: true,
         }
-      }
+      }*/
+      return Object.assign({}, state, {
+        Info: {
+          name: action.name,
+          age: action.age,
+          height: action.height,
+          weight: action.weight,
+          registered: true,
+        }
+      })
+
     default:
       return state;
   }

@@ -1,6 +1,6 @@
 import {
   SET_VIEW_FILTER, 
-  ADD_FOOD,
+  ADD_EXERCISE,
   REMOVE_FOOD,
   ViewFilters,
 } from '../actions';
@@ -40,23 +40,24 @@ export function exerciseFilter(state = VIEW_ALL, action){
 /* state is an array, for food list only */
 export function exerciseOperate(state = initialState.exercises, action){
   switch (action.type){
-    case ADD_FOOD:
-      const {newItem} = action.exercises;
-      const newId = state.exercises.length() + 1;
+    case ADD_EXERCISE:
+      const newId = state.exercises.length + 1;
       return [
           ...state,
           {
-            name: newItem.name,
-            category: newItem.category,
+            name: action.name,
+            category: action.category,
             id: newId,
           }
         ]
-      
+    
+    /*
     case REMOVE_FOOD:
       return state.filter((item) =>
           item.id !== action.id
         )
-    
+    */
+
     default: 
       return state
   }
