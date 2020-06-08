@@ -23,10 +23,16 @@ const showVisibleList = (food, filter) => {
 }
 */
 
+/*
 const mapStateToProps = (state) => ({
   foodList: state.foodList
-})
 
+})*/
+
+function mapStateToProps(state) {
+  console.log(state.foodList);
+  return {foodList: state.foodList}
+}
 class FoodList extends Component {
   render(){
     const {foodList} = this.props;

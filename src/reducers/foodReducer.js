@@ -42,14 +42,12 @@ export function foodOperate(state = initialState.food, action){
   const {food} = state; 
   switch (action.type){
     case ADD_FOOD:
-      console.log("adding food, new id is ");
-      const newId = state.food.length() + 1;
-      console.log(newId);
+      const newId = state.length() + 1;
       return [
           ...state,
           {
-            name: action.name,
-            category: action.category,
+            name: 'new',
+            category: 'cat',
             image: default_image,
             id: newId,
           }

@@ -9,6 +9,13 @@ const splashLogo = require('../../assets/bootLogo.jpg');
 //const deviceHeight = Dimensions.get("window").height;
 
 export default class SplashScreen extends React.Component {
+
+  componentDidMount(){
+    setTimeout(()=>{
+      this.props.navigation.navigate('Firstform')
+    }, 5000);
+    
+  }
   render(){
     return(
       <Container>
@@ -32,7 +39,7 @@ export default class SplashScreen extends React.Component {
           <View style={{ marginBottom: 80 }}>
             <Button
               style={{ backgroundColor: "purple", alignSelf: "center" }}
-              onPress={() => this.props.navigation.navigate('Home')}
+              onPress={() => this.props.navigation.navigate('Firstform')}
             >
               <Text>Proceed</Text>
             </Button>

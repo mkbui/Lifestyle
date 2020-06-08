@@ -1,6 +1,7 @@
 const SET_VIEW_FILTER = 'SET_VIEW_FILTER'
 const ADD_FOOD = 'ADD_FOOD'
 const REMOVE_FOOD = 'REMOVE_FOOD'
+const CREATE_USER = 'CREATE_USER'
 
 export const ViewFilters = {
   VIEW_ALL: 'VIEW_ALL',
@@ -20,6 +21,10 @@ export const actionCreators = {
 }
 */
 
+
+export function createUser(name, age, height){
+  return { type: CREATE_USER, name, age, height}
+}
 export function addFood(name, category){
   return { type: ADD_FOOD, name, category };
 }

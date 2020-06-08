@@ -18,6 +18,9 @@ import {
 } from "native-base";
 import PropTypes from 'prop-types';
 
+import {connect} from "react-redux";
+import {createUser} from "../actions";
+
 class UsernameForm extends Component {
 
   state = {
@@ -135,9 +138,16 @@ class FirstformScreen extends Component {
     //this.props.navigation.navigate('Home');
   }
 
+  callSave(){
+    const {dispatch} = this.props;
+    const {name, initInfo} = this.state;
+    dispatch(createUser(name, initInfo.age, initInfo.height));
+  }
+
   saveUserInfo = ({userInfo}) => {
     const {step} = this.state;
     this.setState({step: step + 1, initInfo: userInfo});
+    this.callSave();
     this.props.navigation.navigate('Home');
   }
   render() {
@@ -171,4 +181,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FirstformScreen;
+export default connect()(FirstformScreen);

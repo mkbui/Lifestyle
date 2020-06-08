@@ -30,11 +30,9 @@ import AddForm from "../components/AddForm";
 
 const default_image = require("../../assets/default_image.png");
 
-const mapStateToProps = (state) => ({
-  food: foodOperate(state, undefined),
-})
 
 
+/*
 const  food = [
   {
     name: 'Egg',
@@ -49,7 +47,7 @@ const  food = [
     id: 2,
   }
 ]
-
+*/
 
 const exercises = [
   {
