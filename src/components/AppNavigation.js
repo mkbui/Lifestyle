@@ -51,14 +51,14 @@ const Stack = createStackNavigator();
 function StackNavigator() {
   return(
     <Stack.Navigator
-      initialRouteName = 'Suggestion List'
+      initialRouteName = 'Splash'
       headerMode = 'none'
     >
-      <Stack.Screen name = 'Suggestion List' component = { ListScreen } />
       <Stack.Screen name = 'Splash' component = {SplashScreen}/>
       <Stack.Screen name = 'Home' component = {HomeScreen} />
       <Stack.Screen name = 'Settings' component = { SettingsScreen } />
       <Stack.Screen name = 'Firstform' component = {FirstformScreen} />
+      <Stack.Screen name = 'Suggestion List' component = { ListScreen } />
     </Stack.Navigator>
   )
 };

@@ -13,10 +13,16 @@ import {
   Text
 } from "native-base";
 
+import {connect} from "react-redux";
+
+const mapStateToProps = (state) => ({
+  userInfo: state.user,
+})
 
 class HomeScreen extends Component {
 
   render() {
+    const {userInfo} = this.props;
     return (
       <Container style={styles.container}>
         <Header>
@@ -26,7 +32,7 @@ class HomeScreen extends Component {
             </Button>
           </Left>
           <Body style = {{flex: 1}}>
-            <Title style={styles.headerText}>Home</Title>
+            <Title style={styles.headerText}>Home, {userInfo.Info.name}</Title>
           </Body>
           <Right style = {{flex: 1}}>
             <Button 
@@ -54,4 +60,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-export default HomeScreen;
+export default connect(mapStateToProps)(HomeScreen);

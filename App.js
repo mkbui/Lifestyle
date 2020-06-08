@@ -20,14 +20,16 @@ const persistConfig = {
 /* Declare store and persistor (saving data) for main dispatch appReducer */
 const persistedReducer = persistReducer(persistConfig, appReducer)
 const store = createStore(persistedReducer);
-persistStore(store);
+const persistor = persistStore(store);
 
 /* Main function contains Navigator defined in components */
 export default class App extends React.Component {
   render() {
     return (
       <Provider store = {store}>
-        <AppNavigation/>
+        <PersistGate loading = {null} persistor = {persistor}>
+          <AppNavigation/>
+        </PersistGate>
       </Provider>
     );
   }

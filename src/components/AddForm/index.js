@@ -21,17 +21,9 @@ import {addFood} from "../../actions";
 
 const default_image = require("../../../assets/default_image.png");
 
-const mapStateToProps = state => {
-  return { foodList: state.foodList };
-}; 
-
-const mapDispatchToProps = dispatch => {
-  return {
-    add: (name, category) => {
-      dispatch(addFood(name, category));
-    }
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  addFood: (name, category) => dispatch(addFood(name, category))
+})
 
 class AddForm extends Component {
   constructor(props){
@@ -49,10 +41,8 @@ class AddForm extends Component {
   }
 
   handlePress(){
-    const {completeForm} = this.props;
     const {name, category} = this.state;
-    //this.props.add(name, category);
-    completeForm();
+    this.props.addFood(name, category);
     this.setState({name: '', category: 'protein'})
   }
 
@@ -98,7 +88,7 @@ class AddForm extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddForm);
+export default connect(null, mapDispatchToProps)(AddForm);
 
 const styles = StyleSheet.create({
   formContainer: {
