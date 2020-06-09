@@ -29,29 +29,54 @@ const mapStateToProps = (state) => ({
 class ExerciseList extends Component {
   render(){
     const {exerciseList} = this.props;
+    /*
     return(
-      <List
-          dataArray={exerciseList}
-          renderRow={data =>
-            <ListItem thumbnail>
-              <Left>
-                <Thumbnail square source={data.image} />
-              </Left>
-              <Body>
-                <Text>
-                  {data.name}
-                </Text>
-                <Text numberOfLines={1} note>
-                  {data.category}
-                </Text>
-              </Body>
-              <Right>
-                <Button transparent>
-                  <Text>Add</Text>
-                </Button>
-              </Right>
-            </ListItem>}
-        />
+      <List 
+        dataArray = {exerciseList}
+        renderRow = { data =>
+          <ListItem thumbnail>
+            <Left>
+              <Thumbnail square source={data.image} />
+            </Left>
+            <Body>
+              <Text>
+                {data.name}
+              </Text>
+              <Text numberOfLines={1} note>
+                {data.category}
+              </Text>
+            </Body>
+            <Right>
+              <Button transparent>
+                <Text>Add</Text>
+              </Button>
+            </Right>
+          </ListItem>
+        }
+        keyExtractor = {item => item.id}
+      />
+    )*/
+    return(
+      exerciseList.map( data =>
+        <ListItem thumbnail key = {data.id}>
+            <Left>
+              <Thumbnail square source={data.image} />
+            </Left>
+            <Body>
+              <Text>
+                {data.name}
+              </Text>
+              <Text numberOfLines={1} note>
+                {data.category}
+              </Text>
+            </Body>
+            <Right>
+              <Button transparent>
+                <Text>View</Text>
+              </Button>
+            </Right>
+        </ListItem>
+      )
     )
   }
 }

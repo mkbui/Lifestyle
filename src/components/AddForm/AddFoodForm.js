@@ -14,6 +14,7 @@ import {
   Picker,
   Form,
   Label,
+  Toast
 } from "native-base";
 
 import {connect} from "react-redux";
@@ -44,6 +45,10 @@ class AddFoodForm extends Component {
     const {name, category} = this.state;
     this.props.addFood(name, category);
     this.setState({name: '', category: 'null'})
+    Toast.show({
+      text: "Food added successfully!",
+      buttonText: "Okay"
+    })
   }
 
   render(){
@@ -61,20 +66,22 @@ class AddFoodForm extends Component {
             value = {name}
           />
         </Item>
-        <Picker
-          headerStyle={{ backgroundColor: "#b95dd3" }}
-          headerBackButtonTextStyle={{ color: "#fff" }}
-          headerTitleStyle={{ color: "#fff" }}
-          mode="dropdown"
-          headerBackButtonText="Back!"
-          style={{ width: undefined }}
-          selectedValue={this.state.category}
-          onValueChange={this.onValueChange.bind(this)}
-        >
-              <Item label="Choose category..." value="null" />
-              <Item label="Protein" value="protein" />
-              <Item label="Vegetable" value="vegetable" />
-        </Picker>
+        <Item picker stackedLabel>
+          <Picker
+            headerStyle={{ backgroundColor: "#b95dd3" }}
+            headerBackButtonTextStyle={{ color: "#fff" }}
+            headerTitleStyle={{ color: "#fff" }}
+            mode="dropdown"
+            headerBackButtonText="Back!"
+            style={{ width: undefined }}
+            selectedValue={this.state.category}
+            onValueChange={this.onValueChange.bind(this)}
+          >
+                <Item label="Choose category..." value="null" />
+                <Item label="Protein" value="protein" />
+                <Item label="Vegetable" value="vegetable" />
+          </Picker>
+        </Item>
 
       </Form>
       <Button 

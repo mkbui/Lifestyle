@@ -14,7 +14,7 @@ const {VIEW_ALL} = ViewFilters;
 
 const initialState = {
   viewFilters:  ViewFilters.VIEW_ALL,
-  food: data.food /*[
+  food: /*data.food*/[
     {
       name: 'Egg',
       category: 'protein',
@@ -27,7 +27,7 @@ const initialState = {
       image: default_image,
       id: 2,
     }
-  ],*/
+  ],
 }
 
 /* reducer for viewFilters state */
