@@ -26,7 +26,7 @@ import {connect} from "react-redux";
 import {foodOperate} from "../reducers";
 import FoodList from "../components/FoodList";
 import ExerciseList from "../components/ExerciseList";
-import AddForm from "../components/AddForm";
+import {AddFoodForm, AddExerciseForm} from "../components/AddForm";
 
 const default_image = require("../../assets/default_image.png");
 
@@ -65,8 +65,7 @@ const exercises = [
 ]
 
 
-class FoodTab extends Component {
-
+class ListTab extends Component {
 
   constructor(props){
     super(props);
@@ -82,6 +81,7 @@ class FoodTab extends Component {
   }
 
   formHeader(item, expanded){
+    const cat = this.props;
     return (
       <View
         style={{
@@ -93,7 +93,7 @@ class FoodTab extends Component {
         }}
       >
         <Text style = {{color: '#1C2833', fontWeight: "bold"}}>
-          {" "}{item.title}
+          {" "}{item.title}{" "}{cat}
         </Text>
         {expanded
           ? <Icon style = {{color: '#7F8C8D'}}  name="remove" />
@@ -103,17 +103,21 @@ class FoodTab extends Component {
   }
 
   formContent(item) {
-    return <AddForm completeForm = {this.toggleExpand}/>
+    if (this.props.cat === 'food') 
+      return <AddFoodForm completeForm = {this.toggleExpand}/>;
+    return <AddExerciseForm completeForm = {this.toggleExpand}/>
+    
   }
 
   render(){
     //const {food} = this.props;
+    const {cat} = this.props;
     return(
       <Content padder>
         <Accordion
             dataArray={
               [{
-              title: 'Add new custom food',
+              title: 'Add new custom',
               content: 'Enter basic info',
               }]
             }
@@ -126,11 +130,14 @@ class FoodTab extends Component {
             renderHeader = {this.formHeader}
             renderContent = {(item) =>
               {
-                return <AddForm/>
+                if (this.props.cat === 'food') 
+                  {return <AddFoodForm completeForm = {this.toggleExpand}/>}
+                return <AddExerciseForm completeForm = {this.toggleExpand}/>
               }
             }
         />
-        <FoodList/>
+        {cat === 'food' && <FoodList/>}
+        {cat === 'exercise' && <ExerciseList/>}
       </Content>
     )
   }
@@ -235,8 +242,8 @@ class ListScreen extends Component {
       </Segment>
 
       <Content padder>
-        {this.state.seg === 1 && <FoodTab/>}
-        {this.state.seg === 2 && <ExTab/>}
+        {this.state.seg === 1 && <ListTab cat = 'food'/>}
+        {this.state.seg === 2 && <ListTab cat = 'exercise'/>}
       </Content>
     </Container>
     );

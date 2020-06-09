@@ -8,11 +8,13 @@ import {
 import { combineReducers } from 'redux';
 const default_image = require("../../assets/default_image.png");
 
+import data from "../data/data.json"
+
 const {VIEW_ALL} = ViewFilters;
 
 const initialState = {
   viewFilters:  ViewFilters.VIEW_ALL,
-  food: [
+  food: data.food /*[
     {
       name: 'Egg',
       category: 'protein',
@@ -25,7 +27,7 @@ const initialState = {
       image: default_image,
       id: 2,
     }
-  ],
+  ],*/
 }
 
 /* reducer for viewFilters state */
