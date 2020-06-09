@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-
-import {StyleSheet} from "react-native";
+import {SafeAreaView, StyleSheet} from "react-native";
 import {
   Button,
   List,
@@ -31,7 +30,6 @@ const mapStateToProps = (state) => ({
 })*/
 
 function mapStateToProps(state) {
-  console.log(state.foodList);
   return {foodList: state.foodList}
 }
 
@@ -39,9 +37,7 @@ class FoodList extends Component {
   render(){
     const {foodList} = this.props;
     return(
-      <List
-          dataArray={foodList}
-          renderRow={data =>
+        foodList.map(data =>
             <ListItem thumbnail>
               <Left>
                 <Thumbnail square source={data.image} />
@@ -56,11 +52,11 @@ class FoodList extends Component {
               </Body>
               <Right>
                 <Button transparent>
-                  <Text>Add</Text>
+                  <Text>View</Text>
                 </Button>
               </Right>
-            </ListItem>}
-        />
+            </ListItem>
+        )
     )
   }
 }
