@@ -16,9 +16,8 @@ import {
 import {connect} from "react-redux";
 import {userAccess} from "../reducers/userReducer"
 function mapStateToProps(state) {
-  console.log(state.user);
   return{
-  userInfo: state.user,
+    userInfo: state.user,
   }
 }
 
@@ -48,6 +47,7 @@ class HomeScreen extends Component {
 
         <Content padder>
           <Text>Default screen with header and drawer menu</Text>
+          
         </Content>
       </Container>
     );

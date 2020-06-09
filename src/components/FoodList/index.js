@@ -14,6 +14,7 @@ import {
 import {connect} from "react-redux";
 import {foodOperate} from "../../reducers";
 import {ViewFilter} from "../../actions";
+import data from "../../data/data.json";
 
 /*
 const showVisibleList = (food, filter) => {
@@ -33,6 +34,7 @@ function mapStateToProps(state) {
   console.log(state.foodList);
   return {foodList: state.foodList}
 }
+
 class FoodList extends Component {
   render(){
     const {foodList} = this.props;
