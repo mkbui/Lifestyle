@@ -14,7 +14,8 @@ import {
   Form,
   Item,
   Input,
-  Label
+  Label,
+  Picker,
 } from "native-base";
 import PropTypes from 'prop-types';
 
@@ -23,7 +24,7 @@ import {createUser} from "../actions";
 
 const  mapDispatchToProps = dispatch => {
   return {
-    createUser: (name, age, height) => dispatch(createUser(name, age, height))
+    createUser: (name, initInfo) => dispatch(createUser(name, initInfo))
   }
 }
 
@@ -71,19 +72,28 @@ class UsernameForm extends Component {
 class FitnessForm extends Component {
 
   state = {
-    userInfo: {
-      age: 1,
-      height: 150,
-      weight: 50,
-    }
+    age: 1,
+    height: 150,
+    weight: 50,
+    gender: "",
   }
 
   handlePress = () => {
     const {saveUserInfo} = this.props;
-    const {userInfo} = this.state;
-    saveUserInfo({userInfo});
+    const {age, height, weight, gender} = this.state;
+    const userInfo = {
+        age: age,
+        height: height,
+        weight: weight,
+        gender: gender,
+    }
+    saveUserInfo(userInfo);
   }
   
+  onGenderChoose(value){
+    this.setState({gender: value})
+  }
+
   render(){
     return(
       <Content padder>
@@ -95,7 +105,7 @@ class FitnessForm extends Component {
           <Item stackedLabel>
             <Label>Age</Label>
             <Input 
-              placeholder = "Enter you age in number"
+              placeholder = "Enter your age in number"
               onChangeText = { (text) => this.setState({age: text})}
             />
           </Item>
@@ -113,6 +123,22 @@ class FitnessForm extends Component {
               onChangeText = { (text) => this.setState({weight: text})}
             />
           </Item>
+          <Item picker >
+            <Picker
+              mode="dropdown" 
+              iosIcon={<Icon name="ios-arrow-down" />}
+              style={{ paddingTop: 70, height: 60, }}
+              placeholder="Choose your gender"
+              placeholderStyle={{ color: "#bfc6ea" }}
+              placeholderIconColor="#007aff"
+              selectedValue={this.state.gender}
+              onValueChange={this.onGenderChoose.bind(this)}
+            >
+              <Item style={{ color: "#bfc6ea" }} label="Choose your gender" value = ""/>
+              <Item label="Male" value="male" />
+              <Item label="Female" value="female" />
+            </Picker>
+            </Item>
         </Form>
         <Button 
           block  
@@ -128,19 +154,24 @@ class FitnessForm extends Component {
 }
 
 class FirstformScreen extends Component {
-  state = {
-    step: 0,
-    name: 'Default',
-    initInfo: {
-      height: 100,
-      weight: 100,
-      age: 10,
-    },
-  };
 
+  constructor(props){
+    super(props);
+    this.state = {
+      step: 0,
+      name: 'Default',
+      initInfo: {
+        height: 100,
+        weight: 100,
+        age: 10,
+        gender: '',
+      },
+    };
+  
+  }
   saveUsername = ({userText}) => {
     const {step} = this.state;
-    this.setState({step: step + 1, name: userText});
+    this.setState({...this.state, step: step + 1, name: userText});
     //this.props.navigation.navigate('Home');
   }
 
@@ -148,25 +179,25 @@ class FirstformScreen extends Component {
     const {dispatch} = this.props;
     const {name, initInfo} = this.state;
     //dispatch(createUser(name, initInfo.age, initInfo.height));
-    this.props.createUser(name, initInfo.age, initInfo.height, initInfo.weight);
+    this.props.createUser(name, initInfo);
+    this.props.navigation.navigate('Home');
   }
 
-  saveUserInfo = ({userInfo}) => {
-    const {step} = this.state;
-    this.setState(prevState => ({
-      ...prevState,
+  saveUserInfo = (userInfo) => {
+    const {step, initInfo} = this.state;
+    const {height, weight, age, gender} = userInfo;
+    this.setState( prevState => ({
       step: step + 1, 
       initInfo: {
         ...prevState.initInfo,
-        height: userInfo.height,
-        weight: userInfo.weight,
-        age: userInfo.age,
+        height: height,
+        weight: weight,
+        age: age,
+        gender: gender,
       }
-    }))
-
-    this.callSave();
-    this.props.navigation.navigate('Home');
+    }), this.callSave.bind(this))
   }
+
   render() {
     const {step} = this.state;
     return (

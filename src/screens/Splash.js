@@ -55,7 +55,7 @@ class SplashScreen extends Component {
           <View style={{ marginBottom: 80 }}>
             <Button
               style={{ backgroundColor: "purple", alignSelf: "center" }}
-              onPress={() => this.proceed}
+              onPress={() => this.proceed()}
             >
               <Text>Proceed</Text>
             </Button>

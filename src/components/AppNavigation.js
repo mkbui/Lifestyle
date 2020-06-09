@@ -13,6 +13,7 @@ import HomeScreen from '../screens/Home';
 import SettingsScreen from '../screens/Settings';
 import FirstformScreen from '../screens/Firstform';
 import ListScreen from '../screens/Display';
+import TrackerScreen from '../screens/Tracker';
 
 /* Drawer navigator containing side list of main screens and stack navigator itself */
 const Drawer = createDrawerNavigator();
@@ -29,7 +30,7 @@ function DrawerNavigator() {
       }}
     >
       <Drawer.Screen name = 'Home' component = { StackNavigator } />
-      <Drawer.Screen name='Details' component={ DetailsScreen } />
+      <Drawer.Screen name = 'Tracker' component = { TrackerScreen } />
       <Drawer.Screen name = 'Settings' component = { SettingsScreen } />
       <Drawer.Screen name = 'Suggestion List' component = { ListScreen } />
     </Drawer.Navigator>
@@ -59,6 +60,7 @@ function StackNavigator() {
       <Stack.Screen name = 'Settings' component = { SettingsScreen } />
       <Stack.Screen name = 'Firstform' component = {FirstformScreen} />
       <Stack.Screen name = 'Suggestion List' component = { ListScreen } />
+      <Stack.Screen name = 'Tracker' component = {TrackerScreen} />
     </Stack.Navigator>
   )
 };
