@@ -6,6 +6,7 @@ const User = {
     age: 1,
     height: 100,
     weight: 100,
+    gender: '',
     registered: false,
   },
   FitnessRecord: [
@@ -32,9 +33,10 @@ export function userAccess(state = User, action){
       return Object.assign({}, state, {
         Info: {
           name: action.name,
-          age: action.age,
-          height: action.height,
-          weight: action.weight,
+          age: action.initInfo.age,
+          height: action.initInfo.height,
+          weight: action.initInfo.weight,
+          gender: action.initInfo.gender,
           registered: true,
         }
       })

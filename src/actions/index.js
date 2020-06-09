@@ -23,8 +23,9 @@ export const actionCreators = {
 */
 
 
-export function createUser(name, age, height, weight){
-  return { type: CREATE_USER, name, age, height, weight }
+export function createUser(name, initInfo){
+  
+  return { type: CREATE_USER, name, initInfo }
 }
 export function addFood(name, category){
   return { type: ADD_FOOD, name, category };
