@@ -14,6 +14,7 @@ import {
   Picker,
   Form,
   Label,
+  Toast,
 } from "native-base";
 
 import {connect} from "react-redux";
@@ -44,7 +45,11 @@ class AddExerciseForm extends Component {
   handlePress(){
     const {name, category} = this.state;
     this.props.addExercise(name, category);
-    this.setState({name: '', category: 'null'})
+    this.setState({name: '', category: 'null'});
+    Toast.show({
+      text: "Exercise added successfully!",
+      type: "success",
+    })
   }
 
   render(){
@@ -62,20 +67,23 @@ class AddExerciseForm extends Component {
             value = {name}
           />
         </Item>
-        <Picker
-          headerStyle={{ backgroundColor: "#b95dd3" }}
-          headerBackButtonTextStyle={{ color: "#fff" }}
-          headerTitleStyle={{ color: "#fff" }}
-          mode="dropdown"
-          headerBackButtonText="Back!"
-          style={{ width: undefined }}
-          selectedValue={this.state.category}
-          onValueChange={this.onValueChange.bind(this)}
-        >
-              <Item label="Choose category..." value="null" />
-              <Item label="Abs" value="abs" />
-              <Item label="Relax" value="relax" />
-        </Picker>
+        <Item picker>
+          <Picker
+              headerStyle={{ backgroundColor: "#b95dd3" }}
+              headerBackButtonTextStyle={{ color: "#fff" }}
+              headerTitleStyle={{ color: "#fff" }}
+              mode="dropdown"
+              headerBackButtonText="Back!"
+              style={{ width: undefined }}
+              selectedValue={this.state.category}
+              onValueChange={this.onValueChange.bind(this)}
+            >
+                  <Item label="Choose category..." value="null" />
+                  <Item label="Abs" value="abs" />
+                  <Item label="Relax" value="relax" />
+          </Picker>
+        </Item>
+          
 
       </Form>
       <Button 

@@ -6,6 +6,7 @@ import {
 } from '../actions';
 
 import { combineReducers } from 'redux';
+import uuid from "react-native-uuid";
 const default_image = require("../../assets/default_image.png");
 
 import data from "../data/data.json"

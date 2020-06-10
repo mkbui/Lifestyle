@@ -14,7 +14,8 @@ import {
   Picker,
   Form,
   Label,
-  Toast
+  Toast,
+
 } from "native-base";
 
 import {connect} from "react-redux";
@@ -47,7 +48,7 @@ class AddFoodForm extends Component {
     this.setState({name: '', category: 'null'})
     Toast.show({
       text: "Food added successfully!",
-      buttonText: "Okay"
+      type: "success",
     })
   }
 
@@ -66,14 +67,14 @@ class AddFoodForm extends Component {
             value = {name}
           />
         </Item>
-        <Item picker stackedLabel>
+        <Item picker>
           <Picker
             headerStyle={{ backgroundColor: "#b95dd3" }}
             headerBackButtonTextStyle={{ color: "#fff" }}
             headerTitleStyle={{ color: "#fff" }}
             mode="dropdown"
             headerBackButtonText="Back!"
-            style={{ width: undefined }}
+            style={{ width: undefined, paddingLeft: 50 }}
             selectedValue={this.state.category}
             onValueChange={this.onValueChange.bind(this)}
           >
