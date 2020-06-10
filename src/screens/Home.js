@@ -23,6 +23,9 @@ import {getDateString} from "../utils";
 import {connect} from "react-redux";
 import {userAccess} from "../reducers/userReducer"
 const default_image = require("../../assets/default_image.png");
+const heart = require("../../assets/heart.png");
+const finance = require("../../assets/finance.png");
+
 function mapStateToProps(state) {
   return{
     userInfo: state.user,
@@ -36,7 +39,7 @@ class HomeScreen extends Component {
     this.state = {
       fActive: false,
     }
-    console.log(this.props.userInfo);
+    //console.log(this.props.userInfo);
   }
   render() {
     const {userInfo} = this.props;
@@ -86,14 +89,75 @@ class HomeScreen extends Component {
             </CardItem>
           </Card>
 
-          <Card style = {styles.mb}>
-            <CardItem>
+          <Card  style = {styles.mb}>
+            <CardItem header bordered >
+              <Left>
+                <Thumbnail source = {heart} />
+                <Body>
+                  <Text style = {styles.sectionHeader}>Update your health status</Text>
+                </Body>
+              </Left>
+            </CardItem>
+            <CardItem bordered>
               <Left>
                 <Icon type = "FontAwesome5" name = "weight"/>
                 <Text style = {styles.cardText}>{userInfo.Info.weight} kg</Text>
               </Left>
             </CardItem>
+            <CardItem bordered>
+              <Left>
+                <Icon type = "MaterialCommunityIcons" name = "cup-water"/>
+                <Text style = {styles.cardText}>0 litre</Text>
+              </Left>
+            </CardItem>
+
+            <CardItem bordered>
+              <Left>
+                <Icon type = "FontAwesome5" name = "utensils"/>
+                <Text style = {styles.cardText}> 0 Kcal</Text>
+              </Left>
+            </CardItem>
+
+            <CardItem bordered>
+              <Left>
+                <Icon type = "MaterialCommunityIcons" name = "fire"/>
+                <Text style = {styles.cardText}>0 Kcal</Text>
+              </Left>
+            </CardItem>
+
+            <CardItem footer bordered>
+              <Text>Go to Health Tracker</Text>
+            </CardItem>
           </Card>
+
+          <Card  style = {styles.mb}>
+            <CardItem header bordered >
+              <Left>
+                <Thumbnail  source = {finance} />
+                <Body>
+                  <Text style = {styles.sectionHeader}>Update your financial status</Text>
+                </Body>
+              </Left>
+            </CardItem>
+            <CardItem bordered>
+              <Left>
+                <Icon type = "MaterialCommunityIcons" name = "cash-refund"/>
+                <Text style = {styles.cardText}>0 VND</Text>
+              </Left>
+            </CardItem>
+
+            <CardItem bordered>
+              <Left>
+                <Icon type = "MaterialCommunityIcons" name = "credit-card-plus"/>
+                <Text style = {styles.cardText}>0 VND</Text>
+              </Left>
+            </CardItem>
+
+            <CardItem footer bordered>
+              <Text>Go to Financial Diary</Text>
+            </CardItem>
+          </Card>
+
         </Content>
       </Container>
     );
@@ -109,11 +173,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   mb: {
+    color: 'peachpuff',
     marginBottom: 20,
   },
-  cardText: {
+  sectionHeader: {
     fontWeight: 'bold',
     fontSize: 20,
+  },
+  cardText: {
+    fontWeight: '800',
+    fontSize: 16,
   }
 });
 

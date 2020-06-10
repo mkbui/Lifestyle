@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-import Root from 'native-base';
+import {Root} from 'native-base';
 
 /* React-navigation necessities import */
 import {NavigationContainer} from '@react-navigation/native';
@@ -74,7 +74,7 @@ function AppContainer() {
   )
 };
 
-export default AppContainer; /*() =>
+export default () =>
   <Root>
     <AppContainer />
-  </Root>;*/
+  </Root>
