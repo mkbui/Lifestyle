@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {StyleSheet, Platform} from 'react-native';
+import {View, StyleSheet, Platform} from 'react-native';
 import {
   Container,
   Header,
@@ -74,9 +74,9 @@ class SettingsScreen extends Component {
 
         <Content>
 
-          <Separator bordered noTopBorder />
+          <Separator bordered noTopBorder style = {styles.separator} />
 
-          <ListItem icon >
+          <ListItem style = {styles.row} icon >
             <Left>
               <Button style={{ backgroundColor: "purple" }}>
                 <Icon active name="moon" />
@@ -94,7 +94,7 @@ class SettingsScreen extends Component {
             </Right>
           </ListItem>
 
-          <ListItem icon>
+          <ListItem style = {styles.row} icon>
             <Left>
               <Button style={{ backgroundColor: "orange" }}>
                 <Icon active name="notifications" />
@@ -111,7 +111,7 @@ class SettingsScreen extends Component {
             </Right>
           </ListItem>
           
-          <ListItem icon last>
+          <ListItem style = {styles.row} icon last>
             <Left>
               <Button style={{ backgroundColor: "#4CDA64" }}>
                 <Icon name="arrow-dropdown" />
@@ -135,10 +135,10 @@ class SettingsScreen extends Component {
           </ListItem>
 
 
-          <Separator bordered />
+          <Separator bordered style = {styles.separator}/>
 
 
-          <ListItem icon onPress = {() => this.setState({stage: 'pin'})}>
+          <ListItem style = {styles.row} icon onPress = {() => this.setState({stage: 'pin'})}>
             <Left>
               <Button style={{ backgroundColor: "#FD3C2D" }}>
                 <Icon active name="lock" />
@@ -152,7 +152,7 @@ class SettingsScreen extends Component {
             </Right>
           </ListItem>
 
-          <ListItem icon onPress = {() => this.setState({stage: 'editUser'})}>
+          <ListItem style = {styles.row} icon onPress = {() => this.setState({stage: 'editUser'})}>
             <Left>
               <Button style={{ backgroundColor: "blue" }}>
                 <Icon active name="person" />
@@ -163,20 +163,13 @@ class SettingsScreen extends Component {
             </Body>
           </ListItem>
 
+          <Separator bordered style = {styles.separator}/>
         </Content>
       </Container>
     );
   }
 }
 
-/*
-
-
-          
-          
-          
-
-          */
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFF"
@@ -190,7 +183,14 @@ const styles = StyleSheet.create({
   },
   mb: {
     marginBottom: 15
-  }
+  },
+  separator: {
+    //backgroundColor: '#FFF',
+  },
+ 
+  row: {
+  
+  },
 });
 
 export default SettingsScreen;
