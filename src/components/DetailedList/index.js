@@ -10,16 +10,12 @@ import {
   Body,
   Right,
   Icon,
-  Toast,
+
 } from "native-base";
 import {connect} from "react-redux";
-import {removeFood} from "../../actions";
 import {foodOperate} from "../../reducers";
 import {ViewFilter} from "../../actions";
 import data from "../../data/data.json";
-
-
-
 
 /*
 const showVisibleList = (food, filter) => {
@@ -39,24 +35,11 @@ function mapStateToProps(state) {
   return {foodList: state.foodList}
 }
 
-const mapDispatchToProps = dispatch => ({
-  removeFood: (id) => dispatch(removeFood(id))
-})
-
-class FoodList extends Component {
-  
-  removeItem(data){
-    this.props.removeFood(data.id);
-    Toast.show({
-      text: "Removed successfully!",
-      type: "success",
-    })
-  }
-
+class DetailedList extends Component {
   render(){
-    const {foodList} = this.props;
+    const {data} = this.props;
     return(
-        foodList.map(data =>
+        data.map(data =>
             <ListItem thumbnail key = {data.id}>
               <Left>
                 <Thumbnail square source={data.image} />
@@ -72,7 +55,7 @@ class FoodList extends Component {
               <Right>
                 <Button transparent>
                   <Icon style = {styles.iconView} type = "FontAwesome5" name = "glasses"/>
-                  <Icon style = {styles.iconView} name = "trash" onPress = {() => {this.removeItem(data)}} />
+                  <Icon style = {styles.iconView} name = "trash" />
                 </Button> 
               </Right>
             </ListItem>
@@ -88,4 +71,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(FoodList);
+export default connect(mapStateToProps)(DetailedList);

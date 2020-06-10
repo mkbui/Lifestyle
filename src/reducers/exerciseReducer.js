@@ -1,10 +1,11 @@
 import {
   SET_VIEW_FILTER, 
   ADD_EXERCISE,
-  REMOVE_FOOD,
   ViewFilters,
+  REMOVE_EXERCISE,
 } from '../actions';
 
+import uuid from "react-native-uuid";
 
 const default_image = require("../../assets/default_image.png");
 
@@ -17,13 +18,13 @@ const initialState = {
       name: 'Sit-up',
       category: 'abs',
       image: default_image,
-      id: 1,
+      id: uuid.v4(),
     },
     {
       name: 'Sit-down',
       category: 'relax',
       image: default_image,
-      id: 2,
+      id: uuid.v4(),
     }
   ],
 }
@@ -41,22 +42,23 @@ export function exerciseFilter(state = VIEW_ALL, action){
 export function exerciseOperate(state = initialState.exercises, action){
   switch (action.type){
     case ADD_EXERCISE:
-      const newId = state.exercises.length + 1;
+      const newId = uuid.v4()//state.length + 1;
       return [
           ...state,
           {
             name: action.name,
             category: action.category,
+            image: default_image,
             id: newId,
           }
         ]
     
-    /*
-    case REMOVE_FOOD:
+    
+    case REMOVE_EXERCISE:
       return state.filter((item) =>
           item.id !== action.id
         )
-    */
+    
 
     default: 
       return state
