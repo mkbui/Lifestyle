@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import {StyleSheet} from 'react-native';
+import React, { Component, useState } from "react";
+import {View,StyleSheet, Switch} from 'react-native';
 import {
   Container,
   Header,
@@ -13,7 +13,29 @@ import {
   Text
 } from "native-base";
 
+
+function Toggle() {
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+  return (
+    <View style={styles.container}>
+      <Switch
+        trackColor={{ false: "#767577", true: "#81b0ff" }}
+        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={toggleSwitch}
+        value={isEnabled}
+      />
+    </View>
+  );
+}
+
 class SettingsScreen extends Component {
+  constructor(props){
+    super(props);
+    const darkModeOn = false;
+  }
   render() {
     return (
       <Container style={styles.container}>
@@ -36,7 +58,10 @@ class SettingsScreen extends Component {
         </Header>
 
         <Content padder>
-          <Text>Setting screen</Text>
+          <Text>Dark Mode</Text>
+          <Toggle />
+          <Text>Set Lock Code</Text>
+          <Toggle />
         </Content>
       </Container>
     );
