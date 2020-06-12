@@ -1,5 +1,8 @@
+
 import React, { Component } from "react";
 import {View, StyleSheet, Platform, ToastAndroid} from 'react-native';
+import React, { Component, useState } from "react";
+import {View,StyleSheet, Switch} from 'react-native';
 import {
   Container,
   Header,
@@ -24,7 +27,22 @@ import {initializeReminders} from "../utils"
 //const Item = Picker.Item;
 
 /* TO BE ADDED: a mapDispatchToProps and mapStateToProps to save settings to store */
+function Toggle() {
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
+  return (
+    <View style={styles.container}>
+      <Switch
+        trackColor={{ false: "#767577", true: "#81b0ff" }}
+        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={toggleSwitch}
+        value={isEnabled}
+      />
+    </View>
+  );
+}
 /* Presentational component for managing redirection to setting changes */
 class SettingsScreen extends Component {
   constructor(props) {
