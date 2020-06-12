@@ -12,7 +12,7 @@ import SplashScreen from '../screens/Splash';
 import HomeScreen from '../screens/Home';
 import SettingsScreen from '../screens/Settings';
 import FirstformScreen from '../screens/Firstform';
-
+import ExportPersonalDocumentScreen from '../screens/ExportPersonalDocument';
 /* Drawer navigator containing side list of main screens and stack navigator itself */
 const Drawer = createDrawerNavigator();
 function DrawerNavigator() {
@@ -30,6 +30,7 @@ function DrawerNavigator() {
       <Drawer.Screen name = 'Home' component = { StackNavigator } />
       <Drawer.Screen name='Details' component={ DetailsScreen } />
       <Drawer.Screen name = 'Settings' component = { SettingsScreen } />
+      <Stack.Screen name = 'ExportPersonalDocument' component = { ExportPersonalDocumentScreen } />
     </Drawer.Navigator>
   )
 } 
@@ -56,6 +57,7 @@ function StackNavigator() {
       <Stack.Screen name = 'Home' component = {HomeScreen} />
       <Stack.Screen name = 'Settings' component = { SettingsScreen } />
       <Stack.Screen name = 'Firstform' component = {FirstformScreen} />
+      <Stack.Screen name = 'ExportPersonalDocument' component = { ExportPersonalDocumentScreen } />
     </Stack.Navigator>
   )
 };
