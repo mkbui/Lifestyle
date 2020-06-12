@@ -24,7 +24,7 @@ export default class SplashScreen extends React.Component {
               backgroundColor: "transparent"
             }}
           >
-            <Text style={styles.text}>(Edited) Monitor and improve your health today</Text>
+            <Text style={styles.text}>Monitor and improve your health today</Text>
             <View style={{ marginTop: 8 }} />
             <Text style={styles.text}>with Lifestyle Application!</Text>
             <View style={{ marginTop: 8 }} />
