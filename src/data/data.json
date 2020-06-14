@@ -1,3 +1,4 @@
+
 {
   "food": [
       {
@@ -25,6 +26,12 @@
       "category": "relax",
       "image": "default_image",
       "id": "2"
+    }
+  ],
+  "randomtips": [
+    {
+      "text": "Walking is good for your leg",
+      "category": "fitness"
     }
   ]
 }

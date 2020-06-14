@@ -87,7 +87,7 @@ export function userAccess(state = User, action){
         ],
         FinanceRecord: [
           ...state.FinanceRecord,
-          state.DailyRecord.FinanceRecord,
+          state.DailyRecord.Finance,
         ],
         DailyRecord: {
           date: todays,
