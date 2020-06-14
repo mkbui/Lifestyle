@@ -51,15 +51,16 @@ class HomeScreen extends Component {
     this.state = {
       fActive: false,
     }
-    console.log(this.props.userInfo);
-  }
-
-  ComponentDidMount(){
-    lastRecordDate = this.props.userInfo.DailyRecord.date;
-    if (today !== date) {
+    //console.log(this.props.userInfo);
+    let lastRecordDate = this.props.userInfo.DailyRecord.date;
+    if (today !== lastRecordDate) {
       console.log('Initiating new daily record...');
       this.props.createNewDaily();
     }
+  }
+
+  ComponentDidMount(){
+    
   }
 
   render() {
