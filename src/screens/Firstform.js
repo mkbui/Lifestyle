@@ -20,11 +20,12 @@ import {
 import PropTypes from 'prop-types';
 
 import {connect} from "react-redux";
-import {createUser} from "../actions";
-
+import {createUser, calculateInfo, createNewDaily} from "../actions";
 const  mapDispatchToProps = dispatch => {
   return {
-    createUser: (name, initInfo) => dispatch(createUser(name, initInfo))
+    createUser: (name, initInfo) => dispatch(createUser(name, initInfo)),
+    calculateInfo: (info) => dispatch(calculateInfo(info)),
+    createNewDaily: () => dispatch(createNewDaily()),
   }
 }
 
@@ -180,6 +181,8 @@ class FirstformScreen extends Component {
     const {name, initInfo} = this.state;
     //dispatch(createUser(name, initInfo.age, initInfo.height));
     this.props.createUser(name, initInfo);
+    this.props.calculateInfo(initInfo);
+    //this.props.createNewDaily();
     this.props.navigation.navigate('Home');
   }
 
