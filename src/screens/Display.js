@@ -192,8 +192,8 @@ class ListScreen extends Component {
       <Container style = {styles.Container}>
         <Header hasSegment>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name="arrow-back" />
+            <Button transparent onPress={() => this.props.navigation.openDrawer()}>
+              <Icon name="menu" />
             </Button>
           </Left>
           <Body>
