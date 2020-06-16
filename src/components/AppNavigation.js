@@ -15,7 +15,8 @@ import FirstformScreen from '../screens/Firstform';
 import ListScreen from '../screens/Display';
 import TrackerScreen from '../screens/Tracker';
 import AdviceScreen from '../screens/Advice';
-
+import PreForm from '../components/AdviceScreens/PreForm';
+import AdviceAnalysis from '../components/AdviceScreens/AdviceAnalysis';
 /* Drawer navigator containing side list of main screens and stack navigator itself */
 const Drawer = createDrawerNavigator();
 function DrawerNavigator() {
@@ -63,7 +64,10 @@ function StackNavigator() {
       <Stack.Screen name = 'Firstform' component = {FirstformScreen} />
       <Stack.Screen name = 'Suggestion List' component = { ListScreen } />
       <Stack.Screen name = 'Tracker' component = {TrackerScreen} />
+
       <Stack.Screen name = 'Today`s Advice' component = {AdviceScreen} />
+      <Stack.Screen name = 'PreForm' component = {PreForm} />
+      <Stack.Screen name = 'AdviceAnalysis' component = {AdviceAnalysis} />
     </Stack.Navigator>
   )
 };
