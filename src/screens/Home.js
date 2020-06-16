@@ -21,14 +21,26 @@ import {
 import {getDateString} from "../utils";
 
 import {connect} from "react-redux";
+import {createNewDaily} from "../actions";
+
 import {userAccess} from "../reducers/userReducer"
+
+/* Image importing section */
 const default_image = require("../../assets/default_image.png");
 const heart = require("../../assets/heart.png");
 const finance = require("../../assets/finance.png");
 
+const today = getDateString();
+
 function mapStateToProps(state) {
   return{
     userInfo: state.user,
+  }
+}
+
+const  mapDispatchToProps = dispatch => {
+  return {
+    createNewDaily: () => dispatch(createNewDaily())
   }
 }
 
@@ -40,7 +52,17 @@ class HomeScreen extends Component {
       fActive: false,
     }
     //console.log(this.props.userInfo);
+    let lastRecordDate = this.props.userInfo.DailyRecord.date;
+    if (today !== lastRecordDate) {
+      console.log('Initiating new daily record...');
+      this.props.createNewDaily();
+    }
   }
+
+  ComponentDidMount(){
+    
+  }
+
   render() {
     const {userInfo} = this.props;
     return (
@@ -186,4 +208,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(mapStateToProps)(HomeScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

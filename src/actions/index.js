@@ -4,6 +4,8 @@ export const REMOVE_FOOD = 'REMOVE_FOOD'
 export const CREATE_USER = 'CREATE_USER'
 export const ADD_EXERCISE = 'ADD_EXERCISE'
 export const REMOVE_EXERCISE = 'REMOVE_EXERCISE'
+export const CALCULATE_INFO = 'CALCULATE_INFO'
+export const CREATE_NEW_DAILY = 'CREATE_NEW_DAILY'
 
 export const ViewFilters = {
   VIEW_ALL: 'VIEW_ALL',
@@ -28,6 +30,15 @@ export function createUser(name, initInfo){
   
   return { type: CREATE_USER, name, initInfo }
 }
+
+export function calculateInfo(info){
+  return { type: CALCULATE_INFO, info}
+}
+
+export function createNewDaily(){
+  return { type: CREATE_NEW_DAILY}
+}
+
 export function addFood(name, category){
   return { type: ADD_FOOD, name, category };
 }

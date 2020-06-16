@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {StyleSheet} from "react-native";
+import {StyleSheet, ToastAndroid} from "react-native";
 import {
   Container,
   View,
@@ -46,10 +46,14 @@ class AddExerciseForm extends Component {
     const {name, category} = this.state;
     this.props.addExercise(name, category);
     this.setState({name: '', category: 'null'});
-    Toast.show({
+    /*Toast.show({
       text: "Exercise added successfully!",
       type: "success",
-    })
+    })*/
+    ToastAndroid.show(
+      "Exercise added successfully!",
+      ToastAndroid.SHORT
+    )
   }
 
   render(){
