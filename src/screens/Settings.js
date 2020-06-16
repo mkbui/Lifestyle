@@ -1,5 +1,5 @@
-import React, { Component, useState } from "react";
-import {View,StyleSheet, Switch} from 'react-native';
+import React, { Component } from "react";
+import {View,StyleSheet, Switch,} from 'react-native';
 import {
   Container,
   Header,
@@ -10,33 +10,18 @@ import {
   Left,
   Right,
   Body,
-  Text
+  Text,
 } from "native-base";
-
-
-function Toggle() {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-
-  return (
-    <View style={styles.container}>
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitch}
-        value={isEnabled}
-      />
-    </View>
-  );
-}
-
+import {lightStyle, darkStyle} from "./Style"
+import { ToggleTheme, isDarkTheme as dt } from "./Theme";
 class SettingsScreen extends Component {
-  constructor(props){
-    super(props);
-    const darkModeOn = false;
+  constructor(){
+    this.state = {
+      isDarkTheme: dt,
+    };
   }
   render() {
+    const styles = this.state.isDarkTheme ? darkStyle : lightStyle
     return (
       <Container style={styles.container}>
         <Header>
@@ -59,21 +44,12 @@ class SettingsScreen extends Component {
 
         <Content padder>
           <Text>Dark Mode</Text>
-          <Toggle />
-          <Text>Set Lock Code</Text>
-          <Toggle />
+          <ToggleTheme />
         </Content>
       </Container>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#FFF"
-  },
-  headerText: {
-    fontWeight: 'bold',
-  },
-});
+
 export default SettingsScreen;
