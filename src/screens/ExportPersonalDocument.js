@@ -55,7 +55,7 @@ const MyStack = createStackNavigator();
 class ExportPersonalDocumentScreen extends Component {
   render() {
     return (
-      <MyStack.Navigator headerMode = 'none'>
+      <MyStack.Navigator >
       <MyStack.Screen name="PickerScreen" component={PickerScreen} />
       <MyStack.Screen name="OnePagePreview" component={OnePagePreview} />
       </MyStack.Navigator>
