@@ -34,11 +34,14 @@ const User = {
       energyConsumed: 0,
       energyBurned: 0,
       weight: 100,
+      updated: false,
     },
     Finance: {
       date: today,
-      spent: 0,
+      spent: [
+      ],
       earned: 0,
+      updated: false,
     }
   }
 }
