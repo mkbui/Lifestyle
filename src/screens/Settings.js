@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import {View, StyleSheet, Platform, ToastAndroid} from 'react-native';
 import React, { Component, useState } from "react";
 import {View,StyleSheet, Switch} from 'react-native';
+import React, { Component } from "react";
+import {View,StyleSheet, Switch,} from 'react-native';
 import {
   Container,
   Header,
@@ -25,6 +27,8 @@ import {
 import {CancelAllNotification} from "../components/PushController"
 import {initializeReminders} from "../utils"
 //const Item = Picker.Item;
+import {lightStyle, darkStyle} from "./Style"
+import { ToggleTheme, isDarkTheme as dt } from "./Theme";
 
 /* TO BE ADDED: a mapDispatchToProps and mapStateToProps to save settings to store */
 function Toggle() {
@@ -49,6 +53,7 @@ class SettingsScreen extends Component {
     super(props);
     this.state = {
       darkMode: false,
+      isDarkTheme: dt,
       reminder: false,
       stage: 'main',  // main, setpin, editUser
       currency: "$",
@@ -87,6 +92,7 @@ class SettingsScreen extends Component {
   }
 
   render() {
+    const styles = this.state.isDarkTheme ? darkStyle : lightStyle
     return (
       <Container style={styles.container}>
         <Header>
@@ -208,9 +214,12 @@ class SettingsScreen extends Component {
               <Text>Remove all notifications</Text>
             </Body>
           </ListItem>
+          
+          <Text>Dark Mode</Text>
+          <ToggleTheme />
 
           <Separator bordered style = {styles.separator}/>
-        </Content>
+          </Content>
       </Container>
     );
   }

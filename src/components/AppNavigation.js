@@ -4,7 +4,7 @@ import {Root} from 'native-base';
 import {Provider as PaperProvider} from 'react-native-paper';
 
 /* React-navigation necessities import */
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, DarkTheme} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
@@ -38,14 +38,14 @@ const Drawer = createDrawerNavigator();
 function DrawerNavigator() {
   return(
     <Drawer.Navigator
-      initialRouteName='Home'
+      /*initialRouteName='Home'
       drawerStyle={{
         width: 250,
         backgroundColor: '#c6cbef'
       }}  
       drawerContentOptions = {{
         activeTintColor: "#e91e63"
-      }}
+      }}*/
     >
       <Drawer.Screen name = 'Home' component = { StackNavigator } />
       <Drawer.Screen name = 'Tracker' component = { TrackerNavigator } />
@@ -74,7 +74,7 @@ function StackNavigator() {
   return(
     <Stack.Navigator
       initialRouteName = 'Splash'
-      headerMode = 'none'
+      
     >
       <Stack.Screen name = 'Splash' component = {SplashScreen}/>
       <Stack.Screen name = 'Home' component = {HomeScreen} />
@@ -121,7 +121,8 @@ function TrackerNavigator() {
 /* Main Container with Drawer Navigator as root navigator */
 function AppContainer() {
   return (
-    <NavigationContainer>
+    <NavigationContainer 
+    theme = {DarkTheme}>
       <DrawerNavigator/>
     </NavigationContainer>
   )
