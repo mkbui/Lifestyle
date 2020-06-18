@@ -29,7 +29,14 @@ Follow closely this link if you wish to do so:
 <a href="https://www.littlecpu.com/android-studio-c-drive" target="_blank">Moving Android Studio Folder</a>
 
 Note: if the android setup is not working after moving folders, you may have to add *ANDROID_AVD_HOME* and *JAVA_HOME* to environment 
-variables (similar to *ANDROID_SDK_HOME*) to the folders containing your 
+variables (similar to *ANDROID_SDK_HOME*) to the folders containing your ./android/avd and ./Android Studio/jre, respectively.
+
+React Native now also supports *yarn* installation package, so you can run 
+```
+choco install yarn
+```
+additionally to help ease the setting up in later stages.
+
 ### Code Editor set-up
 React Native projects can be compiled and run automatically in Powershell using built-in Node. 
 Therefore, only a code editor is needed to make progress.
@@ -64,7 +71,7 @@ Then copy *App.js*, *assets*, *src* from the zipped folder to your local Lifesty
 
 ### Configuring packages and dependencies
 
-After initializing the project, you need to add necessary dependencies. The following is required (so far):
+After initializing the project, you need to add necessary dependencies. Runing these following in the *Lifestyle* project folder is required (so far):
 
 ```
 yarn add native-base 
