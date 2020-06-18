@@ -5,10 +5,33 @@ import { Container, Button, Text, Header, Body, Title } from 'native-base';
 const splashBackground = require('../../assets/launchscreen-bg.png');
 const splashLogo = require('../../assets/bootLogo.jpg');
 
+import {connect} from "react-redux";
+
 //const { Dimensions, Platform } = require('react-native');
 //const deviceHeight = Dimensions.get("window").height;
 
-export default class SplashScreen extends React.Component {
+function mapStateToProps(state) {
+  return{
+  userInfo: state.user,
+  }
+}
+
+class SplashScreen extends Component {
+
+  componentDidMount(){
+    // Only show the splash screen for maximum 5s
+    setTimeout(()=>{
+      this.proceed();
+    }, 5000);
+  }
+
+  proceed(){
+    const {userInfo} = this.props;
+    let registered = userInfo.Info.registered; 
+    if (registered === true) this.props.navigation.navigate('Home');
+    if (registered === false) this.props.navigation.navigate('Firstform');
+  }
+
   render(){
     return(
       <Container>
@@ -32,7 +55,7 @@ export default class SplashScreen extends React.Component {
           <View style={{ marginBottom: 80 }}>
             <Button
               style={{ backgroundColor: "purple", alignSelf: "center" }}
-              onPress={() => this.props.navigation.navigate('Firstform')}
+              onPress={() => this.proceed()}
             >
               <Text>Proceed</Text>
             </Button>
@@ -43,7 +66,7 @@ export default class SplashScreen extends React.Component {
   }
 };
 
-
+export default connect(mapStateToProps)(SplashScreen);
 
 const styles = StyleSheet.create({
   imageContainer: {
