@@ -71,7 +71,7 @@ Then copy *App.js*, *assets*, *src* from the zipped folder to your local Lifesty
 
 ### Configuring packages and dependencies
 
-After initializing the project, you need to add necessary dependencies. The following is required (so far):
+After initializing the project, you need to add necessary dependencies. Runing these following in the *Lifestyle* project folder is required (so far):
 
 ```
 yarn add native-base 
