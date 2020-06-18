@@ -1,0 +1,37 @@
+
+{
+  "food": [
+      {
+        "name": "Egg",
+        "category": "protein",
+        "image": "../../assets/default_image.png",
+        "id": "1"
+      },
+      {
+        "name": "Potato",
+        "category": "vegetable",
+        "image": "../../assets/default_image.png",
+        "id": "2"
+      }
+  ],
+  "exercises": [
+    {
+      "name": "Sit-up",
+      "category": "abs",
+      "image": "default_image",
+      "id": "1"
+    },
+    {
+      "name": "Sit-down",
+      "category": "relax",
+      "image": "default_image",
+      "id": "2"
+    }
+  ],
+  "randomtips": [
+    {
+      "text": "Walking is good for your leg",
+      "category": "fitness"
+    }
+  ]
+}
