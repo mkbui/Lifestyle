@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-import Root from 'native-base';
+import {Root} from 'native-base';
 
 /* React-navigation necessities import */
 import {NavigationContainer, DarkTheme} from '@react-navigation/native';
@@ -13,6 +13,13 @@ import HomeScreen from '../screens/Home';
 import SettingsScreen from '../screens/Settings';
 import FirstformScreen from '../screens/Firstform';
 import ExportPersonalDocumentScreen from '../screens/ExportPersonalDocument';
+// New screen import
+import ScheduleScreen from '../screens/Schedule';
+import ListScreen from '../screens/Display';
+import TrackerScreen from '../screens/Tracker';
+import AdviceScreen from '../screens/Advice';
+import PreForm from '../components/AdviceScreens/PreForm';
+import AdviceAnalysis from '../components/AdviceScreens/AdviceAnalysis';
 /* Drawer navigator containing side list of main screens and stack navigator itself */
 const Drawer = createDrawerNavigator();
 function DrawerNavigator() {
@@ -22,15 +29,18 @@ function DrawerNavigator() {
       drawerStyle={{
         width: 250,
         backgroundColor: '#c6cbef'
-      }}
+      }}  
       drawerContentOptions = {{
         activeTintColor: "#e91e63"
       }}*/
     >
       <Drawer.Screen name = 'Home' component = { StackNavigator } />
-      <Drawer.Screen name='Details' component={ DetailsScreen } />
+      <Drawer.Screen name = 'Tracker' component = { TrackerScreen } />
       <Drawer.Screen name = 'Settings' component = { SettingsScreen } />
-      <Stack.Screen name = 'ExportPersonalDocument' component = { ExportPersonalDocumentScreen } />
+      <Drawer.Screen name = 'ExportPersonalDocument' component = { ExportPersonalDocumentScreen } />
+      <Drawer.Screen name = 'My Schedule' component = { ScheduleScreen } />
+      <Drawer.Screen name = 'Suggestion List' component = { ListScreen } />
+      <Drawer.Screen name = 'Today`s Advice' component = { AdviceScreen } />
     </Drawer.Navigator>
   )
 } 
@@ -58,6 +68,13 @@ function StackNavigator() {
       <Stack.Screen name = 'Settings' component = { SettingsScreen } />
       <Stack.Screen name = 'Firstform' component = {FirstformScreen} />
       <Stack.Screen name = 'ExportPersonalDocument' component = { ExportPersonalDocumentScreen } />
+      <Stack.Screen name = 'My Schedule' component = {ScheduleScreen} />
+      <Stack.Screen name = 'Suggestion List' component = { ListScreen } />
+      <Stack.Screen name = 'Tracker' component = {TrackerScreen} />
+
+      <Stack.Screen name = 'Today`s Advice' component = {AdviceScreen} />
+      <Stack.Screen name = 'PreForm' component = {PreForm} />
+      <Stack.Screen name = 'AdviceAnalysis' component = {AdviceAnalysis} />
     </Stack.Navigator>
   )
 };
@@ -72,7 +89,7 @@ function AppContainer() {
   )
 };
 
-export default AppContainer; /*() =>
+export default () =>
   <Root>
     <AppContainer />
-  </Root>;*/
+  </Root>
