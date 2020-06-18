@@ -50,6 +50,7 @@ class AddExerciseForm extends Component {
       text: "Exercise added successfully!",
       type: "success",
     })*/
+    this.props.completeForm();
     ToastAndroid.show(
       "Exercise added successfully!",
       ToastAndroid.SHORT
