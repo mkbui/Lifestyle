@@ -90,7 +90,7 @@ export function financeAnalyzer(money, Today){
 
   return(
     <View>
-      {checkBalance(Today.spent, Today.earned)}
+      {checkBalance(Today.spent.sum, Today.earned.sum)}
       {checkAccount(money)}
     </View>
   )

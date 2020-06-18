@@ -51,7 +51,7 @@ class HomeScreen extends Component {
     this.state = {
       fActive: false,
     }
-    //console.log(this.props.userInfo);
+    console.log(this.props.userInfo.DailyRecord.Finance);
     let lastRecordDate = this.props.userInfo.DailyRecord.date;
     if (today !== lastRecordDate) {
       console.log('Initiating new daily record...');
@@ -147,7 +147,7 @@ class HomeScreen extends Component {
               </Left>
             </CardItem>
 
-            <CardItem footer bordered>
+            <CardItem footer bordered button onPress = {() => this.props.navigation.navigate('HealthTracker')}>
               <Text>Go to Health Tracker</Text>
             </CardItem>
           </Card>
@@ -175,7 +175,7 @@ class HomeScreen extends Component {
               </Left>
             </CardItem>
 
-            <CardItem footer bordered>
+            <CardItem footer bordered button onPress = {() => this.props.navigation.navigate('FinanceTracker')}>
               <Text>Go to Financial Diary</Text>
             </CardItem>
           </Card>
