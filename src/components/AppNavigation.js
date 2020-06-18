@@ -12,6 +12,8 @@ import SplashScreen from '../screens/Splash';
 import HomeScreen from '../screens/Home';
 import SettingsScreen from '../screens/Settings';
 import FirstformScreen from '../screens/Firstform';
+// New screen import
+import ScheduleScreen from '../screens/Schedule';
 import ListScreen from '../screens/Display';
 import TrackerScreen from '../screens/Tracker';
 import AdviceScreen from '../screens/Advice';
@@ -34,6 +36,7 @@ function DrawerNavigator() {
       <Drawer.Screen name = 'Home' component = { StackNavigator } />
       <Drawer.Screen name = 'Tracker' component = { TrackerScreen } />
       <Drawer.Screen name = 'Settings' component = { SettingsScreen } />
+      <Drawer.Screen name = 'My Schedule' component = { ScheduleScreen } />
       <Drawer.Screen name = 'Suggestion List' component = { ListScreen } />
       <Drawer.Screen name = 'Today`s Advice' component = { AdviceScreen } />
     </Drawer.Navigator>
@@ -62,6 +65,7 @@ function StackNavigator() {
       <Stack.Screen name = 'Home' component = {HomeScreen} />
       <Stack.Screen name = 'Settings' component = { SettingsScreen } />
       <Stack.Screen name = 'Firstform' component = {FirstformScreen} />
+      <Stack.Screen name = 'My Schedule' component = {ScheduleScreen} />
       <Stack.Screen name = 'Suggestion List' component = { ListScreen } />
       <Stack.Screen name = 'Tracker' component = {TrackerScreen} />
 
