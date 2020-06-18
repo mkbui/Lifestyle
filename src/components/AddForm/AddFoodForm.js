@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {StyleSheet} from "react-native";
+import {StyleSheet, ToastAndroid} from "react-native";
 import {
   Container,
   View,
@@ -45,11 +45,16 @@ class AddFoodForm extends Component {
   handlePress(){
     const {name, category} = this.state;
     this.props.addFood(name, category);
+    this.props.completeForm();
     this.setState({name: '', category: 'null'})
-    Toast.show({
+    /*Toast.show({
       text: "Food added successfully!",
       type: "success",
-    })
+    })*/
+    ToastAndroid.show(
+      "Food added successfully!",
+      ToastAndroid.SHORT
+    )
   }
 
   render(){

@@ -17,6 +17,7 @@ import {removeFood} from "../../actions";
 import {foodOperate} from "../../reducers";
 import {ViewFilter} from "../../actions";
 import data from "../../data/data.json";
+import FormButton from "../FormButton";
 
 
 
@@ -45,6 +46,19 @@ const mapDispatchToProps = dispatch => ({
 
 class FoodList extends Component {
   
+  constructor(props){
+    super(props);
+    this.state = {
+      collapse: true,
+    }
+  }
+
+  collapseForm(){
+    this.setState({
+      collapse: !this.state.collapse,
+    });
+  }
+
   removeItem(data){
     this.props.removeFood(data.id);
     Toast.show({
@@ -76,6 +90,7 @@ class FoodList extends Component {
                 </Button> 
               </Right>
             </ListItem>
+      
         )
     )
   }
