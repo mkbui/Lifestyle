@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Alert} from 'react-native';
 import {
   Container,
   Header,
@@ -14,13 +14,25 @@ import {
   Form,
   Item,
   Input,
-  Label
+  Label,
+  Picker,
 } from "native-base";
+import PropTypes from 'prop-types';
+
+import {connect} from "react-redux";
+import {createUser, calculateInfo, createNewDaily} from "../actions";
+const  mapDispatchToProps = dispatch => {
+  return {
+    createUser: (name, initInfo) => dispatch(createUser(name, initInfo)),
+    calculateInfo: (info) => dispatch(calculateInfo(info)),
+    createNewDaily: () => dispatch(createNewDaily()),
+  }
+}
 
 class UsernameForm extends Component {
 
   state = {
-    userText: '',
+    userText: '' ,
   }
 
   handlePress = () => {
@@ -58,22 +70,135 @@ class UsernameForm extends Component {
 
 }
 
-class FirstformScreen extends Component {
-  state = {
-    step: 0,
-    name: '',
-    initInfo: {
-      height: 100,
-      weight: 100,
-      age: 10,
-      gender: '',
-    },
-  };
+class FitnessForm extends Component {
 
+  state = {
+    age: 1,
+    height: 150,
+    weight: 50,
+    gender: "",
+  }
+
+  handlePress = () => {
+    const {saveUserInfo} = this.props;
+    const {age, height, weight, gender} = this.state;
+    const userInfo = {
+        age: age,
+        height: height,
+        weight: weight,
+        gender: gender,
+    }
+    saveUserInfo(userInfo);
+  }
+  
+  onGenderChoose(value){
+    this.setState({gender: value})
+  }
+
+  render(){
+    return(
+      <Content padder>
+        <Text style = {styles.headerText}>FIRST STEP</Text>
+        <Text style = {styles.contentText}>
+          Now you may want to enter some basic health information here
+        </Text>
+        <Form>
+          <Item stackedLabel>
+            <Label>Age</Label>
+            <Input 
+              placeholder = "Enter your age in number"
+              onChangeText = { (text) => this.setState({age: text})}
+            />
+          </Item>
+          <Item stackedLabel>
+            <Label>Height</Label>
+            <Input 
+              placeholder = "Your height in cm"
+              onChangeText = { (text) => this.setState({height: text})}
+            />
+          </Item>
+          <Item stackedLabel>
+            <Label>Weight</Label>
+            <Input 
+              placeholder = "Your weight in kg"
+              onChangeText = { (text) => this.setState({weight: text})}
+            />
+          </Item>
+          <Item picker >
+            <Picker
+              mode="dropdown" 
+              iosIcon={<Icon name="ios-arrow-down" />}
+              style={{ paddingTop: 70, height: 60, }}
+              placeholder="Choose your gender"
+              placeholderStyle={{ color: "#bfc6ea" }}
+              placeholderIconColor="#007aff"
+              selectedValue={this.state.gender}
+              onValueChange={this.onGenderChoose.bind(this)}
+            >
+              <Item style={{ color: "#bfc6ea" }} label="Choose your gender" value = ""/>
+              <Item label="Male" value="male" />
+              <Item label="Female" value="female" />
+            </Picker>
+            </Item>
+        </Form>
+        <Button 
+          block  
+          style={{ margin: 15, marginTop: 50 }}
+          onPress = {this.handlePress}  
+        >
+          <Text>COMPLETE</Text>
+        </Button>
+      </Content>        
+    ) 
+  }
+
+}
+
+class FirstformScreen extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      step: 0,
+      name: 'Default',
+      initInfo: {
+        height: 100,
+        weight: 100,
+        age: 10,
+        gender: '',
+      },
+    };
+  
+  }
   saveUsername = ({userText}) => {
     const {step} = this.state;
-    this.setState({step: step + 1, name: userText});
+    this.setState({...this.state, step: step + 1, name: userText});
+    //this.props.navigation.navigate('Home');
+  }
+
+  callSave(){
+    const {dispatch} = this.props;
+    const {name, initInfo} = this.state;
+    //dispatch(createUser(name, initInfo.age, initInfo.height));
+    this.props.createUser(name, initInfo);
+    this.props.calculateInfo(initInfo);
+    //this.props.createNewDaily();
     this.props.navigation.navigate('Home');
+  }
+
+  saveUserInfo = (userInfo) => {
+    const {step, initInfo} = this.state;
+    const {height, weight, age, gender} = userInfo;
+    this.setState( prevState => ({
+      step: step + 1, 
+      initInfo: {
+        ...prevState.initInfo,
+        height: height,
+        weight: weight,
+        age: age,
+        gender: gender,
+      }
+    }), this.callSave.bind(this))
   }
 
   render() {
@@ -82,7 +207,7 @@ class FirstformScreen extends Component {
       <Container style={styles.container}>
         {(step === 0) ?
         <UsernameForm saveUsername = {this.saveUsername} />
-        : <Text></Text>}
+        : <FitnessForm saveUserInfo = {this.saveUserInfo}/>}
       </Container>
     );
   }
@@ -107,4 +232,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FirstformScreen;
+export default connect(null, mapDispatchToProps)(FirstformScreen);
