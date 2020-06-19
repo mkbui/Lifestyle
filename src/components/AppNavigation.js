@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 import {Root} from 'native-base';
+import {Provider as PaperProvider} from 'react-native-paper';
 
 /* React-navigation necessities import */
 import {NavigationContainer} from '@react-navigation/native';
@@ -39,10 +40,10 @@ function DrawerNavigator() {
     >
       <Drawer.Screen name = 'Home' component = { StackNavigator } />
       <Drawer.Screen name = 'Tracker' component = { TrackerScreen } />
-      <Drawer.Screen name = 'Settings' component = { SettingsScreen } />
       <Drawer.Screen name = 'My Schedule' component = { ScheduleScreen } />
       <Drawer.Screen name = 'Suggestion List' component = { ListScreen } />
       <Drawer.Screen name = 'Today`s Advice' component = { AdviceScreen } />
+      <Drawer.Screen name = 'Settings' component = { SettingsScreen } />
     </Drawer.Navigator>
   )
 } 
@@ -95,6 +96,9 @@ function AppContainer() {
 };
 
 export default () =>
-  <Root>
-    <AppContainer />
-  </Root>
+  <PaperProvider>
+    <Root>
+        <AppContainer />
+    </Root>
+  </PaperProvider>
+ 
