@@ -132,5 +132,6 @@ const styles = StyleSheet.create({
   script: {
     fontSize: 18,
     paddingTop: 5,
+    marginBottom: 5,
   }
 })
