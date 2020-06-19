@@ -83,9 +83,13 @@ class AddFoodForm extends Component {
             selectedValue={this.state.category}
             onValueChange={this.onValueChange.bind(this)}
           >
-                <Item label="Choose category..." value="null" />
-                <Item label="Protein" value="protein" />
-                <Item label="Vegetable" value="vegetable" />
+                <Item label="Choose category..." value="Null" />
+                <Item label="Protein" value="Protein" />
+                <Item label="Vegetable" value="Vegetable" />
+                <Item label="Fat" value="Fat" />
+                <Item label="Grains" value="Grains" />
+                <Item label="Beverage" value="Beverage" />
+                <Item label="Fruit" value="Fruit" />
           </Picker>
         </Item>
 

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {SafeAreaView, StyleSheet} from "react-native";
+import {SafeAreaView, StyleSheet, ToastAndroid} from "react-native";
 import {
   Button,
   List,
@@ -61,10 +61,10 @@ class FoodList extends Component {
 
   removeItem(data){
     this.props.removeFood(data.id);
-    Toast.show({
-      text: "Removed successfully!",
-      type: "success",
-    })
+    ToastAndroid.show(
+      "Food removed successfully!",
+      ToastAndroid.SHORT
+    )
   }
 
   render(){
