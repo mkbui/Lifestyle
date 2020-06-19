@@ -51,20 +51,6 @@ const  food = [
 ]
 */
 
-const exercises = [
-  {
-    name: 'Sit-up',
-    category: 'abs',
-    image: default_image,
-    id: 1,
-  },
-  {
-    name: 'Sit-down',
-    category: 'relax',
-    image: default_image,
-    id: 2,
-  }
-]
 
 /*
 class ListTab extends Component {
@@ -92,7 +78,7 @@ class ListTab extends Component {
 }
 */
 
-
+/*
 class ExTab extends Component {
 
   formHeader(item, expanded){
@@ -143,7 +129,7 @@ class ExTab extends Component {
     </Content>
     )
   }
-}
+}*/
 
 class ListScreen extends Component {
   
@@ -156,11 +142,6 @@ class ListScreen extends Component {
     }
   }
 
-  toggleExpand(){
-    this.setState({
-      expanded: false,
-    })
-  }
 
   collapseFoodForm(){
     this.setState({
@@ -196,10 +177,6 @@ class ListScreen extends Component {
     );
   }
 
-  formContent(item){
-    return (this.state.seg === 1? <AddFoodForm completeForm = {this.toggleExpand.bind(this)}/> 
-      : <AddExerciseForm/>)
-  }
 
   render() {
     const {seg, expandedExercise, expandedFood} = this.state;
@@ -244,11 +221,15 @@ class ListScreen extends Component {
           {seg === 2 && <FormButton
               title = {expandedExercise?'Cancel':'Add new custom exercise'}
               color = {expandedExercise?'red':'green'}
-              handlePress = {this.collapseFoodForm.bind(this)}
+              handlePress = {this.collapseExerciseForm.bind(this)}
           />}
 
-          {seg === 1 && expandedFood && <AddFoodForm completeForm = {this.collapseFoodForm.bind(this)}/>}
-          {seg === 2 && expandedExercise && <AddFoodForm completeForm = {this.collapseFoodForm.bind(this)}/>}
+          {seg === 1 && expandedFood && 
+            <AddFoodForm completeForm = {this.collapseFoodForm.bind(this)}/>
+          }
+          {seg === 2 && expandedExercise && 
+            <AddExerciseForm completeForm = {this.collapseExerciseForm.bind(this)}/>
+          }
 
           {seg === 1 && <FoodList/>}
           {seg === 2 && <ExerciseList/>}

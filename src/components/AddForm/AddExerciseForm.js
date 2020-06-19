@@ -83,9 +83,13 @@ class AddExerciseForm extends Component {
               selectedValue={this.state.category}
               onValueChange={this.onValueChange.bind(this)}
             >
-                  <Item label="Choose category..." value="null" />
-                  <Item label="Abs" value="abs" />
-                  <Item label="Relax" value="relax" />
+                  <Item label="Choose category..." value="Null" />
+                  <Item label="Abs" value="Abs" />
+                  <Item label="Arms" value="Arms" />
+                  <Item label="Legs" value="Legs" />
+                  <Item label="Back" value="Back" />
+                  <Item label="Overall" value="Overall" />
+                  <Item label="Relax" value="Relax" />
           </Picker>
         </Item>
           
