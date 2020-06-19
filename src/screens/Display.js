@@ -28,6 +28,8 @@ import FoodList from "../components/FoodList";
 import ExerciseList from "../components/ExerciseList";
 import AddFoodForm from "../components/AddForm/AddFoodForm";
 import AddExerciseForm from "../components/AddForm/AddExerciseForm"
+import FormButton from "../components/FormButton";
+
 const default_image = require("../../assets/default_image.png");
 
 
@@ -49,20 +51,6 @@ const  food = [
 ]
 */
 
-const exercises = [
-  {
-    name: 'Sit-up',
-    category: 'abs',
-    image: default_image,
-    id: 1,
-  },
-  {
-    name: 'Sit-down',
-    category: 'relax',
-    image: default_image,
-    id: 2,
-  }
-]
 
 /*
 class ListTab extends Component {
@@ -90,7 +78,7 @@ class ListTab extends Component {
 }
 */
 
-
+/*
 class ExTab extends Component {
 
   formHeader(item, expanded){
@@ -141,7 +129,7 @@ class ExTab extends Component {
     </Content>
     )
   }
-}
+}*/
 
 class ListScreen extends Component {
   
@@ -149,13 +137,21 @@ class ListScreen extends Component {
     super(props);
     this.state = {
       seg: 1,
-      expanded: false,
+      expandedFood: false,
+      expandedExercise: false,
     }
   }
 
-  toggleExpand(){
+
+  collapseFoodForm(){
     this.setState({
-      expanded: false,
+      expandedFood: !this.state.expandedFood,
+    })
+  }
+
+  collapseExerciseForm(){
+    this.setState({
+      expandedExercise: !this.state.expandedExercise,
     })
   }
 
@@ -181,12 +177,9 @@ class ListScreen extends Component {
     );
   }
 
-  formContent(item){
-    return (this.state.seg === 1? <AddFoodForm completeForm = {this.toggleExpand.bind(this)}/> 
-      : <AddExerciseForm/>)
-  }
 
   render() {
+    const {seg, expandedExercise, expandedFood} = this.state;
     return (
   
       <Container style = {styles.Container}>
@@ -220,30 +213,50 @@ class ListScreen extends Component {
         </Segment>
 
         <Content padder>
-          <Accordion
-              dataArray={
-                [{
-                title: 'Add new custom',
-                content: 'Enter basic info',
-                }]
-              }
-              animation={true}
-              expanded={this.state.expanded}
-              icon="add"
-              expandedIcon="remove"
-              iconStyle={{ color: "green" }}
-              expandedIconStyle={{ color: "red" }}
-              renderHeader = {this.formHeader.bind(this)}
-              renderContent = {this.formContent.bind(this)}
-          />
-          {this.state.seg === 1 && <FoodList/>}
-          {this.state.seg === 2 && <ExerciseList/>}
+          {seg === 1 && <FormButton
+              title = {expandedFood?'Cancel':'Add new custom food'}
+              color = {expandedFood?'red':'green'}
+              handlePress = {this.collapseFoodForm.bind(this)}
+          />}
+          {seg === 2 && <FormButton
+              title = {expandedExercise?'Cancel':'Add new custom exercise'}
+              color = {expandedExercise?'red':'green'}
+              handlePress = {this.collapseExerciseForm.bind(this)}
+          />}
+
+          {seg === 1 && expandedFood && 
+            <AddFoodForm completeForm = {this.collapseFoodForm.bind(this)}/>
+          }
+          {seg === 2 && expandedExercise && 
+            <AddExerciseForm completeForm = {this.collapseExerciseForm.bind(this)}/>
+          }
+
+          {seg === 1 && <FoodList/>}
+          {seg === 2 && <ExerciseList/>}
         </Content>
       </Container>
     );
   }
 }
 
+/*
+    <Accordion
+        dataArray={
+          [{
+          title: 'Add new custom',
+          content: 'Enter basic info',
+          }]
+        }
+        animation={true}
+        expanded={this.state.expanded}
+        icon="add"
+        expandedIcon="remove"
+        iconStyle={{ color: "green" }}
+        expandedIconStyle={{ color: "red" }}
+        renderHeader = {this.formHeader.bind(this)}
+        renderContent = {this.formContent.bind(this)}
+    />
+  */
 
 const styles = StyleSheet.create({
   container: {

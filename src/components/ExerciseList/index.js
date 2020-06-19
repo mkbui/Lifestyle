@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 
-import {StyleSheet} from "react-native";
+import {StyleSheet, ToastAndroid} from "react-native";
 import {
   Button,
   List,
@@ -35,10 +35,10 @@ class ExerciseList extends Component {
 
   removeItem(data){
     this.props.removeExercise(data.id);
-    Toast.show({
-      text: "Removed successfully!",
-      type: "success",
-    })
+    ToastAndroid.show(
+      "Exercise removed successfully!",
+      ToastAndroid.SHORT
+    )
   }
 
   render(){
