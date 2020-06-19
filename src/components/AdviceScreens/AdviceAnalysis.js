@@ -108,8 +108,8 @@ class AdviceAnalysis extends Component {
         </Header>
 
         <Content padder>
-          <Card style = {styles.reviewBox} transparent>
-              <CardItem transparent>
+          <Card style = {styles.reviewBox} >
+              <CardItem transparent >
                 <Left>
                   <Icon type = "FontAwesome5" name = "heartbeat" />
                   <Text>  </Text>
@@ -138,8 +138,8 @@ class AdviceAnalysis extends Component {
           </Card>
 
 
-          <Card style = {styles.reviewBox}>
-              <CardItem >
+          <Card transparent >
+              <CardItem style = {[styles.reviewBox, {backgroundColor: 'peachpuff'}]}>
                 <Left>
                   <Body>
                     {fitnessAnalyzer(FitnessRecord, DailyRecord.Fitness)}
@@ -148,8 +148,8 @@ class AdviceAnalysis extends Component {
               </CardItem>
           </Card>
 
-          <Card style = {styles.reviewBox}>
-              <CardItem >
+          <Card transparent >
+              <CardItem style = {[styles.reviewBox, {backgroundColor: 'aquamarine'}]}>
                 <Left>
                   <Body>
                     {financeAnalyzer(userInfo.Info.money, DailyRecord.Finance)}
@@ -158,8 +158,8 @@ class AdviceAnalysis extends Component {
               </CardItem>
           </Card>
 
-          <Card style = {styles.tipBox}>
-              <CardItem >
+          <Card >
+              <CardItem style = {styles.tipBox}>
                 <Left>
                   <Body>
                     <Text style = {styles.script}>Water is good for H2O.</Text>
@@ -213,8 +213,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   reviewBox: {
-    backgroundColor: 'orange',
     marginBottom: 25,
+    borderRadius: 10,
+    borderWidth: 2,
+  },
+  tipBox: {
+    backgroundColor: 'seashell',
   },
   script: {
     fontSize: 18,

@@ -109,8 +109,8 @@ class WarningSuggest extends Component {
         </Header>
 
         <Content padder>
-              <Card style = {styles.reviewBox}>
-                  <CardItem >
+              <Card transparent >
+                  <CardItem style = {styles.reviewBox}>
                     <Left>
                       <Body>
                         {warningPresent(userInfo.Info, userInfo.Measure)}
@@ -227,6 +227,8 @@ const styles = StyleSheet.create({
   reviewBox: {
     backgroundColor: 'orange',
     marginBottom: 25,
+    borderWidth: 2,
+    borderRadius: 10,
   },
   script: {
     fontSize: 18,
