@@ -57,7 +57,7 @@ const User = {
         detail: [
         ]
       },
-      updated: false,
+      updated: true,
     }
   }
 }
@@ -146,7 +146,7 @@ export function userAccess(state = User, action){
           Finance: {
             ...state.DailyRecord.Finance,
             earned: {
-              sum: state.DailyRecord.Finance.earned.sum + iRecord.amount,
+              sum: state.DailyRecord.Finance.earned.sum + parseInt(iRecord.amount, 10),
               detail: [
                 ...state.DailyRecord.Finance.earned.detail,
                 {
@@ -163,7 +163,6 @@ export function userAccess(state = User, action){
       
       case ADD_EXPENSE_RECORD:
         const eRecord = action.eRecord;
-        console.log(eRecord);
         if (eRecord.amount > 0) return Object.assign({}, state, {
           ...state,
           DailyRecord: {
@@ -171,7 +170,7 @@ export function userAccess(state = User, action){
             Finance: {
               ...state.DailyRecord.Finance,
               spent: {
-                sum: state.DailyRecord.Finance.spent + eRecord.amount,
+                sum: state.DailyRecord.Finance.spent.sum + parseInt(eRecord.amount, 10),
                 detail: [
                   ...state.DailyRecord.Finance.spent.detail,
                   {
