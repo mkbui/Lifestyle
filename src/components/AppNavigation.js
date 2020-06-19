@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 import {Root} from 'native-base';
+import {Provider as PaperProvider} from 'react-native-paper';
 
 /* React-navigation necessities import */
 import {NavigationContainer} from '@react-navigation/native';
@@ -19,6 +20,10 @@ import TrackerScreen from '../screens/Tracker';
 import AdviceScreen from '../screens/Advice';
 import PreForm from '../components/AdviceScreens/PreForm';
 import AdviceAnalysis from '../components/AdviceScreens/AdviceAnalysis';
+import WarningSuggest from '../components/AdviceScreens/WarningSuggest';
+import FinanceTracker from '../components/TrackerScreens/FinanceTracker';
+import HealthTracker from '../components/TrackerScreens/HealthTracker';
+
 /* Drawer navigator containing side list of main screens and stack navigator itself */
 const Drawer = createDrawerNavigator();
 function DrawerNavigator() {
@@ -35,10 +40,10 @@ function DrawerNavigator() {
     >
       <Drawer.Screen name = 'Home' component = { StackNavigator } />
       <Drawer.Screen name = 'Tracker' component = { TrackerScreen } />
-      <Drawer.Screen name = 'Settings' component = { SettingsScreen } />
       <Drawer.Screen name = 'My Schedule' component = { ScheduleScreen } />
       <Drawer.Screen name = 'Suggestion List' component = { ListScreen } />
       <Drawer.Screen name = 'Today`s Advice' component = { AdviceScreen } />
+      <Drawer.Screen name = 'Settings' component = { SettingsScreen } />
     </Drawer.Navigator>
   )
 } 
@@ -67,11 +72,16 @@ function StackNavigator() {
       <Stack.Screen name = 'Firstform' component = {FirstformScreen} />
       <Stack.Screen name = 'My Schedule' component = {ScheduleScreen} />
       <Stack.Screen name = 'Suggestion List' component = { ListScreen } />
-      <Stack.Screen name = 'Tracker' component = {TrackerScreen} />
+      
 
       <Stack.Screen name = 'Today`s Advice' component = {AdviceScreen} />
       <Stack.Screen name = 'PreForm' component = {PreForm} />
       <Stack.Screen name = 'AdviceAnalysis' component = {AdviceAnalysis} />
+      <Stack.Screen name = 'WarningSuggest' component = {WarningSuggest} />
+
+      <Stack.Screen name = 'Tracker' component = {TrackerScreen} />
+      <Stack.Screen name = 'HealthTracker' component = {HealthTracker}/>
+      <Stack.Screen name = 'FinanceTracker' component = {FinanceTracker}/>
     </Stack.Navigator>
   )
 };
@@ -86,6 +96,9 @@ function AppContainer() {
 };
 
 export default () =>
-  <Root>
-    <AppContainer />
-  </Root>
+  <PaperProvider>
+    <Root>
+        <AppContainer />
+    </Root>
+  </PaperProvider>
+ 

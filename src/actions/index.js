@@ -6,6 +6,10 @@ export const ADD_EXERCISE = 'ADD_EXERCISE'
 export const REMOVE_EXERCISE = 'REMOVE_EXERCISE'
 export const CALCULATE_INFO = 'CALCULATE_INFO'
 export const CREATE_NEW_DAILY = 'CREATE_NEW_DAILY'
+export const ADD_INCOME_RECORD = 'ADD_INCOME_RECORD'
+export const ADD_EXPENSE_RECORD = 'ADD_EXPENSE_RECORD'
+export const ADD_CONSUME_RECORD = 'ADD_FITNESS_RECORD'
+export const ADD_EXERCISE_RECORD = 'ADD_EXERCISE_RECORD'
 
 export const ViewFilters = {
   VIEW_ALL: 'VIEW_ALL',
@@ -57,4 +61,20 @@ export function removeExercise(id){
 
 export function setViewFilters(filter) {
   return { type: SET_VIEW_FILTER, filter}
+}
+
+export function addIncomeRecord(iRecord) {
+  return { type: ADD_INCOME_RECORD, iRecord}
+}
+
+export function addExpenseRecord(eRecord) {
+  return { type: ADD_EXPENSE_RECORD, eRecord}
+}
+
+export function addConsumeRecord(record) {
+  return { type: ADD_CONSUME_RECORD, record}
+}
+
+export function addExerciseRecord(record) {
+  return { type: ADD_EXERCISE_RECORD, record}
 }
