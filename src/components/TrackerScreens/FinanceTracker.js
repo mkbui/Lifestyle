@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {StyleSheet, Image, ToastAndroid} from 'react-native';
+import {StyleSheet, Image, ToastAndroid, Modal, ScrollView} from 'react-native';
 import {
   Container,
   Header,
@@ -23,13 +23,15 @@ import {
   Label,
   Form,
   Item,
+  List,
+  ListItem,
 } from "native-base";
+import {FAB, Portal, Provider} from "react-native-paper";
 import {getDateString} from "../../utils";
 
 import {connect} from "react-redux";
 import {createNewDaily, addIncomeRecord, addExpenseRecord} from '../../actions';
 import FormButton from '../FormButton';
-
 import {userAccess} from "../../reducers/userReducer"
 
 /* Image importing section */
@@ -54,17 +56,21 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class IncomeForm extends Component {
+  _isMounted = false;
 
   constructor(props){
     super(props);
     this.state = {
       amount: 0,
       note: '',
-      category: 'general',
+      category: 'General',
       
     }
-    console.log(this.state)
   };
+
+  componentDidMount(){
+    this._isMounted = true;
+  }
 
   onCatChange = (value) => {
     this.setState({
@@ -75,23 +81,26 @@ class IncomeForm extends Component {
   handlePress = () => {
     //const {amount, note, category} = this.state.;
     const records = {
-      amount: this.state.amount,
+      amount: parseInt(this.state.amount,10),
       note: this.state.note,
       category: this.state.category,
     }
     this.setState({
       amount: 0,
       note: '',
-      category: 'general',
+      category: 'General',
     },)
-    console.log(records);
     this.props.submit(records);
+  }
+
+  handleCancel = () => {
+    this.props.cancel();
   }
 
   render(){
     return (
-      <Content padder>
-        
+      <View style = {styles.formView} >
+        <Text style = {styles.formTitleText}>Expense Record</Text>
 
         <Form>
           <Item stackedLabel>
@@ -120,12 +129,12 @@ class IncomeForm extends Component {
               selectedValue={this.state.category}
               onValueChange={this.onCatChange.bind(this)}
             >
-              <Item style={{ color: "#bfc6ea" }} label="Category" value = "general"/>
-              <Item label="Account deposit" value="deposit" />
-              <Item label="Salary reception" value="salary" />
-              <Item label="Interest" value="interest" />
-              <Item label="Lottery win" value="lottery" />
-              <Item label="Others" value = "others" />
+              <Item style={{ color: "#bfc6ea" }} label="Category" value = "General"/>
+              <Item label="Account deposit" value="Deposit" />
+              <Item label="Salary reception" value="Salary" />
+              <Item label="Interest" value="Interest" />
+              <Item label="Lottery win" value="Lottery" />
+              <Item label="Others" value = "Others" />
             </Picker>
             </Item>
         </Form>
@@ -136,21 +145,35 @@ class IncomeForm extends Component {
         >
           <Text>SUBMIT RECORD</Text>
         </Button>
-      </Content>
+        <Button 
+          block  
+          style={{ margin: 15, marginTop: 15 }}
+          backgroundColor='red'
+          onPress = {this.handleCancel.bind(this)}  
+        >
+          <Text>CANCEL</Text>
+        </Button>
+
+      </View>
     )
   }
 }
 
 class ExpenseForm extends Component {
+  _isMounted = false;
 
   constructor(props){
     super(props);
     this.state = {
       amount: 0,
       note: '',
-      category: 'general',
+      category: 'General',
     }
   };  
+
+  componentDidMount(){
+    this._isMounted = true;
+  }
 
   onCatChange = (value) => {
     this.setState({
@@ -160,23 +183,27 @@ class ExpenseForm extends Component {
 
   handlePress = () => {
     const records = {
-      amount: this.state.amount,
+      amount: parseInt(this.state.amount, 10),
       note: this.state.note,
       category: this.state.category,
     }
     this.setState({
       amount: 0,
       note: '',
-      category: 'general',
+      category: 'General',
     })
     console.log(records);
     this.props.submit(records);
   }
 
+  cancel = () => {
+    this.props.cancel();
+  }
+
   render(){
     return (
-      <Content padder>
-  
+      <View style = {styles.formView}>
+        <Text style = {styles.formTitleText}>Expense Record</Text>
         <Form>
           <Item stackedLabel>
             <Label>Amount</Label>
@@ -203,14 +230,14 @@ class ExpenseForm extends Component {
               selectedValue={this.state.category}
               onValueChange={this.onCatChange.bind(this)}
             >
-              <Item style={{ color: "#bfc6ea" }} label="Category" value = "general"/>
-              <Item label="Food" value="food" />
-              <Item label="Transport" value="transport" />
-              <Item label="Shopping" value="shopping" />
-              <Item label="Utilities" value="utilities" />
-              <Item label="Tax" value="tax" />
-              <Item label="Education" value="education" />
-              <Item label="Others" value = "others" />
+              <Item style={{ color: "#bfc6ea" }} label="Category" value = "General"/>
+              <Item label="Food" value="Food" />
+              <Item label="Transport" value="Transport" />
+              <Item label="Shopping" value="Shopping" />
+              <Item label="Utilities" value="Utilities" />
+              <Item label="Tax" value="Tax" />
+              <Item label="Education" value="Education" />
+              <Item label="Others" value = "Others" />
             </Picker>
             </Item>
         </Form>
@@ -221,7 +248,79 @@ class ExpenseForm extends Component {
         >
           <Text>SUBMIT RECORD</Text>
         </Button>
-      </Content>
+        <Button 
+          block  
+          backgroundColor='red'
+          style={{ margin: 15, marginTop: 15 }}
+          onPress = {this.cancel.bind(this)}  
+        >
+          <Text>CANCEL</Text>
+        </Button>
+      </View>
+    )
+  }
+}
+
+class FinanceDetail extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+
+    }
+  }
+
+  render(){
+    const {userInfo, day} = this.props;
+    const {earned, spent} = userInfo.DailyRecord.Finance;
+    const today = getDateString();  
+    if (today === day) { const renderRecord = userInfo.DailyRecord.Finance; }
+    
+    return(
+        <ScrollView>
+            
+          {<List style = {{marginTop: 20}}
+            dataArray={userInfo.DailyRecord.Finance.earned.detail}
+            renderRow={data =>
+
+              <CardItem bordered button style = {{height: 60, backgroundColor: 'palegreen'}}>
+              <Left>
+                <Icon type = "MaterialCommunityIcons" name = "credit-card-plus"/>
+                <Text style = {styles.listText}>{data.category}</Text>
+              </Left>
+              <Body>
+                <Text style = {styles.listAmount}>+{data.amount} VND</Text>
+              </Body>
+              <Right> 
+                {/*<Icon type = "FontAwesome5" name = "trash"/>*/}
+              </Right>
+              </CardItem>
+                
+            }
+            keyExtractor = {(data, index) => index.toString()}
+          />
+          }
+
+          <List style = {{marginTop: 20}}
+            dataArray={userInfo.DailyRecord.Finance.spent.detail}
+            renderRow={data =>
+
+            <CardItem bordered button style = {{height: 60, backgroundColor: 'aliceblue'}}>
+            <Left>
+              <Icon type = "MaterialCommunityIcons" name = "cash-refund"/>
+              <Text style = {styles.listText}>{data.category}</Text>
+            </Left>
+            <Body>
+              <Text style = {styles.listAmount}>-{data.amount} VND</Text>
+            </Body>
+            <Right> 
+              {/*<Icon type = "FontAwesome5" name = "trash"/>*/}
+            </Right>
+            </CardItem> 
+            }
+            keyExtractor = {(data, index) => index.toString()}
+            />
+        </ScrollView> 
+
     )
   }
 }
@@ -234,33 +333,43 @@ class FinanceTracker extends Component {
       seg: 1,
       expandedIncome: false,
       expandedExpense: false,
+      showChoice: false,
     }
     
     console.log(this.props.userInfo.DailyRecord)
-    //console.log(this.props.userInfo);
   }
   
-  collapseIncomeForm(){
+  switchChoice(){
     this.setState({
-      expandedIncome: !this.state.expandedIncome
-    });
+      showChoice: !this.state.showChoice
+    })
+  }
+
+  collapseIncomeForm(){
+    
+    this.setState({
+      showChoice: false,
+    }, this.setState({
+      expandedIncome: !this.state.expandedIncome,
+      })
+    );
+    
   }
 
   collapseExpenseForm(){
     this.setState({
-      expandedExpense: !this.state.expandedExpense
+      expandedExpense: !this.state.expandedExpense,
+      showChoice: false,
     });
   }
 
   submitIncome(record){
-    console.log(record);
     this.props.addIncomeRecord(record);
     ToastAndroid.show(
       "Record added successfully!",
       ToastAndroid.SHORT
     )
     this.collapseIncomeForm();
-    //console.log(this.props.userInfo.DailyRecord);
   }
 
   submitExpense(record){
@@ -270,73 +379,130 @@ class FinanceTracker extends Component {
       ToastAndroid.SHORT
     )
     this.collapseExpenseForm();
-    //console.log(this.props.userInfo.DailyRecord);
+  }
+
+  openUp(){
+    this.setState({
+      showChoice: !this.state.showChoice
+    })
   }
 
   render() {
     const {userInfo} = this.props;
-    const {seg, expandedIncome, expandedExpense} = this.state;
+    const {earned, spent} = userInfo.DailyRecord.Finance;
+    const {seg, expandedIncome, expandedExpense, showChoice} = this.state;
     return (
-      <Container style={styles.container}>
-        <Header>
-          <Left style = {{flex: 0.5}}>
-            <Button transparent onPress={() => this.props.navigation.openDrawer()}>
-              <Icon name="menu" />
-            </Button>
-          </Left>
-          <Body style = {{flex: 1}}>
-            <Title style={styles.headerText}>Finance Tracker</Title>
-          </Body>
-          <Right style = {{flex: 0.5}}>
-            <Button 
-              transparent 
-              onPress={() => this.props.navigation.goBack()}>
-              <Icon name = "arrow-back" />
-            </Button>
-          </Right>
-        </Header>
+      
+      <Provider>
+        <Container style={styles.container}>
+          <Header>
+            <Left style = {{flex: 0.5}}>
+              <Button transparent >
+              </Button>
+            </Left>
+            <Body style = {{flex: 1}}>
+              <Title style={styles.headerText}>Finance Tracker</Title>
+            </Body>
+            <Right style = {{flex: 0.5}}>
+              <Button 
+                transparent 
+                onPress={() => this.props.navigation.goBack()}>
+                <Icon name = "arrow-back" />
+              </Button>
+            </Right>
+          </Header>
 
-        <Segment>
-          <Button
-            first
+
+          
+          {/*<Segment>
+            <Button
+              first
+              style = {styles.segButton}
+              active={this.state.seg === 1 ? true : false}
+              onPress={() => this.setState({ seg: 1 })}
+            >
+              <Text>Income</Text>
+            </Button>
+            <Button
             style = {styles.segButton}
-            active={this.state.seg === 1 ? true : false}
-            onPress={() => this.setState({ seg: 1 })}
-          >
-            <Text>Income</Text>
-          </Button>
-          <Button
-          style = {styles.segButton}
-            active={this.state.seg === 2 ? true : false}
-            onPress={() => this.setState({ seg: 2 })}
-          >
-            <Text>Expense</Text>
-          </Button>
-        </Segment>
+              active={this.state.seg === 2 ? true : false}
+              onPress={() => this.setState({ seg: 2 })}
+            >
+              <Text>Expense</Text>
+            </Button>
+          </Segment>*/}
 
-        
-        <Text style = {styles.formTitleText}>PERSONAL {seg === 1 ? 'INCOME' : 'EXPENSE'} MANAGEMENT</Text>
+          
+          <Text style = {styles.formTitleText}>PERSONAL FINANCE MANAGEMENT</Text>
 
-        {seg === 1 &&         
-          <FormButton
+          {/*seg === 1 &&         
+            <FormButton
             title = {expandedIncome?'Cancel':"Add new earning record"}
             handlePress = {this.collapseIncomeForm.bind(this)}
             color = {expandedIncome?'red':'green'}
           />
-        }
+          */}
 
-        {seg === 2 &&      
-          <FormButton
-            title = {expandedExpense?'Cancel':"Add new spending record"}
-            handlePress = {this.collapseExpenseForm.bind(this)}
-            color = {expandedExpense?'red':'green'}
-          />
-        }
+          <Modal 
+            transparent={true}  
+            visible={expandedIncome}
+            animationType="slide"
+          >
+            <IncomeForm 
+              cancel = {this.collapseIncomeForm.bind(this)} 
+              submit = {this.submitIncome.bind(this)}
+            />
+          </Modal>
+          <Modal 
+            transparent={true}  
+            visible={expandedExpense}
+            animationType="slide"
+          >
+            <ExpenseForm 
+              cancel = {this.collapseExpenseForm.bind(this)} 
+              submit = {this.submitExpense.bind(this)}
+            />
+          </Modal>
 
-        {seg === 1 && expandedIncome && <IncomeForm submit= {this.submitIncome.bind(this)}/>}
-        {seg === 2 && expandedExpense && <ExpenseForm submit = {this.submitExpense.bind(this)}/>}
+          {/*seg === 1 && expandedIncome && <IncomeForm submit= {this.submitIncome.bind(this)}/>*/}
+          {/*seg === 2 && expandedExpense && <ExpenseForm submit = {this.submitExpense.bind(this)}/>*/}
 
-      </Container>
+          <Card style = {styles.mt}>
+            <CardItem bordered button style = {{height: 80, backgroundColor: 'khaki'}}>
+              <Left>
+                <Icon type = "MaterialCommunityIcons" name = "calendar"/>
+                <Text style = {styles.dateText}>{getDateString()}</Text>
+              </Left>
+              <Right> 
+                <Text style = {styles.moneyText}>{earned.sum - spent.sum} VND</Text>
+              </Right>
+            </CardItem>
+          </Card>
+          <FinanceDetail userInfo = {userInfo} day = {getDateString()} segment = {seg} />
+
+          
+          <Portal>
+            <FAB.Group
+              open={showChoice}
+              icon={'plus'}
+              color={'green'}
+              actions={[
+                { icon: 'credit-card-plus', label: 'New Income', onPress: () => 
+                  {this.setState({expandedIncome: true})} },
+                { icon: 'cash-refund', label: 'New Expense', onPress: () => 
+                  {this.setState({expandedExpense: true})} },
+              ]}
+              onStateChange={this.openUp.bind(this)}
+              onPress={() => {
+                if (showChoice) {
+                  
+                }
+              }}
+            />
+          </Portal>
+        
+        </Container>
+      </Provider>
     );
   }
 }
@@ -356,18 +522,81 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginBottom: 10,
   },
+  formView: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 80,
+
+    margin: 20,
+    backgroundColor: "ivory",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  
+  },
+  addButton: {
+    justifyContent: 'flex-end',
+    marginLeft: 350,  
+    borderRadius: 50, 
+    marginBottom: 15,
+    marginRight: 15,
+    backgroundColor: 'blue',
+  },
+  choiceButton: {
+    justifyContent: 'flex-end',
+    marginLeft: 270,  
+    borderRadius: 30, 
+    marginBottom: 40,
+    marginRight: 15,
+    backgroundColor: 'lavender',
+  },
+
   mb: {
     color: 'peachpuff',
     marginBottom: 20,
+  },
+  mt: {
+    marginTop: 20,
+    marginBottom: 5,
+    marginLeft: 15,
+    marginRight: 15,
   },
   sectionHeader: {
     fontWeight: 'bold',
     fontSize: 20,
   },
-  cardText: {
+  listText: {
+    marginLeft: 25,
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+  listAmount: {
+    marginTop: 6,
+    marginLeft: 20,
     fontWeight: '800',
-    fontSize: 16,
-  }
+    fontSize: 18,
+  },
+  dateText: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: 'maroon'
+  },
+  moneyText: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: 'orangered',
+  },
+  
+  
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FinanceTracker);
