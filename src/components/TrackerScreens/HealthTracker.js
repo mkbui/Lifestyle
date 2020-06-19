@@ -69,8 +69,7 @@ class HealthTracker extends Component {
       <Container style={styles.container}>
         <Header>
           <Left style = {{flex: 0.5}}>
-            <Button transparent onPress={() => this.props.navigation.openDrawer()}>
-              <Icon name="menu" />
+            <Button transparent >
             </Button>
           </Left>
           <Body style = {{flex: 1}}>
@@ -80,105 +79,14 @@ class HealthTracker extends Component {
             <Button 
               transparent 
               onPress={() => this.props.navigation.goBack()}>
-              <Icon name = "paper-plane" />
+              <Icon name = "arrow-back" />
             </Button>
           </Right>
         </Header>
 
         <Content padder>
 
-          <Card style = {styles.mb}>
-            <CardItem>
-              <Left>
-                <Thumbnail source={default_image} />
-                <Body>
-                  <Text>Bulletin</Text>
-                  <Text note>{getDateString()}</Text>
-                </Body>
-              </Left>
-            </CardItem>
-
-            <CardItem cardBody>
-              <Image
-                  style={{
-                    resizeMode: "cover",
-                    width: null,
-                    height: 200,
-                    flex: 1
-                  }}
-                  source={default_image}
-                />
-            </CardItem>
-          </Card>
-
-          <Card  style = {styles.mb}>
-            <CardItem header bordered >
-              <Left>
-                <Thumbnail source = {heart} />
-                <Body>
-                  <Text style = {styles.sectionHeader}>Update your health status</Text>
-                </Body>
-              </Left>
-            </CardItem>
-            <CardItem bordered>
-              <Left>
-                <Icon type = "FontAwesome5" name = "weight"/>
-                <Text style = {styles.cardText}>{userInfo.Info.weight} kg</Text>
-              </Left>
-            </CardItem>
-            <CardItem bordered>
-              <Left>
-                <Icon type = "MaterialCommunityIcons" name = "cup-water"/>
-                <Text style = {styles.cardText}>0 litre</Text>
-              </Left>
-            </CardItem>
-
-            <CardItem bordered>
-              <Left>
-                <Icon type = "FontAwesome5" name = "utensils"/>
-                <Text style = {styles.cardText}> 0 Kcal</Text>
-              </Left>
-            </CardItem>
-
-            <CardItem bordered>
-              <Left>
-                <Icon type = "MaterialCommunityIcons" name = "fire"/>
-                <Text style = {styles.cardText}>0 Kcal</Text>
-              </Left>
-            </CardItem>
-
-            <CardItem footer bordered>
-              <Text>Go to Health Tracker</Text>
-            </CardItem>
-          </Card>
-
-          <Card  style = {styles.mb}>
-            <CardItem header bordered >
-              <Left>
-                <Thumbnail  source = {finance} />
-                <Body>
-                  <Text style = {styles.sectionHeader}>Update your financial status</Text>
-                </Body>
-              </Left>
-            </CardItem>
-            <CardItem bordered>
-              <Left>
-                <Icon type = "MaterialCommunityIcons" name = "cash-refund"/>
-                <Text style = {styles.cardText}>0 VND</Text>
-              </Left>
-            </CardItem>
-
-            <CardItem bordered>
-              <Left>
-                <Icon type = "MaterialCommunityIcons" name = "credit-card-plus"/>
-                <Text style = {styles.cardText}>0 VND</Text>
-              </Left>
-            </CardItem>
-
-            <CardItem footer bordered>
-              <Text>Go to Financial Diary</Text>
-            </CardItem>
-          </Card>
+        
 
         </Content>
       </Container>
