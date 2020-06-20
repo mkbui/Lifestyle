@@ -1,13 +1,10 @@
 import React, { Component } from "react";
 import {
   StyleSheet,
-  ImageBackground,
-  TouchableOpacity,
   Modal,
-  Alert,
   TouchableHighlight,
   TextInput,
-  FlatList,
+  Switch,
 } from 'react-native';
 import {
   Container,
@@ -25,64 +22,68 @@ import {
   Footer,
   FooterTab,
   ListItem,
+  List,
 } from "native-base";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import ActivityList from '../components/ActivityList'
+import AddActivityModal from '../components/ActivityModal/AddActivityModal'
 
+let i = 0;
 class Activity extends Component {
-  constructor(name, hour, min, repeat) {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activate : true,
+    };
+    this.repeat = [
+      {day : "Sun", value : false},
+      {day : "Mon", value : false},
+      {day : "Tue", value : false},
+      {day : "Wed", value : false},
+      {day : "Thu", value : false},
+      {day : "Fri", value : false},
+      {day : "Sat", value : false},
+    ];
+  }
+  
+  setComponent(name, hour, min, Sun, Mon, Tue, Wed, Thu, Fri, Sat) {
     this.name = name;
     this.hour = hour;
     this.min = min;
-    this.repeat = repeat;
+    this.repeat[0].value = Sun;
+    this.repeat[1].value = Mon;
+    this.repeat[2].value = Tue;
+    this.repeat[3].value = Wed;
+    this.repeat[4].value = Thu;
+    this.repeat[5].value = Fri;
+    this.repeat[6].value = Sat;
   }
-  
+  id = (i++).toString();
+  setActivate = () => {
+    this.state.activate = !this.state.activate;
+    console.log("activated")
+  }
 }
+
+
 
 class ScheduleScreen extends Component {
   constructor(props){
     super(props);
     this.state = {
-      date : new Date(1598051730000),
+      date : new Date(),
       mode : 'time',
-      show : false,
-      checkSun : false,
-      checkMon : false,
-      checkTue : false,
-      checkWed : false,
-      checkSat : false,
-      checkFri : false,
-      checkThu : false,
-    };
-    this.activity = {
-      name : 'Activity',
+      showModal : false,
     };
   }
-  onChangeTime = (event, selectedDate) => {
-    const currentDate = selectedDate || this.state.date;
-    this.state.show = Platform.OS === 'ios';
-    this.state.date = currentDate;
-  };
-
   setModalVisible = (visible) => {
-    this.setState({show: visible});
-  };
-
-  checkBox = check => {
     this.setState(state => ({
-      [check] : !state[check]
+      [visible] : !state[visible]
     }));
   };
 
-  onChangeName = (textChange) => {
-    this.activity.name = textChange;
-  };
-  onButton = () => {
-    console.log(this.state.date.getMinutes());
-    console.log(this.state.checkSun);
-  };
   render() {
-    const { mode, date, show } = this.state;
-    const {checkSun, checkMon, checkTue, checkWed, checkThu, checkFri, checkSat} = this.state;
+    const { showModal } = this.state;
     return (
       <Container style={styles.container}>
         <Header>
@@ -103,92 +104,14 @@ class ScheduleScreen extends Component {
           </Right>
         </Header>
         <Content>
-          <View style={styles.centeredView}>
-            <Button onPress={this.onButton}>
-              <Text>Test</Text>
-            </Button>
-            <Modal
-                transparent={true} 
-                visible={show}
-                animationType="slide">
-
-              <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                  <Text style={styles.modalText}>Activity Name: </Text>
-                  <TextInput 
-                    style={{height: 40}}
-                    placeholder="Please insert activity name!"
-                    onChangeText={this.onChangeName}
-                    defaultValue={'Activity'}
-                    textAlign="center"
-                  />
-                  <Text style={styles.modalText}>Repeat</Text>
-                  <ListItem>
-                    <CheckBox checked={checkSun} onPress={() => {this.checkBox('checkSun')}} color="blue"/>
-                    <Body>
-                      <Text>Sunday</Text>
-                    </Body>
-                  </ListItem>
-                  <ListItem>
-                    <CheckBox checked={checkMon} onPress={() => {this.checkBox('checkMon')}} color="blue"/>
-                    <Body>
-                      <Text>Monday</Text>
-                    </Body>
-                  </ListItem>
-                  <ListItem>
-                    <CheckBox checked={checkTue} onPress={() => {this.checkBox('checkTue')}} color="blue"/>
-                    <Body>
-                      <Text>Tuesday</Text>
-                    </Body>
-                  </ListItem>
-                  <ListItem>
-                    <CheckBox checked={checkWed} onPress={() => {this.checkBox('checkWed')}} color="blue"/>
-                    <Body>
-                      <Text>Wednesday</Text>
-                    </Body>
-                  </ListItem>
-                  <ListItem>
-                    <CheckBox checked={checkThu} onPress={() => {this.checkBox('checkThu')}} color="blue"/>
-                    <Body>
-                      <Text>Thursday</Text>
-                    </Body>
-                  </ListItem>
-                  <ListItem>
-                    <CheckBox checked={checkFri} onPress={() => {this.checkBox('checkFri')}} color="blue"/>
-                    <Body>
-                      <Text>Friday</Text>
-                    </Body>
-                  </ListItem>
-                  <ListItem>
-                    <CheckBox checked={checkSat} onPress={() => {this.checkBox('checkSat')}} color="blue"/>
-                    <Body>
-                      <Text>Saturday</Text>
-                    </Body>
-                  </ListItem>
-                  <DateTimePicker
-                      testID="dateTimePicker"
-                      value={date}
-                      mode={mode}
-                      is24Hour={true}
-                      display="default"
-                      onChange={this.onChangeTime}
-                  />
-                  <TouchableHighlight
-                    style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                    onPress={() => {
-                      this.setModalVisible(!show);
-                    }}
-                  >
-                    <Text style={styles.textStyle}>OK</Text>
-                  </TouchableHighlight>
-                </View>
-              </View>
-            </Modal>
+          <View>
+            <ActivityList/>
           </View>
+            {showModal && <AddActivityModal completeAdd={() => {this.setModalVisible('showModal')}}/>}
         </Content>
         <Footer backgroundColor="#ffffff">
           <FooterTab>
-              <Button onPress={() => {this.setModalVisible(!show)}}>
+              <Button onPress={() => {this.setModalVisible('showModal')}}>
                 <Text style={styles.buttonContainer}>
                   New activity
                 </Text>
@@ -219,12 +142,46 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 22
   },
-  modalView: {
-    margin: 20,
+  modalView: { //For text and repeat modal
+    margin: 30,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
-    //alignItems: "center",
+    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  openButton: {
+    backgroundColor: "#F194FF",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+  },
+  modalButton: {
+    flex : 0.7,
+    flexDirection : "row",
+    alignItems :"center",
+    justifyContent : "space-evenly",
+  },
+  activityView: {
+    marginLeft : 1,
+    backgroundColor: "white",
+    borderRadius: 5,
+    padding: 5,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -234,20 +191,11 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5
   },
-  openButton: {
-    backgroundColor: "#F194FF",
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2
+  timeText: {
+    fontSize : 25,
   },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center"
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center"
+  dateText: {
+    fontSize: 5,
   }
 });
 export default ScheduleScreen;

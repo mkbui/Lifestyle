@@ -6,6 +6,8 @@ export const ADD_EXERCISE = 'ADD_EXERCISE'
 export const REMOVE_EXERCISE = 'REMOVE_EXERCISE'
 export const CALCULATE_INFO = 'CALCULATE_INFO'
 export const CREATE_NEW_DAILY = 'CREATE_NEW_DAILY'
+export const ADD_ACTIVITY = 'ADD_ACTIVITY'
+export const REMOVE_ACTIVITY = 'REMOVE_ACTIVITY'
 
 export const ViewFilters = {
   VIEW_ALL: 'VIEW_ALL',
@@ -57,4 +59,12 @@ export function removeExercise(id){
 
 export function setViewFilters(filter) {
   return { type: SET_VIEW_FILTER, filter}
+}
+
+export function addActivity(activity){
+  return { type: ADD_ACTIVITY, activity };
+}
+
+export function removeActivity(id){
+  return { type: REMOVE_ACTIVITY, id };
 }
