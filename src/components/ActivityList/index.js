@@ -54,12 +54,12 @@ class ActivityList extends Component {
               <View>
                 <TouchableOpacity>
                   <Text style={styles.timeText}>
-                    {activity.hour}:{activity.min}
+                    {activity.hour}:{activity.min <= 9 ? '0' + activity.min : activity.min}
                   </Text>
                 </TouchableOpacity>
               </View>
               <View style={{marginTop: 20, flexDirection:"row", alignItems:"center", justifyContent:"space-evenly"}}>
-                {/* { 
+                { 
                   activity.repeat.map(item => {
                     return(
                       (item.value === true) && <ListItem key={item.day}>
@@ -68,7 +68,7 @@ class ActivityList extends Component {
                         </Text>
                       </ListItem>
                     )
-                })} */}
+                })}
               </View>
             </View>
           </Body>
@@ -78,7 +78,7 @@ class ActivityList extends Component {
                 trackColor={{ false: "#767577", true: "#81b0ff" }}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={() => {}}
-                value={true}
+                value={activity.state.activate}
               />
               <TouchableOpacity onPress={() => {this.removeItem(activity)}}>
                 <Icon

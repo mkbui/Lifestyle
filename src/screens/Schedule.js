@@ -28,7 +28,6 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import ActivityList from '../components/ActivityList'
 import AddActivityModal from '../components/ActivityModal/AddActivityModal'
 
-let i = 0;
 class Activity extends Component {
   constructor(props) {
     super(props);
@@ -44,8 +43,9 @@ class Activity extends Component {
       {day : "Fri", value : false},
       {day : "Sat", value : false},
     ];
+    i++;
   }
-  
+  static i = 0;
   setComponent(name, hour, min, Sun, Mon, Tue, Wed, Thu, Fri, Sat) {
     this.name = name;
     this.hour = hour;
@@ -58,7 +58,7 @@ class Activity extends Component {
     this.repeat[5].value = Fri;
     this.repeat[6].value = Sat;
   }
-  id = (i++).toString();
+  id = (i).toString();
   setActivate = () => {
     this.state.activate = !this.state.activate;
     console.log("activated")
