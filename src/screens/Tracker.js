@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {StyleSheet} from 'react-native';
+import {View, StyleSheet, Image, ImageBackground} from 'react-native';
 import {
   Container,
   Header,
@@ -11,7 +11,14 @@ import {
   Left,
   Right,
   Body,
+  Card,
+  CardItem,
 } from "native-base";
+
+import {Grid, Col, Row} from 'react-native-easy-grid';
+
+const financeBg = require('../../assets/financeTracker.png');
+const healthBg = require('../../assets/healthTracker.jpg');
 
 class TrackerScreen extends Component {
   constructor(props) {
@@ -31,7 +38,7 @@ class TrackerScreen extends Component {
             </Button>
           </Left>
           <Body style = {{flex: 1}}>
-            <Title style = {styles.headerText}>Settings</Title>
+            <Title style = {styles.headerText}>Trackers</Title>
           </Body>
           <Right style = {{flex: 1}}>
             <Button 
@@ -41,9 +48,29 @@ class TrackerScreen extends Component {
             </Button>
           </Right>
         </Header>
-        <Content padder>
-          <Text>Tracker screen</Text>
-        </Content>
+        
+        <View style = {{flex: 1, flexDirection: 'column'}}>
+          
+          <ImageBackground style = {styles.bgImage} source={financeBg}>
+            <Button 
+              style = {styles.button} 
+              onPress = {() => this.props.navigation.navigate('FinanceTracker')}
+            >
+              <Text style = {styles.titleText}>Finance</Text>
+            </Button>
+          </ImageBackground>
+        
+
+          <ImageBackground style = {styles.bgImage} source={healthBg}>
+            <Button 
+              style = {styles.button} 
+              onPress = {() => this.props.navigation.navigate('HealthTracker')}
+            >
+              <Text style = {styles.titleText}>Health</Text>
+            </Button>
+          </ImageBackground>
+          
+        </View>
       </Container>
     );
   }
@@ -61,7 +88,50 @@ const styles = StyleSheet.create({
     marginBottom: 7
   },
   mb: {
-    marginBottom: 15
+    marginBottom: 50,
+    width: 100,
+    paddingLeft: 150,
+  },
+  rowItem1: {
+    backgroundColor: 'orange',
+  },
+  rowItem2: {
+    backgroundColor: 'yellow',
+  },
+  titleText: {
+    justifyContent: 'center',
+    textAlignVertical: 'center',
+    alignSelf: 'center',
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: 'black',
+  },
+  bgImage: {
+    alignSelf: 'center', 
+    resizeMode: 'cover',
+    width: 500,
+    flex: 1,
+  },
+  box: {
+    backgroundColor: 'white',
+    justifyContent: 'flex-end',
+    alignContent: 'space-around',
+    alignSelf: 'center',
+    textAlignVertical: 'center',
+    width: 150,
+  },
+  button: {
+    width: 160,
+    height: 70,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    alignItems: 'center',
+    textAlignVertical: 'center',
+    textAlign: 'center',
+    marginTop: 120,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    borderWidth: 3,
   }
 });
 

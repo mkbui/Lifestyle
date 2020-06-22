@@ -1,4 +1,12 @@
-import {CREATE_USER, CALCULATE_INFO, CREATE_NEW_DAILY} from "../actions";
+import {
+  CREATE_USER, 
+  CALCULATE_INFO, 
+  CREATE_NEW_DAILY,
+  ADD_CONSUME_RECORD,
+  ADD_EXERCISE_RECORD,
+  ADD_EXPENSE_RECORD,
+  ADD_INCOME_RECORD,
+} from "../actions";
 import {getDateString} from "../utils"
 
 const today = getDateString();
@@ -38,10 +46,18 @@ const User = {
     },
     Finance: {
       date: today,
-      spent: [
-      ],
-      earned: 0,
-      updated: false,
+      spent: {
+        sum: 0,
+        detail: [
+
+        ]
+      },
+      earned: {
+        sum: 0,
+        detail: [
+        ]
+      },
+      updated: true,
     }
   }
 }
@@ -84,6 +100,11 @@ export function userAccess(state = User, action){
     case CREATE_NEW_DAILY:
       const todays = getDateString();
       return Object.assign({}, state, {
+        Info: {
+          ...state.Info,
+          weight: state.DailyRecord.Fitness.weight,
+          money: state.Info.money + state.DailyRecord.Finance.earned - state.DailyRecord.Finance.spent.sum,
+        },
         FitnessRecord: [
           ...state.FitnessRecord,
           state.DailyRecord.Fitness,
@@ -99,16 +120,69 @@ export function userAccess(state = User, action){
             waterConsumed: 0,
             energyConsumed: 0,
             energyBurned: 0,
-            weight: state.Info.weight,
+            weight: state.DailyRecord.Fitness.weight,
           },
           Finance: {
             date: todays,
-            spent: 0,
-            earned: 0,
+            spent: {
+              sum: 0,
+              detail: [],
+            },
+            earned: {
+              sum: 0,
+              detail: [],
+            }
           },
         }
       })
       
+
+    case ADD_INCOME_RECORD:
+      const iRecord = action.iRecord;
+      if (iRecord.amount > 0) return Object.assign({}, state, {
+        ...state,
+        DailyRecord: {
+          ...state.DailyRecord,
+          Finance: {
+            ...state.DailyRecord.Finance,
+            earned: {
+              sum: state.DailyRecord.Finance.earned.sum + parseInt(iRecord.amount, 10),
+              detail: [
+                ...state.DailyRecord.Finance.earned.detail,
+                {
+                  amount: iRecord.amount,
+                  note: iRecord.note,
+                  category: iRecord.category,
+                }
+              ]
+            }
+          },
+        }
+      })
+
+      
+      case ADD_EXPENSE_RECORD:
+        const eRecord = action.eRecord;
+        if (eRecord.amount > 0) return Object.assign({}, state, {
+          ...state,
+          DailyRecord: {
+            ...state.DailyRecord,
+            Finance: {
+              ...state.DailyRecord.Finance,
+              spent: {
+                sum: state.DailyRecord.Finance.spent.sum + parseInt(eRecord.amount, 10),
+                detail: [
+                  ...state.DailyRecord.Finance.spent.detail,
+                  {
+                    amount: eRecord.amount,
+                    note: eRecord.note,
+                    category: eRecord.category,
+                  }
+                ]
+              }
+            },
+          }
+        })
 
     default:
       return state;

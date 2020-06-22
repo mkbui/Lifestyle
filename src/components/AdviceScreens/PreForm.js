@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {StyleSheet, Image, ActivityIndicator} from 'react-native';
+import {StyleSheet, Image, ActivityIndicator, Alert} from 'react-native';
 import {
   Container,
   Header,
@@ -26,7 +26,7 @@ import {connect} from 'react-redux';
 const analysisBackground = require('../../../assets/analysis.png');
 const default_image = require('../../../assets/default_image.png')
 
-function mapStateToProps(){
+function mapStateToProps(state){
   return {
     userInfo: state.user,
     foodList: state.foodList, 
@@ -34,7 +34,7 @@ function mapStateToProps(){
   }
 }
 
-export default class PreForm extends Component {
+class PreForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -57,11 +57,30 @@ export default class PreForm extends Component {
   }
   
   proceed(){
-    this.props.proceed("AdviceAnalysis");
+    const {DailyRecord} = this.props.userInfo;
+    const {checkFinance, checkFitness} = this.state;
+    console.log("proceeding")
+    if (checkFitness && !DailyRecord.Fitness.updated){
+      Alert.alert(
+        "Warning",
+        "You have not updated your fitness record",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+          { text: "Update Now", onPress: () => this.props.navigation.navigate("HealthTracker") }
+        ],
+        { cancelable: false }
+      );   
+    }
+    else {this.props.navigation.navigate("AdviceAnalysis");}
     //proceed("AdviceAnalysis");
   }
 
   render() {
+    const {DailyRecord} = this.props.userInfo;
     return (
       <Container style={styles.container}>
       <Header>
@@ -137,7 +156,7 @@ export default class PreForm extends Component {
           </ListItem>
           <Button 
             style = {styles.proceedButton} 
-            onPress = {() => this.props.navigation.navigate("AdviceAnalysis")}
+            onPress = {() => this.proceed() }
           >
             <Text>PROCEED</Text>
           </Button>
@@ -149,7 +168,8 @@ export default class PreForm extends Component {
   }
 }
 
-
+export default connect(mapStateToProps)(PreForm)
+  
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFF"
