@@ -83,9 +83,9 @@ class FitnessForm extends Component {
     const {saveUserInfo} = this.props;
     const {age, height, weight, gender} = this.state;
     const userInfo = {
-        age: age,
-        height: height,
-        weight: weight,
+        age: parseInt(age, 10),
+        height: parseInt(height, 10),
+        weight: parseInt(weight, 10),
         gender: gender,
     }
     saveUserInfo(userInfo);

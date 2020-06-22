@@ -27,6 +27,8 @@ import {userAccess} from "../reducers/userReducer"
 
 /* Image importing section */
 const default_image = require("../../assets/default_image.png");
+const default_background = require("../../assets/defaultBackground.jpg")
+const splashLogo = require('../../assets/bootLogo.jpg');
 const heart = require("../../assets/heart.png");
 const finance = require("../../assets/finance.png");
 
@@ -51,7 +53,7 @@ class HomeScreen extends Component {
     this.state = {
       fActive: false,
     }
-    //console.log(this.props.userInfo);
+    console.log(this.props.userInfo.DailyRecord.Finance);
     let lastRecordDate = this.props.userInfo.DailyRecord.date;
     if (today !== lastRecordDate) {
       console.log('Initiating new daily record...');
@@ -65,6 +67,7 @@ class HomeScreen extends Component {
 
   render() {
     const {userInfo} = this.props;
+    const {DailyRecord, Info} = this.props.userInfo;
     return (
       <Container style={styles.container}>
         <Header>
@@ -90,7 +93,7 @@ class HomeScreen extends Component {
           <Card style = {styles.mb}>
             <CardItem>
               <Left>
-                <Thumbnail source={default_image} />
+                <Thumbnail source={splashLogo} />
                 <Body>
                   <Text>Bulletin</Text>
                   <Text note>{getDateString()}</Text>
@@ -106,7 +109,7 @@ class HomeScreen extends Component {
                     height: 200,
                     flex: 1
                   }}
-                  source={default_image}
+                  source={default_background}
                 />
             </CardItem>
           </Card>
@@ -129,7 +132,7 @@ class HomeScreen extends Component {
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "cup-water"/>
-                <Text style = {styles.cardText}>0 litre</Text>
+                <Text style = {styles.cardText}>{DailyRecord.Fitness.waterConsumed} litre</Text>
               </Left>
             </CardItem>
 
@@ -147,7 +150,7 @@ class HomeScreen extends Component {
               </Left>
             </CardItem>
 
-            <CardItem footer bordered>
+            <CardItem footer bordered button onPress = {() => this.props.navigation.navigate('HealthTracker')}>
               <Text>Go to Health Tracker</Text>
             </CardItem>
           </Card>
@@ -164,18 +167,18 @@ class HomeScreen extends Component {
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "cash-refund"/>
-                <Text style = {styles.cardText}>0 VND</Text>
+                <Text style = {styles.cardText}>{DailyRecord.spent.sum}0 VND</Text>
               </Left>
             </CardItem>
 
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "credit-card-plus"/>
-                <Text style = {styles.cardText}>0 VND</Text>
+                <Text style = {styles.cardText}>{DailyRecord.Finance.earned.sum} VND</Text>
               </Left>
             </CardItem>
 
-            <CardItem footer bordered>
+            <CardItem footer bordered button onPress = {() => this.props.navigation.navigate('FinanceTracker')}>
               <Text>Go to Financial Diary</Text>
             </CardItem>
           </Card>

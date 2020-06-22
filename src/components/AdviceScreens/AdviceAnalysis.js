@@ -21,7 +21,7 @@ import {
 import * as Progress from 'react-native-progress';
 
 import {connect} from 'react-redux';
-import {fitnessAnalyzer, financialAnalyzer} from "../../utils";
+import {fitnessAnalyzer, financialAnalyzer, financeAnalyzer} from "../../utils";
 
 
 const analysisBackground = require('../../../assets/analysis.png');
@@ -58,7 +58,7 @@ class AdviceAnalysis extends Component {
     const {indicating} = this.state;
     const {userInfo} = this.props;
     const {FinanceRecord, FitnessRecord, DailyRecord} = userInfo;
-    console.log(userInfo);
+    
     if (indicating == true) return (
       <Container style={styles.container}>
 
@@ -108,8 +108,8 @@ class AdviceAnalysis extends Component {
         </Header>
 
         <Content padder>
-          <Card style = {styles.reviewBox} transparent>
-              <CardItem transparent>
+          <Card style = {styles.reviewBox} >
+              <CardItem transparent >
                 <Left>
                   <Icon type = "FontAwesome5" name = "heartbeat" />
                   <Text>  </Text>
@@ -138,8 +138,8 @@ class AdviceAnalysis extends Component {
           </Card>
 
 
-          <Card style = {styles.reviewBox}>
-              <CardItem >
+          <Card transparent >
+              <CardItem style = {[styles.reviewBox, {backgroundColor: 'peachpuff'}]}>
                 <Left>
                   <Body>
                     {fitnessAnalyzer(FitnessRecord, DailyRecord.Fitness)}
@@ -148,18 +148,18 @@ class AdviceAnalysis extends Component {
               </CardItem>
           </Card>
 
-          <Card style = {styles.reviewBox}>
-              <CardItem >
+          <Card transparent >
+              <CardItem style = {[styles.reviewBox, {backgroundColor: 'aquamarine'}]}>
                 <Left>
                   <Body>
-                    <Text style = {styles.script}>Your financial situation is abysmal! Save some money.</Text>
+                    {financeAnalyzer(userInfo.Info.money, DailyRecord.Finance)}
                   </Body>
                 </Left>
               </CardItem>
           </Card>
 
-          <Card style = {styles.tipBox}>
-              <CardItem >
+          <Card >
+              <CardItem style = {styles.tipBox}>
                 <Left>
                   <Body>
                     <Text style = {styles.script}>Water is good for H2O.</Text>
@@ -167,6 +167,13 @@ class AdviceAnalysis extends Component {
                 </Left>
               </CardItem>
           </Card>
+
+          <Button 
+            style = {styles.proceedButton} 
+            onPress = {() => this.props.navigation.navigate("WarningSuggest")}
+          >
+            <Text>PROCEED</Text>
+          </Button>
 
         </Content>
       </Container>
@@ -206,8 +213,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   reviewBox: {
-    backgroundColor: 'orange',
     marginBottom: 25,
+    borderRadius: 10,
+    borderWidth: 2,
+  },
+  tipBox: {
+    backgroundColor: 'seashell',
   },
   script: {
     fontSize: 18,
