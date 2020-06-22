@@ -4,6 +4,7 @@ import { combineReducers } from 'redux';
 import {foodFilter, foodOperate} from "./foodReducer"
 import {exerciseFilter, exerciseOperate} from "./exerciseReducer";
 import {userAccess} from "./userReducer";
+import {activityOperate} from "./activityReducer"
 
 /* make a combination reducer for all sep. type */
 /* This will be the store reference for mapStateToProps when accessing data */
@@ -13,6 +14,7 @@ const appReducer = combineReducers({
   exerciseFilter: exerciseFilter,
   exerciseList: exerciseOperate,
   user: userAccess,
+  activityList: activityOperate,
 })
 
 export default appReducer;
