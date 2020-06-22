@@ -22,11 +22,12 @@ import {addExercise} from "../../actions";
 
 const default_image = require("../../../assets/default_image.png");
 
+/* Dispatchers used: addExercise to push new items to exercise list in store */
 const mapDispatchToProps = dispatch => ({
   addExercise: (name, category) => dispatch(addExercise(name, category))
 })
 
-
+/* Component managing new item adding form */
 class AddExerciseForm extends Component {
   constructor(props){
     super(props);
@@ -42,6 +43,7 @@ class AddExerciseForm extends Component {
     });
   }
 
+  /* Dispatch call and state reset, along with a toast */
   handlePress(){
     const {name, category} = this.state;
     this.props.addExercise(name, category);

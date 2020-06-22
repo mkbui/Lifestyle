@@ -34,18 +34,21 @@ const finance = require("../../assets/finance.png");
 
 const today = getDateString();
 
+/* Store data used: userInfo */
 function mapStateToProps(state) {
   return{
     userInfo: state.user,
   }
 }
 
+/* Store dispatcher used: createNewDaily for making a new daily record every day */
 const  mapDispatchToProps = dispatch => {
   return {
     createNewDaily: () => dispatch(createNewDaily())
   }
 }
 
+/* Presentational screen for default user view */
 class HomeScreen extends Component {
 
   constructor(props){
@@ -59,10 +62,6 @@ class HomeScreen extends Component {
       console.log('Initiating new daily record...');
       this.props.createNewDaily();
     }
-  }
-
-  ComponentDidMount(){
-    
   }
 
   render() {

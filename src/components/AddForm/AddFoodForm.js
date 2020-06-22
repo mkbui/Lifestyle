@@ -23,10 +23,12 @@ import {addFood} from "../../actions";
 
 const default_image = require("../../../assets/default_image.png");
 
+/* Dispatchers used: addFood to push new items to food list in store */
 const mapDispatchToProps = dispatch => ({
   addFood: (name, category) => dispatch(addFood(name, category))
 })
 
+/* Component managing new item adding form */
 class AddFoodForm extends Component {
   constructor(props){
     super(props);
@@ -42,6 +44,7 @@ class AddFoodForm extends Component {
     });
   }
 
+  /* Dispatch call and state reset, along with a toast */
   handlePress(){
     const {name, category} = this.state;
     this.props.addFood(name, category);
