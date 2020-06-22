@@ -23,16 +23,19 @@ const showVisibleList = (food, filter) => {
 }
 */
 
+/* store data used: exercise list */
 const mapStateToProps = (state) => ({
   exerciseList: state.exerciseList
 })
 
+/* store dispatch function used: remove exercise for item removal */
 const mapDispatchToProps = dispatch => ({
   removeExercise: (id) => dispatch(removeExercise(id))
 })
 
 class ExerciseList extends Component {
 
+  /* dispatch function call along with a toast */
   removeItem(data){
     this.props.removeExercise(data.id);
     ToastAndroid.show(

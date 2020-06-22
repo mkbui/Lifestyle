@@ -15,6 +15,7 @@ import data from "../data/data.json"
 
 const {VIEW_ALL} = ViewFilters;
 
+/* Initial food list, could be read from json or database file instead */
 const initialState = {
   viewFilters:  ViewFilters.VIEW_ALL,
   food: /*data.food*/[
