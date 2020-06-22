@@ -36,10 +36,12 @@ const mapStateToProps = (state) => ({
 
 })*/
 
+/* store data used: exercise list */
 function mapStateToProps(state) {
   return {foodList: state.foodList}
 }
 
+/* store dispatch function used: remove exercise for item removal */
 const mapDispatchToProps = dispatch => ({
   removeFood: (id) => dispatch(removeFood(id))
 })
@@ -59,6 +61,7 @@ class FoodList extends Component {
     });
   }
 
+  /* dispatch function call along with a toast */
   removeItem(data){
     this.props.removeFood(data.id);
     ToastAndroid.show(

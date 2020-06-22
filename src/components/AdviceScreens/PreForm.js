@@ -26,6 +26,7 @@ import {connect} from 'react-redux';
 const analysisBackground = require('../../../assets/analysis.png');
 const default_image = require('../../../assets/default_image.png')
 
+/* store data used: user record */
 function mapStateToProps(state){
   return {
     userInfo: state.user,
@@ -34,6 +35,7 @@ function mapStateToProps(state){
   }
 }
 
+/* Pre-Advice screen for user to choose which sections they want to proceed */
 class PreForm extends Component {
   constructor(props) {
     super(props);
@@ -44,18 +46,20 @@ class PreForm extends Component {
     }
   }
 
+  /* checkbox state management */
   toggleFinance(){
     this.setState({checkFinance: !this.state.checkFinance})
   }
-
   toggleFitness(){
     this.setState({checkFitness: !this.state.checkFitness})
   }
-  
   toggleGeneral(){
     this.setState({checkGeneral: !this.state.checkGeneral})
   }
   
+  /* transitioning function, will check for finance & fitness section up-to-date status */
+  /* currently only check for fitness because unreasonable to update finance every day */
+  /* present warning via React Alert if not updated, prompt user to cancel or update */
   proceed(){
     const {DailyRecord} = this.props.userInfo;
     const {checkFinance, checkFitness} = this.state;

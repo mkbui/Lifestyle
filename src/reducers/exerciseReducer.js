@@ -8,12 +8,14 @@ import {
 import uuid from "react-native-uuid";
 
 const default_image = require("../../assets/default_image.png");
+/* Icon credit */
 // Icons made by <a href="https://www.flaticon.com/authors/ultimatearm" 
 // title="ultimatearm">ultimatearm</a> from <a href="https://www.flaticon.com/" 
 // title="Flaticon"> www.flaticon.com</a>
 
 const {VIEW_ALL} = ViewFilters;
 
+/* Initial food list, could be read from a json or database file instead */
 const initialState = {
   viewFilters:  ViewFilters.VIEW_ALL,
   exercises: [
@@ -65,7 +67,7 @@ export function exerciseFilter(state = VIEW_ALL, action){
   }
 }
 
-/* state is an array, for food list only */
+/* state is an array, for list only */
 export function exerciseOperate(state = initialState.exercises, action){
   switch (action.type){
     case ADD_EXERCISE:
