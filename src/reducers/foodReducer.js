@@ -9,6 +9,8 @@ import { combineReducers } from 'redux';
 import uuid from "react-native-uuid";
 const default_image = require("../../assets/default_image.png");
 
+
+
 import data from "../data/data.json"
 
 const {VIEW_ALL} = ViewFilters;
@@ -18,15 +20,33 @@ const initialState = {
   food: /*data.food*/[
     {
       name: 'Egg',
-      category: 'protein',
-      image: default_image,
+      category: 'Protein',
+      image: require("../../assets/food/egg.png"),
       id: 1,
     },
     {
       name: 'Potato',
-      category: 'vegetable',
-      image: default_image,
+      category: 'Grains',
+      image: require("../../assets/food/potato.png"),
       id: 2,
+    },
+    {
+      name: 'Salmon',
+      category: 'Protein',
+      image: require("../../assets/food/salmon.png"),
+      id: 3,
+    },
+    {
+      name: 'Spinach',
+      category: 'Vegetable',
+      image: require("../../assets/food/spinach.png"),
+      id: 4,
+    },
+    {
+      name: 'Orange',
+      category: 'Fruit',
+      image: require("../../assets/food/orange.png"),
+      id: 5,
     }
   ],
 }
