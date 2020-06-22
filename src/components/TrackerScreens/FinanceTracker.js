@@ -41,20 +41,23 @@ const finance = require('../../../assets/finance.png');
 
 const today = getDateString();
 
+/* Store data used: user record */
 function mapStateToProps(state) {
   return{
     userInfo: state.user,
   }
 }
 
+/* Dispatching function used: adding (and potentially removing) records*/
 const mapDispatchToProps = (dispatch) => {
   return {
-    createNewDaily: () => dispatch(createNewDaily()),
+    //createNewDaily: () => dispatch(createNewDaily()),
     addIncomeRecord: (iRecord) => dispatch(addIncomeRecord(iRecord)),
     addExpenseRecord: (eRecord) => dispatch(addExpenseRecord(eRecord))
   }
 }
 
+/* Income submission form */
 class IncomeForm extends Component {
   _isMounted = false;
 
@@ -68,6 +71,7 @@ class IncomeForm extends Component {
     }
   };
 
+  /* attempts to prevent mounting warning */
   componentDidMount(){
     this._isMounted = true;
   }
@@ -78,6 +82,7 @@ class IncomeForm extends Component {
     })
   };
 
+  /* submitting info to parent screen and reset state */
   handlePress = () => {
     //const {amount, note, category} = this.state.;
     const records = {
@@ -93,6 +98,7 @@ class IncomeForm extends Component {
     this.props.submit(records);
   }
 
+  /* submitting cancel command to parent screen */
   handleCancel = () => {
     this.props.cancel();
   }
@@ -159,6 +165,7 @@ class IncomeForm extends Component {
   }
 }
 
+/* Expense submission form */
 class ExpenseForm extends Component {
   _isMounted = false;
 
@@ -181,6 +188,7 @@ class ExpenseForm extends Component {
     })
   };
 
+  /* submitting info to parent screen and reset state */
   handlePress = () => {
     const records = {
       amount: parseInt(this.state.amount, 10),
@@ -196,6 +204,7 @@ class ExpenseForm extends Component {
     this.props.submit(records);
   }
 
+  /* submit cancel command to parent screen */
   cancel = () => {
     this.props.cancel();
   }
@@ -261,6 +270,7 @@ class ExpenseForm extends Component {
   }
 }
 
+/* Presentation view for financial status on a given day */
 class FinanceDetail extends Component {
   constructor(props){
     super(props);

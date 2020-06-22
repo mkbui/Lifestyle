@@ -20,6 +20,7 @@ import {Grid, Col, Row} from 'react-native-easy-grid';
 const financeBg = require('../../assets/financeTracker.png');
 const healthBg = require('../../assets/healthTracker.jpg');
 
+/* Tracker Screen, managing redirection to either health or finance tracker */
 class TrackerScreen extends Component {
   constructor(props) {
     super(props);

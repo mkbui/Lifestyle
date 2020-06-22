@@ -16,5 +16,6 @@ import {
   Label,
 } from "native-base";
 
+/* Currently unneccessary file, imported directly from either form instead */
 import AddFoodForm from "./AddFoodForm";
 import AddExerciseForm from "./AddExerciseForm";

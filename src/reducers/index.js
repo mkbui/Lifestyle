@@ -6,6 +6,7 @@ import {exerciseFilter, exerciseOperate} from "./exerciseReducer";
 import {userAccess} from "./userReducer";
 
 /* make a combination reducer for all sep. type */
+/* This will be the store reference for mapStateToProps when accessing data */
 const appReducer = combineReducers({
   foodFilter: foodFilter,
   foodList: foodOperate,

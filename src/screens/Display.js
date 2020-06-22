@@ -33,104 +33,6 @@ import FormButton from "../components/FormButton";
 const default_image = require("../../assets/default_image.png");
 
 
-
-/*
-const  food = [
-  {
-    name: 'Egg',
-    category: 'protein',
-    image: default_image,
-    id: 1,
-  },
-  {
-    name: 'Potato',
-    category: 'vegetable',
-    image: default_image,
-    id: 2,
-  }
-]
-*/
-
-
-/*
-class ListTab extends Component {
-
-  constructor(props){
-    super(props);
-    this.state = {
-      expanded: false,
-    }
-  }
-
-
-
-  render(){
-    //const {food} = this.props;
-    const {cat} = this.props;
-    return(
-      <Content padder>
-        
-        {cat === 'food' && <FoodList/>}
-        {cat === 'exercise' && <ExerciseList/>}
-      </Content>
-    )
-  }
-}
-*/
-
-/*
-class ExTab extends Component {
-
-  formHeader(item, expanded){
-    return (
-      <View
-        style={{
-          flexDirection: "row",
-          padding: 8,
-          justifyContent: "space-between",
-          alignItems: "center",
-          backgroundColor: "#A3E4D7"
-        }}
-      >
-        <Text style = {{color: '#1C2833', fontWeight: "bold"}}>
-          {" "}{item.title}
-        </Text>
-        {expanded
-          ? <Icon style = {{color: '#7F8C8D'}}  name="remove" />
-          : <Icon style = {{color: '#1C2833'}}  name="add" />}
-      </View>
-    );
-  }
-
-  formContent(item) {
-    return <AddForm completeForm = {() => {}}/>
-  }
-
-  render(){
-    return(
-      <Content padder>
-        <Accordion
-            dataArray={
-              [{
-              title: 'Add new custom exercise',
-              content: 'Enter basic info',
-              }]
-            }
-            animation={true}
-            expanded={true}
-            icon="add"
-            expandedIcon="remove"
-            iconStyle={{ color: "green" }}
-            expandedIconStyle={{ color: "red" }}
-            renderHeader = {this.formHeader}
-            renderContent = {this.formContent}
-        />
-        <ExerciseList/>
-    </Content>
-    )
-  }
-}*/
-
 class ListScreen extends Component {
   
   constructor(props){
@@ -239,6 +141,7 @@ class ListScreen extends Component {
   }
 }
 
+/* Omitted accordion due to virtualized lists warning */
 /*
     <Accordion
         dataArray={
@@ -279,7 +182,108 @@ const styles = StyleSheet.create({
 export default ListScreen;
 
 
-/* ListScreen with tabs (omitted)
+/* Initial food state, migrated to redux store */
+/*
+const  food = [
+  {
+    name: 'Egg',
+    category: 'protein',
+    image: default_image,
+    id: 1,
+  },
+  {
+    name: 'Potato',
+    category: 'vegetable',
+    image: default_image,
+    id: 2,
+  }
+]
+*/
+
+
+/* Initial Separate screens as tabs, removed due to redundancy */
+/*
+class ListTab extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      expanded: false,
+    }
+  }
+
+
+
+  render(){
+    //const {food} = this.props;
+    const {cat} = this.props;
+    return(
+      <Content padder>
+        
+        {cat === 'food' && <FoodList/>}
+        {cat === 'exercise' && <ExerciseList/>}
+      </Content>
+    )
+  }
+}
+*/
+
+/*
+class ExTab extends Component {
+
+  formHeader(item, expanded){
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          padding: 8,
+          justifyContent: "space-between",
+          alignItems: "center",
+          backgroundColor: "#A3E4D7"
+        }}
+      >
+        <Text style = {{color: '#1C2833', fontWeight: "bold"}}>
+          {" "}{item.title}
+        </Text>
+        {expanded
+          ? <Icon style = {{color: '#7F8C8D'}}  name="remove" />
+          : <Icon style = {{color: '#1C2833'}}  name="add" />}
+      </View>
+    );
+  }
+
+  formContent(item) {
+    return <AddForm completeForm = {() => {}}/>
+  }
+
+  render(){
+    return(
+      <Content padder>
+        <Accordion
+            dataArray={
+              [{
+              title: 'Add new custom exercise',
+              content: 'Enter basic info',
+              }]
+            }
+            animation={true}
+            expanded={true}
+            icon="add"
+            expandedIcon="remove"
+            iconStyle={{ color: "green" }}
+            expandedIconStyle={{ color: "red" }}
+            renderHeader = {this.formHeader}
+            renderContent = {this.formContent}
+        />
+        <ExerciseList/>
+    </Content>
+    )
+  }
+}*/
+
+
+/* ListScreen with tabs (omitted) */
+/* 
 class ListScreen extends Component {
   render() {
     return (
