@@ -24,23 +24,23 @@ class TrackerScreen extends Component {
   render() {
     return (
       <Container style={styles.container}>
-        <Header>
-          <Left style = {{flex: 1}}>
-            <Button transparent onPress={() => this.props.navigation.openDrawer()}>
-              <Icon name="menu" />
-            </Button>
-          </Left>
-          <Body style = {{flex: 1}}>
-            <Title style = {styles.headerText}>Settings</Title>
-          </Body>
-          <Right style = {{flex: 1}}>
-            <Button 
-              transparent 
-              onPress={() => this.props.navigation.goBack()}>
-              <Icon name = "arrow-back" />
-            </Button>
-          </Right>
-        </Header>
+          <Header>
+            <Left style = {{flex: 1}}>
+              <Button transparent onPress={() => this.props.navigation.openDrawer()}>
+                <Icon name="menu" />
+              </Button>
+            </Left>
+            <Body style = {{flex: 1}}>
+              <Title style = {styles.headerText}>Settings</Title>
+            </Body>
+            <Right style = {{flex: 1}}>
+              <Button 
+                transparent 
+                onPress={() => this.props.navigation.goBack()}>
+                <Icon name = "arrow-back" />
+              </Button>
+            </Right>
+          </Header>
         <Content padder>
           <Text>Tracker screen</Text>
         </Content>

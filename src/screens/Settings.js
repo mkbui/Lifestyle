@@ -52,7 +52,6 @@ class SettingsScreen extends Component {
   }
 
   render() {
-    const styles = this.state.isDarkTheme ? darkStyle : lightStyle
     return (
       <Container style={styles.container}>
         <Header>
