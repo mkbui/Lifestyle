@@ -21,9 +21,12 @@ import AdviceScreen from '../screens/Advice';
 import PreForm from '../components/AdviceScreens/PreForm';
 import AdviceAnalysis from '../components/AdviceScreens/AdviceAnalysis';
 import WarningSuggest from '../components/AdviceScreens/WarningSuggest';
+import MainTracker from '../components/StatusManagement/screens/MainTracker';
+import Budget from '../components/StatusManagement/screens/Budget/Budget';
+import Health from '../components/StatusManagement/screens/Health/Health';
+
 import FinanceTracker from '../components/TrackerScreens/FinanceTracker';
 import HealthTracker from '../components/TrackerScreens/HealthTracker';
-
 /* Drawer navigator containing side list of main screens and stack navigator itself */
 const Drawer = createDrawerNavigator();
 function DrawerNavigator() {
@@ -39,7 +42,7 @@ function DrawerNavigator() {
       }}
     >
       <Drawer.Screen name = 'Home' component = { StackNavigator } />
-      <Drawer.Screen name = 'Tracker' component = { TrackerScreen } />
+      <Drawer.Screen name = 'Tracker' component = { MainTracker } />
       <Drawer.Screen name = 'My Schedule' component = { ScheduleScreen } />
       <Drawer.Screen name = 'Suggestion List' component = { ListScreen } />
       <Drawer.Screen name = 'Today`s Advice' component = { AdviceScreen } />
@@ -80,6 +83,11 @@ function StackNavigator() {
       <Stack.Screen name = 'WarningSuggest' component = {WarningSuggest} />
 
       <Stack.Screen name = 'Tracker' component = {TrackerScreen} />
+      <Stack.Screen name = 'MainTracker' component = {MainTracker} />
+      <Stack.Screen name = 'Budget' component = {Budget}/>
+      <Stack.Screen name = 'Health' component = {Health}/>
+
+      {/* Old tracker template */}
       <Stack.Screen name = 'HealthTracker' component = {HealthTracker}/>
       <Stack.Screen name = 'FinanceTracker' component = {FinanceTracker}/>
     </Stack.Navigator>
