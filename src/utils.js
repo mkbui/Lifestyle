@@ -28,6 +28,15 @@ export function getDateString(){
 "Measure": {"BMI": 24.382716049382715, "BMR": 2534}}
 */
 
+/* looping through filter list to see if the item does match */
+export function checkFilter(name, filterList) {
+  let res = false;
+  filterList.map(item => {
+    if (item.name === name && item.checked === true) {res = true;}
+  })
+  return res;
+};
+
 
 /* Return simple advice based on user info */
 export function fitnessAnalyzer(Record, Today){
