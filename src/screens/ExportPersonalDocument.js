@@ -1,78 +1,145 @@
-import React, { Component, useState } from "react";
-import {StyleSheet, Picker, Button} from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import React, { Component, useState,set } from "react";
+import {StyleSheet, PermissionsAndroid, Platform} from 'react-native';
 import {
   Container,
-  View,
+  Header,
+  Title,
+  Content,
+  Button,
+  Icon,
   Text,
-  Content
+  Left,
+  Right,
+  Body,
+  Picker,
+  ListItem,
+  Item
 } from "native-base";
-
-
-PickerScreen = ({navigation}) => {
-  const [selectedValue, setSelectedValue] = useState("default");
-  return (
-    <Container style = {styles.Container}>
-       <View style={{flex: 0, flexDirection: 'row', justifyContent:'center', alignItems: 'center',
-       margin: 15, marginTop: 50
-       }}>
-        <Text>Please select activity: </Text>
-        <Picker
-          selectedValue={selectedValue}
-          style={{ height: 50, width: 150 }}
-          onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-        >
-          <Picker.Item label="All" value="default" />
-          <Picker.Item label="JavaScript" value="js" />
-        </Picker>
-      </View>
-      <View style={{
-        flex:1, 
-        alignItems:'flex-end',
-        margin: 15, marginTop: 50
-      }}>
-        <Button
-        title="Next"
-        onPress={() => navigation.navigate('OnePagePreview')}
-        />
-      </View>
-    </Container>
-  );
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import {connect} from "react-redux";
+function mapStateToProps(state) {
+  return {foodList: state.foodList}
 }
 
-OnePagePreview = ({navigation}) => {
-  return (
-    <Content padder>
-      <Text>
-        Nothing........
-        
-        
-      </Text>
-    </Content>
-  )
-}
-const MyStack = createStackNavigator();
+
 class ExportPersonalDocumentScreen extends Component {
+  state = {
+    selectedValue: ' ',
+  }
+  setSelectedValue = (itemValue) =>{
+    this.setState({selectedValue:  itemValue})
+    this.askPermission();
+  }
+
+  askPermission() {
+    async function requestExternalWritePermission() {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'Lifestyle App External Storage Write Permission',
+            message:
+              'Export Personal Document needs access to Storage data',
+          }
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          createPDF();
+        } 
+        else {
+          alert('WRITE_EXTERNAL_STORAGE permission denied');
+        }
+      } catch (err) {
+        alert('Write permission err', err);
+        console.warn(err);
+      }
+    }
+    //Calling the External Write permission function
+    if (Platform.OS === 'android') {
+      requestExternalWritePermission();
+    } else {
+      createPDF();
+    }
+  }
+  ExportHTMLToPDF = () => {
+
+  }
+  
+  createHTML = () => {
+  
+  }
+  GetData = () => {
+
+  }
+  createPDF = () => {
+    GetData();
+    createHTML();
+    ExportHTMLToPDF();
+  }
+
   render() {
     return (
-      <MyStack.Navigator >
-      <MyStack.Screen name="PickerScreen" component={PickerScreen} />
-      <MyStack.Screen name="OnePagePreview" component={OnePagePreview} />
-      </MyStack.Navigator>
+      <Container style = {styles.container}>
+       <Header>
+          <Left style = {{flex: 1}}>
+            <Button transparent onPress={() => this.props.navigation.openDrawer()}>
+              <Icon name="menu" />
+            </Button>
+          </Left>
+          <Body style = {{flex: 1}}>
+            <Title>Export Document</Title>
+          </Body>
+          <Right style = {{flex: 1}}>
+            <Button 
+              transparent 
+              onPress={() => this.props.navigation.goBack()}>
+              <Icon name = "arrow-back" />
+            </Button>
+          </Right>
+        </Header>
+       <Content padder>
+       <ListItem style = {styles.row} icon last>
+            <Left>
+              <Button style={{ backgroundColor: "#4CDA64" }}>
+                <Icon active name="ios-man" />
+              </Button>
+            </Left>
+            <Body>
+              <Text>Select Activity</Text>
+            </Body>
+            <Right>
+              <Picker
+                note
+                mode="dropdown"
+                style={{ width: 150 }}
+                selectedValue={this.state.selectedValue}
+                onValueChange={this.setSelectedValue.bind(this)}
+              >
+              </Picker>
+            </Right>
+          </ListItem>
+      </Content>
+    </Container>
     );
   }
 }
 
 
-
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#FFF"
+  container:{
+    backgroundColor: 'white',
+
   },
-  headerText: {
-    fontWeight: 'bold',
-    justifyContent: 'center',
+  headerText:{
+    fontSize: 30,
+    textAlign: 'left',
+    marginTop: 30,
+  },
+  contentText:{
+    textAlign: 'center',
+    fontSize: 15,
+    marginTop: 20,
+    marginBottom: 50,
   },
 });
 
-export default ExportPersonalDocumentScreen;
+export default connect(mapStateToProps)(ExportPersonalDocumentScreen);
