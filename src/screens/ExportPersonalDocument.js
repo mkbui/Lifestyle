@@ -13,7 +13,7 @@ import {
   Body,
   Picker,
   ListItem,
-  Item
+  Separator
 } from "native-base";
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import {connect} from "react-redux";
@@ -22,42 +22,43 @@ function mapStateToProps(state) {
 }
 
 
+
 class ExportPersonalDocumentScreen extends Component {
   state = {
     selectedValue: ' ',
+    filePath: ''
   }
   setSelectedValue = (itemValue) =>{
     this.setState({selectedValue:  itemValue})
-    this.askPermission();
   }
 
-  askPermission() {
-    async function requestExternalWritePermission() {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-          {
-            title: 'Lifestyle App External Storage Write Permission',
-            message:
-              'Export Personal Document needs access to Storage data',
-          }
-        );
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          createPDF();
-        } 
-        else {
-          alert('WRITE_EXTERNAL_STORAGE permission denied');
-        }
-      } catch (err) {
-        alert('Write permission err', err);
-        console.warn(err);
-      }
-    }
-    //Calling the External Write permission function
+  handlePress = () =>{
     if (Platform.OS === 'android') {
-      requestExternalWritePermission();
+      this.requestExternalWritePermission();
     } else {
-      createPDF();
+      this.createPDF();
+    }
+  }
+ 
+  async requestExternalWritePermission() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: 'Lifestyle App External Storage Write Permission',
+          message:
+            'Export Personal Document needs access to Storage data',
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        this.createPDF();
+      } 
+      else {
+        alert('WRITE_EXTERNAL_STORAGE permission denied');
+      }
+    } catch (err) {
+      alert('Write permission err', err);
+      console.warn(err);
     }
   }
   ExportHTMLToPDF = () => {
@@ -70,12 +71,24 @@ class ExportPersonalDocumentScreen extends Component {
   GetData = () => {
 
   }
-  createPDF = () => {
-    GetData();
-    createHTML();
-    ExportHTMLToPDF();
-  }
 
+  async createPDF() {
+    //GetData();
+    //createHTML();
+    //ExportHTMLToPDF();
+    let options = {
+      //Content to print
+      html:
+        '<h1 style="text-align: center;"><strong>Hello Guys</strong></h1><p style="text-align: center;">Here is an example of pdf Print in React Native</p><p style="text-align: center;"><strong>Team About React</strong></p>',
+      //File Name
+      fileName: 'test',
+      //File directory
+      directory: 'docs',
+    };
+    let file = await RNHTMLtoPDF.convert(options);
+    console.log(file.filePath);
+    this.setState({filePath:file.filePath});
+  }
   render() {
     return (
       <Container style = {styles.container}>
@@ -97,7 +110,7 @@ class ExportPersonalDocumentScreen extends Component {
           </Right>
         </Header>
        <Content padder>
-       <ListItem style = {styles.row} icon last>
+       <ListItem style = {styles.row} icon last noBorder>
             <Left>
               <Button style={{ backgroundColor: "#4CDA64" }}>
                 <Icon active name="ios-man" />
@@ -117,11 +130,29 @@ class ExportPersonalDocumentScreen extends Component {
               </Picker>
             </Right>
           </ListItem>
+          <ListItem style = {styles.row} icon last noBorder>
+            <Left></Left>
+            <Body></Body>
+            <Right>
+              <Button
+                style={{ width: 70 }}
+                onPress={() =>{
+                  this.handlePress()
+                }}
+              >
+                <Text>Next</Text>
+              </Button>
+            </Right>
+          </ListItem>
+      <Text>{this.state.filePath}</Text>
+      
       </Content>
     </Container>
     );
   }
 }
+
+
 
 
 const styles = StyleSheet.create({
