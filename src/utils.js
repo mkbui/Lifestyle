@@ -4,10 +4,11 @@ import {
   Text,
 } from 'native-base';
 
-/* transform React Date() format to dd/mm/yyyy */
+/* transform React Date() format to dd-mm-yyyy */
 export function getDateString(){
   const date = new Date();
-  const dateString = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
+  var zero = (date.getMonth()+1<10 ? '0' : '')
+  const dateString = date.getDate() + '-' + zero + (date.getMonth()+1) + '-' + date.getFullYear();
   return dateString;
 }
 

@@ -16,7 +16,7 @@ const today = getDateString();
 const User = {
   Info: {
     name: 'A',
-    age: 1,
+    age: 20,
     height: 100,
     weight: 100,
     gender: '',
@@ -29,6 +29,7 @@ const User = {
     BMR: 1600,
   },
 
+  // Records: currently not used, migrating to exerciseReducer, mealReducer and budgetReducer
   FitnessRecord: [
 
   ],
@@ -122,7 +123,7 @@ export function userAccess(state = User, action){
             waterConsumed: 0,
             energyConsumed: 0,
             energyBurned: 0,
-            weight: state.DailyRecord.Fitness.weight,
+            weight: state.Info.weight,
           },
           Finance: {
             date: todays,

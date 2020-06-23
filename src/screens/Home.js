@@ -38,6 +38,8 @@ const today = getDateString();
 function mapStateToProps(state) {
   return{
     userInfo: state.user,
+    budgetList: state.budgetReducer.budgetList,
+    mealList: state.mealReducer.mealList,
   }
 }
 
@@ -56,17 +58,48 @@ class HomeScreen extends Component {
     this.state = {
       fActive: false,
     }
-    //console.log(this.props.userInfo);
+    console.log(this.props.userInfo);
     let lastRecordDate = this.props.userInfo.DailyRecord.date;
     if (today !== lastRecordDate) {
       console.log('Initiating new daily record...');
       this.props.createNewDaily();
     }
   }
+  calIncome = () => {
+    const {budgetList} = this.props;
+    var incomeTotal = 0;
+    {
+      budgetList.map(budget => {
+        if (
+          budget.type === 'Income' &&
+          budget.date === today
+        ) {
+          incomeTotal += Number(budget.amount);
+        }
+      });
+    }
+    return incomeTotal;
+  }
 
   render() {
-    const {userInfo} = this.props;
+    const {userInfo, budgetList, mealList} = this.props;
     const {DailyRecord, Info} = this.props.userInfo;
+    var incomeTotal = 0, expenseTotal = 0, totalConsumed = 0;
+
+    /* calculate total expense and income today */
+    budgetList.map(budget => {
+      if (budget.date === today) {
+        if (budget.type === 'Income') incomeTotal += Number(budget.amount);
+        else expenseTotal += Number(budget.amount);
+      }
+    });
+    /* calculate total energy consumed today */
+    mealList.map(meal => {
+      if (meal.date === today) {
+        totalConsumed += meal.carb*4 + meal.protein*4 + meal.fat*9;
+      }
+    });
+
     return (
       <Container style={styles.container}>
         <Header>
@@ -138,7 +171,7 @@ class HomeScreen extends Component {
             <CardItem bordered>
               <Left>
                 <Icon type = "FontAwesome5" name = "utensils"/>
-                <Text style = {styles.cardText}> 0 Kcal</Text>
+                <Text style = {styles.cardText}>{totalConsumed} Kcal</Text>
               </Left>
             </CardItem>
 
@@ -149,7 +182,7 @@ class HomeScreen extends Component {
               </Left>
             </CardItem>
 
-            <CardItem footer bordered button onPress = {() => this.props.navigation.navigate('HealthTracker')}>
+            <CardItem footer bordered button onPress = {() => this.props.navigation.navigate('Health')}>
               <Text>Go to Health Tracker</Text>
             </CardItem>
           </Card>
@@ -166,18 +199,18 @@ class HomeScreen extends Component {
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "cash-refund"/>
-                <Text style = {styles.cardText}>{DailyRecord.Finance.spent.sum} VND</Text>
+                <Text style = {styles.cardText}>{incomeTotal/*DailyRecord.Finance.spent.sum*/} VND</Text>
               </Left>
             </CardItem>
 
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "credit-card-plus"/>
-                <Text style = {styles.cardText}>{DailyRecord.Finance.earned.sum} VND</Text>
+                <Text style = {styles.cardText}>{expenseTotal/*DailyRecord.Finance.earned.sum*/} VND</Text>
               </Left>
             </CardItem>
 
-            <CardItem footer bordered button onPress = {() => this.props.navigation.navigate('FinanceTracker')}>
+            <CardItem footer bordered button onPress = {() => this.props.navigation.navigate('Budget')}>
               <Text>Go to Financial Diary</Text>
             </CardItem>
           </Card>
