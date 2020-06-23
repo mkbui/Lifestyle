@@ -6124,6 +6124,10 @@ react-native-input-xg@^0.0.2:
   integrity sha1-nl7ihNs8Yd+PugWH89YpQ7jCPic=
   dependencies:
     react-native-stylesheet-xg "^1.1.0"
+react-native-html-to-pdf@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-html-to-pdf/-/react-native-html-to-pdf-0.8.0.tgz#c6e27296a05de76ac3800406144ebdfd77cfe054"
+  integrity sha512-64Hx7JbX3sZ1iXgouuCI25/C6o8BHyTzOO3RzvLfw4O8VcdpB+wJ4d24iWRtKjeJmArsubN9+WMOebBxQaPzJw==
 
 react-native-iphone-x-helper@^1.0.3, react-native-iphone-x-helper@^1.2.1:
   version "1.2.1"
