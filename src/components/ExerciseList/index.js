@@ -15,6 +15,7 @@ import {
 } from "native-base";
 import {connect} from "react-redux";
 import {viewFilter, removeExercise} from "../../actions";
+import {checkFilter} from "../../utils";
 /*
 const showVisibleList = (food, filter) => {
   switch (filter) {
@@ -45,7 +46,17 @@ class ExerciseList extends Component {
   }
 
   render(){
-    const {exerciseList} = this.props;
+    const {exerciseList, search, filter} = this.props;
+    var isFilter = false;
+    filter.map(data => {
+      if (data.checked === true) isFilter = true;
+    })
+    
+    let renderList = exerciseList.filter(data => 
+      (data.name.indexOf(search) !== -1 && 
+        (!isFilter || checkFilter(data.category, filter) === true)
+      )
+    )
     /*
     return(
       <List 
@@ -74,7 +85,7 @@ class ExerciseList extends Component {
       />
     )*/
     return(
-      exerciseList.map( data =>
+      renderList.map( data =>
         <ListItem thumbnail key = {data.id}>
             <Left>
               <Thumbnail square source={data.image} />

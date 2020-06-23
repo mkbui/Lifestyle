@@ -4,10 +4,11 @@ import {
   Text,
 } from 'native-base';
 
-/* transform React Date() format to dd/mm/yyyy */
+/* transform React Date() format to dd-mm-yyyy */
 export function getDateString(){
   const date = new Date();
-  const dateString = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
+  var zero = (date.getMonth()+1<10 ? '0' : '')
+  const dateString = date.getDate() + '-' + zero + (date.getMonth()+1) + '-' + date.getFullYear();
   return dateString;
 }
 
@@ -27,6 +28,15 @@ export function getDateString(){
 "Info": {"age": "22", "gender": "male", "height": "180", "name": "$¢@√€πG£®", "registered": true, "weight": "79"}, 
 "Measure": {"BMI": 24.382716049382715, "BMR": 2534}}
 */
+
+/* looping through filter list to see if the item does match */
+export function checkFilter(name, filterList) {
+  let res = false;
+  filterList.map(item => {
+    if (item.name === name && item.checked === true) {res = true;}
+  })
+  return res;
+};
 
 
 /* Return simple advice based on user info */

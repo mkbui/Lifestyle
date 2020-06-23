@@ -18,7 +18,7 @@ import {foodOperate} from "../../reducers";
 import {ViewFilter} from "../../actions";
 import data from "../../data/data.json";
 import FormButton from "../FormButton";
-
+import {checkFilter} from "../../utils";
 
 
 
@@ -46,6 +46,8 @@ const mapDispatchToProps = dispatch => ({
   removeFood: (id) => dispatch(removeFood(id))
 })
 
+
+
 class FoodList extends Component {
   
   constructor(props){
@@ -70,10 +72,22 @@ class FoodList extends Component {
     )
   }
 
+
+
   render(){
-    const {foodList} = this.props;
+    const {foodList, search, filter} = this.props;
+    var isFilter = false;
+    filter.map(data => {
+      if (data.checked === true) isFilter = true;
+    })
+    
+    let renderList = foodList.filter(data => 
+      (data.name.indexOf(search) !== -1 && 
+        (!isFilter || checkFilter(data.category, filter) === true)
+      )
+    )
     return(
-        foodList.map(data =>
+        renderList.map(data => 
             <ListItem thumbnail key = {data.id}>
               <Left>
                 <Thumbnail square source={data.image} />
