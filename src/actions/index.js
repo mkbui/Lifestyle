@@ -9,6 +9,7 @@ export const REMOVE_EXERCISE = 'REMOVE_EXERCISE'
 export const CREATE_USER = 'CREATE_USER'
 export const CALCULATE_INFO = 'CALCULATE_INFO'
 export const CREATE_NEW_DAILY = 'CREATE_NEW_DAILY'
+export const UPDATE_DAILY_RECORD = 'UPDATE_DAILY_RECORD'
 // Schedule Management
 export const ADD_ACTIVITY = 'ADD_ACTIVITY'
 export const REMOVE_ACTIVITY = 'REMOVE_ACTIVITY'
@@ -44,6 +45,10 @@ export function calculateInfo(info){
 
 export function createNewDaily(){
   return { type: CREATE_NEW_DAILY}
+}
+
+export function updateDailyRecord(){
+  return { type: UPDATE_DAILY_RECORD }
 }
 
 export function addFood(name, category){

@@ -2,6 +2,7 @@ import {
   CREATE_USER, 
   CALCULATE_INFO, 
   CREATE_NEW_DAILY,
+  UPDATE_DAILY_RECORD,
   ADD_CONSUME_RECORD,
   ADD_EXERCISE_RECORD,
   ADD_EXPENSE_RECORD,
@@ -139,6 +140,17 @@ export function userAccess(state = User, action){
         }
       })
       
+    case UPDATE_DAILY_RECORD: 
+      return Object.assign({}, state, {
+        ...state,
+        DailyRecord: {
+          ...state.DailyRecord,
+          Fitness: {
+            ...state.DailyRecord.Fitness,
+            updated: true,
+          }
+        }
+      })
 
     case ADD_INCOME_RECORD:
       const iRecord = action.iRecord;
