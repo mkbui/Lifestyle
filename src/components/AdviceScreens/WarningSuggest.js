@@ -201,6 +201,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontWeight: 'bold',
+    fontSize: 14,
   },
   text: {
     alignSelf: "center",
