@@ -30,8 +30,8 @@ const mapDispatchToProps = dispatch => ({
   removeActivity: (id) => dispatch(removeActivity(id))
 })
 class ActivityList extends Component {
-  removeItem(data){
-    this.props.removeActivity(data.id);
+  removeItem(activity){
+    this.props.removeActivity(activity.id);
     Toast.show({
       text: "Removed successfully!",
       type: "success",
