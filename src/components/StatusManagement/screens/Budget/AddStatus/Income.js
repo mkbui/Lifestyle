@@ -114,8 +114,33 @@ class Income extends Component {
       });
     }
   };
-
+  
+  category = (item) => {
+    return(
+      <TouchableOpacity
+        key={item.id}
+        onPress={() =>
+          this.setState({
+            category: item.title,
+            categoryImage: item.src,
+            checkedIndex: item.id,
+          })
+        }
+        style={[
+          styles.item,
+          {
+            backgroundColor:
+              this.state.checkedIndex === item.id ? 'yellow' : 'white',
+          },
+        ]}>
+        <Image source={item.src} style={styles.image} />
+        <Text style={styles.title}>{item.title}</Text>
+      </TouchableOpacity>
+    )
+  }
   render() {
+   
+   
     return (
       <Content padder>
         {/* SHOW TITLE EDIT */}
@@ -198,41 +223,18 @@ class Income extends Component {
           </Item>
         </Form>
 
-
       {/* SELECT CATEGORY */}
         <Label style={{color: 'grey', fontSize: 20, margin: 10}}>
           Category:
         </Label>
-        <SafeAreaView>
-          <FlatList
-            style={styles.flatlist}
-            data={DATA}
-            renderItem={({item}) => (
-              <TouchableOpacity
-              key={item.id}
-                onPress={() =>
-                  this.setState({
-                    category: item.title,
-                    categoryImage: item.src,
-                    checkedIndex: item.id,
-                  })
-                }
-                style={[
-                  styles.item,
-                  {
-                    backgroundColor:
-                      this.state.checkedIndex === item.id ? 'yellow' : 'white',
-                  },
-                ]}>
-                <Image source={item.src} style={styles.image} />
-                <Text style={styles.title}>{item.title}</Text>
-              </TouchableOpacity>
-            )}
-            numColumns={3}
-          />
-        </SafeAreaView>
-
-
+      
+    <View style={{flexDirection:"row" ,marginLeft:-10}}>
+    {DATA.map(item =>{ if(item.id <= 11) return(this.category(item))  })}
+    </View>
+    <View style={{flexDirection:"row" ,marginLeft:-10}}>
+    {DATA.map(item =>{ if(item.id  > 11) return(this.category(item))  })}
+    </View>
+    
         {/* BUTTON FOR EDIT FORM */}
         {this.props.budgetEdit ? (
           <View style={styles.viewbtnEdit}>
@@ -348,4 +350,31 @@ const styles = StyleSheet.create({
   },
 });
 
-
+  {/* <SafeAreaView>
+      <FlatList
+        style={styles.flatlist}
+        data={DATA}
+        renderItem={({item}) => (
+          <TouchableOpacity
+          key={item.id}
+            onPress={() =>
+              this.setState({
+                category: item.title,
+                categoryImage: item.src,
+                checkedIndex: item.id,
+              })
+            }
+            style={[
+              styles.item,
+              {
+                backgroundColor:
+                  this.state.checkedIndex === item.id ? 'yellow' : 'white',
+              },
+            ]}>
+            <Image source={item.src} style={styles.image} />
+            <Text style={styles.title}>{item.title}</Text>
+          </TouchableOpacity>
+        )}
+        numColumns={3}
+      />
+    </SafeAreaView> */}
