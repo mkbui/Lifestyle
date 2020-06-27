@@ -125,10 +125,11 @@ export default class Chart extends Component {
     </TouchableOpacity>
      
     {/* Chart component */}
+    <PieChart selectedMonth={selectedMonth} modalVisible={modalVisible} typePieChart={"Expense"}/>
+    <LineChart selectedMonth={selectedMonth} modalVisible={modalVisible} typePieChart={"Expense"}/>
      <PieChart selectedMonth={selectedMonth} modalVisible={modalVisible} typePieChart={"Income"}/>
      <LineChart selectedMonth={selectedMonth} modalVisible={modalVisible} typePieChart={"Income"}/>
-     <PieChart selectedMonth={selectedMonth} modalVisible={modalVisible} typePieChart={"Expense"}/>
-     <LineChart selectedMonth={selectedMonth} modalVisible={modalVisible} typePieChart={"Expense"}/>
+    
      </Content>
 
      </Container>

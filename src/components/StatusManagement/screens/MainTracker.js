@@ -36,7 +36,11 @@ class MainTracker extends Component {
           </Body>
 
           <Right>
-              
+          <Button
+              transparent
+              onPress={() => this.props.navigation.navigate('Home')}>
+              <Text style={{fontWeight: 'bold'}}>Back</Text>
+            </Button>
           </Right>
         </Header>
 
