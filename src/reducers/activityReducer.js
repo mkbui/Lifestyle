@@ -26,7 +26,3 @@ export function activityOperate(state = initialState.activity, action){
       return state
   }
 }
-
-
-
-

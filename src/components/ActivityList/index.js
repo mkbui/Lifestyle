@@ -30,8 +30,8 @@ const mapDispatchToProps = dispatch => ({
   removeActivity: (id) => dispatch(removeActivity(id))
 })
 class ActivityList extends Component {
-  removeItem(data){
-    this.props.removeActivity(data.id);
+  removeItem(activity){
+    this.props.removeActivity(activity.id);
     Toast.show({
       text: "Removed successfully!",
       type: "success",
@@ -40,10 +40,10 @@ class ActivityList extends Component {
   render() {
     const {activityList} = this.props;
     return (
-      activityList.map(activity => (
+      activityList.map(activity => 
         <ListItem thumbnail key={activity.id} style={styles.activityView}>
           <Left>
-            <TouchableOpacity onPress={() => {console.log('a')}}>
+            <TouchableOpacity onPress={() => {console.log(activity.id)}}>
               <Text style={{marginTop : 0.5}}>
                 {activity.name}
               </Text>
@@ -78,7 +78,7 @@ class ActivityList extends Component {
                 trackColor={{ false: "#767577", true: "#81b0ff" }}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={() => {}}
-                value={activity.state.activate}
+                value={activity.activate}
               />
               <TouchableOpacity onPress={() => {this.removeItem(activity)}}>
                 <Icon
@@ -89,7 +89,7 @@ class ActivityList extends Component {
             </View>
           </Right>
         </ListItem>
-      ))
+      )
     )
   }
 }
