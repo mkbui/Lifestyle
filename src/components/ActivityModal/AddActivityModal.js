@@ -28,24 +28,16 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {connect} from "react-redux";
 import {addActivity} from "../../actions";
 
-let i = 0;
-class Activity extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      activate : true,
-    };
-    this.repeat = [
-      {day : "Sun", value : false},
-      {day : "Mon", value : false},
-      {day : "Tue", value : false},
-      {day : "Wed", value : false},
-      {day : "Thu", value : false},
-      {day : "Fri", value : false},
-      {day : "Sat", value : false},
-    ];
-  }
-  
+class Activity {
+  repeat = [
+    {day : "Sun", value : false},
+    {day : "Mon", value : false},
+    {day : "Tue", value : false},
+    {day : "Wed", value : false},
+    {day : "Thu", value : false},
+    {day : "Fri", value : false},
+    {day : "Sat", value : false},
+  ];
   setComponent(name, hour, min, Sun, Mon, Tue, Wed, Thu, Fri, Sat) {
     this.name = name;
     this.hour = hour;
@@ -57,18 +49,18 @@ class Activity extends Component {
     this.repeat[4].value = Thu;
     this.repeat[5].value = Fri;
     this.repeat[6].value = Sat;
+    this.activate = true;
+    this.id = Math.random().toString();
   }
-  id = (i++).toString();
-  setActivate = () => {
-    this.state.activate = !this.state.activate;
-    console.log("activated")
-  }
+  // setActivate = () => {
+  //   this.state.activate = !this.state.activate;
+  //   console.log("activated")
+  // }
 }
 
 const mapDispatchToProps = dispatch => ({
     addActivity: (activity) => dispatch(addActivity(activity))
-  })
-
+})
 class AddActivityModal extends Component {
   constructor(props){
     super(props);
@@ -132,6 +124,7 @@ class AddActivityModal extends Component {
       Sat,
     );
     this.props.addActivity(newActivity);
+    this.props.completeAdd();
     this.activity.name = 'Activity';
   };
 
