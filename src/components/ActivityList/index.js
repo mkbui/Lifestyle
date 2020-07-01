@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import {
   StyleSheet,
   Switch,
-  TouchableOpacity
+  TouchableOpacity,
+  ToastAndroid
 } from 'react-native';
 import {
   Container,
@@ -21,21 +22,26 @@ import {
   Toast,
 } from "native-base";
 import {connect} from "react-redux";
-import {removeActivity} from "../../actions";
+import {removeActivity, activateActivity} from "../../actions";
 
 function mapStateToProps(state) {
   return {activityList: state.activityList}
 }
 const mapDispatchToProps = dispatch => ({
-  removeActivity: (id) => dispatch(removeActivity(id))
+  removeActivity: (id) => dispatch(removeActivity(id)),
+  activateActivity: (id) => dispatch(activateActivity(id))
 })
+
 class ActivityList extends Component {
   removeItem(activity){
     this.props.removeActivity(activity.id);
-    Toast.show({
-      text: "Removed successfully!",
-      type: "success",
-    })
+    ToastAndroid.show(
+      "Activity removed",
+      ToastAndroid.SHORT
+    )
+  }
+  activateItem(activity){
+    this.props.activateActivity(activity.id);
   }
   render() {
     const {activityList} = this.props;
@@ -77,8 +83,8 @@ class ActivityList extends Component {
               <Switch
                 trackColor={{ false: "#767577", true: "#81b0ff" }}
                 ios_backgroundColor="#3e3e3e"
-                onValueChange={() => {}}
-                value={activity.state.activate}
+                onValueChange={() => {this.activateItem(activity)}}
+                value={activity.activate}
               />
               <TouchableOpacity onPress={() => {this.removeItem(activity)}}>
                 <Icon
