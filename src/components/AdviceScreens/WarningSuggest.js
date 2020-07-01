@@ -80,6 +80,7 @@ class WarningSuggest extends Component {
     });
   }
 
+
   render(){
     const {indicating, chosenFood, foodCur, exerCur} = this.state;
     const {userInfo, foodList, exerciseList} = this.props;

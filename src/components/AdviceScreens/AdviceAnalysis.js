@@ -22,7 +22,7 @@ import * as Progress from 'react-native-progress';
 
 import {connect} from 'react-redux';
 import {fitnessAnalyzer, financialAnalyzer, financeAnalyzer} from "../../utils";
-
+import {tips} from './../../data/tips'
 
 const default_image = require('../../../assets/default_image.png')
 let deviceWidth = Dimensions.get('window').width
@@ -41,6 +41,7 @@ class AdviceAnalysis extends Component {
     super(props);
     this.state = {
       indicating: true,
+      tip: ''
     }
   }
 
@@ -53,6 +54,14 @@ class AdviceAnalysis extends Component {
 
   stopIndicating(){
     this.setState({indicating: false})
+  }
+
+  /* tips generator */
+  assignTips(){
+    let chosenId = Math.floor(Math.random()*tips.length);
+    this.setState({
+      tip: tips[chosenId].text,
+    });
   }
 
   render(){
@@ -165,7 +174,7 @@ class AdviceAnalysis extends Component {
               <CardItem style = {styles.tipBox}>
                 <Left>
                   <Body>
-                    <Text style = {styles.tip}>Water is good for H2O.</Text>
+                    <Text style = {styles.tip}>{this.state.tips}</Text>
                   </Body>
                 </Left>
               </CardItem>
