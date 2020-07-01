@@ -1,6 +1,7 @@
 import {
   ADD_ACTIVITY,
   REMOVE_ACTIVITY,
+  ACTIVATE_ACTIVITY,
 } from '../actions';
 
 
@@ -21,7 +22,10 @@ export function activityOperate(state = initialState.activity, action){
       return state.filter((item) =>
           item.id !== action.id
         )
-    
+    case ACTIVATE_ACTIVITY:
+      return state.map(item =>
+          item.id === action.id ? {...item, activate: !item.activate} : item
+        )
     default: 
       return state
   }

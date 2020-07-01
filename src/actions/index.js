@@ -8,6 +8,7 @@ export const CALCULATE_INFO = 'CALCULATE_INFO'
 export const CREATE_NEW_DAILY = 'CREATE_NEW_DAILY'
 export const ADD_ACTIVITY = 'ADD_ACTIVITY'
 export const REMOVE_ACTIVITY = 'REMOVE_ACTIVITY'
+export const ACTIVATE_ACTIVITY = 'ACTIVATE_ACTIVITY'
 export const ADD_INCOME_RECORD = 'ADD_INCOME_RECORD'
 export const ADD_EXPENSE_RECORD = 'ADD_EXPENSE_RECORD'
 export const ADD_CONSUME_RECORD = 'ADD_FITNESS_RECORD'
@@ -71,6 +72,10 @@ export function addActivity(activity){
 
 export function removeActivity(id){
   return { type: REMOVE_ACTIVITY, id };
+}
+
+export function activateActivity(id){
+  return { type: ACTIVATE_ACTIVITY, id };
 }
 
 export function addIncomeRecord(iRecord) {
