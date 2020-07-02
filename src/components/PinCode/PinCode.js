@@ -138,18 +138,7 @@ export class PinCode extends Component{
     };
     
     renderPassWordCircle = () => {
-            <View>
-                <Animate
-                show = {true}
-                start = {{
-
-                }}
-                update = {{
-
-                }}>
-
-                </Animate>
-            </View>
+        
     }
     doShake = () => {
 
