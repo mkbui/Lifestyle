@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 
-import {StyleSheet} from "react-native";
+import {StyleSheet, ToastAndroid} from "react-native";
 import {
   Button,
   List,
@@ -15,6 +15,7 @@ import {
 } from "native-base";
 import {connect} from "react-redux";
 import {viewFilter, removeExercise} from "../../actions";
+import {checkFilter} from "../../utils";
 /*
 const showVisibleList = (food, filter) => {
   switch (filter) {
@@ -23,26 +24,39 @@ const showVisibleList = (food, filter) => {
 }
 */
 
+/* store data used: exercise list */
 const mapStateToProps = (state) => ({
   exerciseList: state.exerciseList
 })
 
+/* store dispatch function used: remove exercise for item removal */
 const mapDispatchToProps = dispatch => ({
   removeExercise: (id) => dispatch(removeExercise(id))
 })
 
 class ExerciseList extends Component {
 
+  /* dispatch function call along with a toast */
   removeItem(data){
     this.props.removeExercise(data.id);
-    Toast.show({
-      text: "Removed successfully!",
-      type: "success",
-    })
+    ToastAndroid.show(
+      "Exercise removed successfully!",
+      ToastAndroid.SHORT
+    )
   }
 
   render(){
-    const {exerciseList} = this.props;
+    const {exerciseList, search, filter} = this.props;
+    var isFilter = false;
+    filter.map(data => {
+      if (data.checked === true) isFilter = true;
+    })
+    
+    let renderList = exerciseList.filter(data => 
+      (data.name.indexOf(search) !== -1 && 
+        (!isFilter || checkFilter(data.category, filter) === true)
+      )
+    )
     /*
     return(
       <List 
@@ -71,7 +85,7 @@ class ExerciseList extends Component {
       />
     )*/
     return(
-      exerciseList.map( data =>
+      renderList.map( data =>
         <ListItem thumbnail key = {data.id}>
             <Left>
               <Thumbnail square source={data.image} />

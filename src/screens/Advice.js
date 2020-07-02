@@ -35,6 +35,7 @@ function mapStateToProps(){
   }
 }
 
+/* Children screens name, unused */
 const screens = [
   {
     route: "PreForm",
@@ -51,7 +52,7 @@ const screens = [
 ];
 
 
-
+/* Advice screen, simple navigation redirected */
 class AdviceScreen extends Component {
   constructor(props){
     super(props);
@@ -64,7 +65,6 @@ class AdviceScreen extends Component {
     //this.setState({stage: this.state.stage + 1});
     //this.props.navigation.navigate("AdviceAnalysis")
     //this.props.navigation.navigate("Home")
-    console.log(screenName)
   }
 
   render(){

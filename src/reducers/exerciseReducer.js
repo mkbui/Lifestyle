@@ -1,66 +1,52 @@
-import {
-  SET_VIEW_FILTER, 
-  ADD_EXERCISE,
-  ViewFilters,
-  REMOVE_EXERCISE,
-} from '../actions';
+import * as ActionType from "../actions/ActionType";
 
-import uuid from "react-native-uuid";
 
-const default_image = require("../../assets/default_image.png");
+let initialState = {
+    exerciseList: [],
+    exerciseEdit: null,
+  };
 
-const {VIEW_ALL} = ViewFilters;
-
-const initialState = {
-  viewFilters:  ViewFilters.VIEW_ALL,
-  exercises: [
-    {
-      name: 'Sit-up',
-      category: 'abs',
-      image: default_image,
-      id: uuid.v4(),
-    },
-    {
-      name: 'Sit-down',
-      category: 'relax',
-      image: default_image,
-      id: uuid.v4(),
-    }
-  ],
-}
-
-/* reducer for viewFilters state */
-export function exerciseFilter(state = VIEW_ALL, action){
-  switch (action.type){
-    case SET_VIEW_FILTER:
-      return action.filter
-    default: return state
-  }
-}
-
-/* state is an array, for food list only */
-export function exerciseOperate(state = initialState.exercises, action){
-  switch (action.type){
-    case ADD_EXERCISE:
-      const newId = uuid.v4()//state.length + 1;
-      return [
-          ...state,
-          {
-            name: action.name,
-            category: action.category,
-            image: default_image,
-            id: newId,
+  const exerciseReducer = (state = initialState, action) => {
+    switch (action.type) {
+   
+      case ActionType.SUBMIT_E:
+        if (action.exercise.id) {
+          //UPDATE EDIT
+          let index = state.exerciseList.findIndex(exercise => {
+            return exercise.id === action.exercise.id;
+          });
+          if (index !== -1) {
+            let exerciseListUpdate = [...state.exerciseList];
+            exerciseListUpdate[index] = action.exercise;
+            state.exerciseList = exerciseListUpdate;
+            
           }
-        ]
-    
-    
-    case REMOVE_EXERCISE:
-      return state.filter((item) =>
-          item.id !== action.id
-        )
-    
-
-    default: 
-      return state
-  }
-}
+        }else{
+            // ADD
+          let exerciseAdd = { ...action.exercise , id: Math.random()};
+          state.exerciseList = [...state.exerciseList, exerciseAdd];
+         }
+        return { ...state };
+  
+      case ActionType.EDIT_E:
+          state.exerciseEdit = action.exercise;
+          return { ...state };
+      
+      case ActionType.DELETE_E:
+        let index = state.exerciseList.findIndex(exercise => {
+        return exercise.id === action.exercise.id;
+        });
+        if(index !== -1){
+          let exerciseListUpdate = [...state.exerciseList];
+          exerciseListUpdate.splice(index,1);
+          state.exerciseList = exerciseListUpdate;
+        }
+      return { ...state };
+      
+      default:
+        return state;//{ ...state };
+    }
+  };
+  
+  export default exerciseReducer;
+  

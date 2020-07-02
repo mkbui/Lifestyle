@@ -27,23 +27,30 @@ import {userAccess} from "../reducers/userReducer"
 
 /* Image importing section */
 const default_image = require("../../assets/default_image.png");
+const default_background = require("../../assets/defaultBackground.jpg")
+const splashLogo = require('../../assets/bootLogo.jpg');
 const heart = require("../../assets/heart.png");
 const finance = require("../../assets/finance.png");
 
 const today = getDateString();
 
+/* Store data used: userInfo */
 function mapStateToProps(state) {
   return{
     userInfo: state.user,
+    budgetList: state.budgetReducer.budgetList,
+    mealList: state.mealReducer.mealList,
   }
 }
 
+/* Store dispatcher used: createNewDaily for making a new daily record every day */
 const  mapDispatchToProps = dispatch => {
   return {
     createNewDaily: () => dispatch(createNewDaily())
   }
 }
 
+/* Presentational screen for default user view */
 class HomeScreen extends Component {
 
   constructor(props){
@@ -51,20 +58,48 @@ class HomeScreen extends Component {
     this.state = {
       fActive: false,
     }
-    //console.log(this.props.userInfo);
+    console.log(this.props.userInfo);
     let lastRecordDate = this.props.userInfo.DailyRecord.date;
     if (today !== lastRecordDate) {
       console.log('Initiating new daily record...');
       this.props.createNewDaily();
     }
   }
-
-  ComponentDidMount(){
-    
+  calIncome = () => {
+    const {budgetList} = this.props;
+    var incomeTotal = 0;
+    {
+      budgetList.map(budget => {
+        if (
+          budget.type === 'Income' &&
+          budget.date === today
+        ) {
+          incomeTotal += Number(budget.amount);
+        }
+      });
+    }
+    return incomeTotal;
   }
 
   render() {
-    const {userInfo} = this.props;
+    const {userInfo, budgetList, mealList} = this.props;
+    const {DailyRecord, Info} = this.props.userInfo;
+    var incomeTotal = 0, expenseTotal = 0, totalConsumed = 0;
+
+    /* calculate total expense and income today */
+    budgetList.map(budget => {
+      if (budget.date === today) {
+        if (budget.type === 'Income') incomeTotal += Number(budget.amount);
+        else expenseTotal += Number(budget.amount);
+      }
+    });
+    /* calculate total energy consumed today */
+    mealList.map(meal => {
+      if (meal.date === today) {
+        totalConsumed += meal.carb*4 + meal.protein*4 + meal.fat*9;
+      }
+    });
+
     return (
       <Container style={styles.container}>
         <Header>
@@ -90,7 +125,7 @@ class HomeScreen extends Component {
           <Card style = {styles.mb}>
             <CardItem>
               <Left>
-                <Thumbnail source={default_image} />
+                <Thumbnail source={splashLogo} />
                 <Body>
                   <Text>Bulletin</Text>
                   <Text note>{getDateString()}</Text>
@@ -106,7 +141,7 @@ class HomeScreen extends Component {
                     height: 200,
                     flex: 1
                   }}
-                  source={default_image}
+                  source={default_background}
                 />
             </CardItem>
           </Card>
@@ -129,14 +164,14 @@ class HomeScreen extends Component {
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "cup-water"/>
-                <Text style = {styles.cardText}>0 litre</Text>
+                <Text style = {styles.cardText}>{DailyRecord.Fitness.waterConsumed} litre</Text>
               </Left>
             </CardItem>
 
             <CardItem bordered>
               <Left>
                 <Icon type = "FontAwesome5" name = "utensils"/>
-                <Text style = {styles.cardText}> 0 Kcal</Text>
+                <Text style = {styles.cardText}>{totalConsumed} Kcal</Text>
               </Left>
             </CardItem>
 
@@ -146,8 +181,8 @@ class HomeScreen extends Component {
                 <Text style = {styles.cardText}>0 Kcal</Text>
               </Left>
             </CardItem>
-
-            <CardItem footer bordered>
+            {/* this.props.navigation.navigate('Tracker', { screen: 'Health' }) */}
+            <CardItem footer bordered button onPress = {() => {this.props.navigation.navigate('Tracker', { screen: 'Health' })}}>
               <Text>Go to Health Tracker</Text>
             </CardItem>
           </Card>
@@ -164,18 +199,18 @@ class HomeScreen extends Component {
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "cash-refund"/>
-                <Text style = {styles.cardText}>0 VND</Text>
+                <Text style = {styles.cardText}>{incomeTotal/*DailyRecord.Finance.spent.sum*/} VND</Text>
               </Left>
             </CardItem>
 
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "credit-card-plus"/>
-                <Text style = {styles.cardText}>0 VND</Text>
+                <Text style = {styles.cardText}>{expenseTotal/*DailyRecord.Finance.earned.sum*/} VND</Text>
               </Left>
             </CardItem>
 
-            <CardItem footer bordered>
+            <CardItem footer bordered button onPress = {() => {this.props.navigation.navigate('Tracker', { screen: 'Budget' })}}>
               <Text>Go to Financial Diary</Text>
             </CardItem>
           </Card>

@@ -22,6 +22,9 @@ import {
 
 //const Item = Picker.Item;
 
+/* TO BE ADDED: a mapDispatchToProps and mapStateToProps to save settings to store */
+
+/* Presentational component for managing redirection to setting changes */
 class SettingsScreen extends Component {
   constructor(props) {
     super(props);
@@ -33,18 +36,21 @@ class SettingsScreen extends Component {
     };
   }
   
+  /* toggle dark mode option switch */
   toggleMode(){
     this.setState({
       darkMode: !this.state.darkMode
     })
   }
 
+  /* toggle reminder option switch */
   toggleReminder(){
     this.setState({
       reminder: !this.state.reminder
     })
   }
 
+  /* managing input state for currency */
   onCurrencyChoose(value){
     this.setState({
       currency: value,
