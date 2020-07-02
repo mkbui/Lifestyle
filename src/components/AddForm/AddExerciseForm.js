@@ -22,11 +22,12 @@ import {addExercise} from "../../actions";
 
 const default_image = require("../../../assets/default_image.png");
 
+/* Dispatchers used: addExercise to push new items to exercise list in store */
 const mapDispatchToProps = dispatch => ({
   addExercise: (name, category) => dispatch(addExercise(name, category))
 })
 
-
+/* Component managing new item adding form */
 class AddExerciseForm extends Component {
   constructor(props){
     super(props);
@@ -42,6 +43,7 @@ class AddExerciseForm extends Component {
     });
   }
 
+  /* Dispatch call and state reset, along with a toast */
   handlePress(){
     const {name, category} = this.state;
     this.props.addExercise(name, category);
@@ -50,6 +52,7 @@ class AddExerciseForm extends Component {
       text: "Exercise added successfully!",
       type: "success",
     })*/
+    this.props.completeForm();
     ToastAndroid.show(
       "Exercise added successfully!",
       ToastAndroid.SHORT
@@ -82,9 +85,13 @@ class AddExerciseForm extends Component {
               selectedValue={this.state.category}
               onValueChange={this.onValueChange.bind(this)}
             >
-                  <Item label="Choose category..." value="null" />
-                  <Item label="Abs" value="abs" />
-                  <Item label="Relax" value="relax" />
+                  <Item label="Choose category..." value="Null" />
+                  <Item label="Abs" value="Abs" />
+                  <Item label="Arms" value="Arms" />
+                  <Item label="Legs" value="Legs" />
+                  <Item label="Back" value="Back" />
+                  <Item label="Overall" value="Overall" />
+                  <Item label="Relax" value="Relax" />
           </Picker>
         </Item>
           

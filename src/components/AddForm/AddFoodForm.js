@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {StyleSheet} from "react-native";
+import {StyleSheet, ToastAndroid} from "react-native";
 import {
   Container,
   View,
@@ -23,10 +23,12 @@ import {addFood} from "../../actions";
 
 const default_image = require("../../../assets/default_image.png");
 
+/* Dispatchers used: addFood to push new items to food list in store */
 const mapDispatchToProps = dispatch => ({
   addFood: (name, category) => dispatch(addFood(name, category))
 })
 
+/* Component managing new item adding form */
 class AddFoodForm extends Component {
   constructor(props){
     super(props);
@@ -42,14 +44,20 @@ class AddFoodForm extends Component {
     });
   }
 
+  /* Dispatch call and state reset, along with a toast */
   handlePress(){
     const {name, category} = this.state;
     this.props.addFood(name, category);
+    this.props.completeForm();
     this.setState({name: '', category: 'null'})
-    Toast.show({
+    /*Toast.show({
       text: "Food added successfully!",
       type: "success",
-    })
+    })*/
+    ToastAndroid.show(
+      "Food added successfully!",
+      ToastAndroid.SHORT
+    )
   }
 
   render(){
@@ -78,9 +86,13 @@ class AddFoodForm extends Component {
             selectedValue={this.state.category}
             onValueChange={this.onValueChange.bind(this)}
           >
-                <Item label="Choose category..." value="null" />
-                <Item label="Protein" value="protein" />
-                <Item label="Vegetable" value="vegetable" />
+                <Item label="Choose category..." value="Null" />
+                <Item label="Protein" value="Protein" />
+                <Item label="Vegetable" value="Vegetable" />
+                <Item label="Fat" value="Fat" />
+                <Item label="Grains" value="Grains" />
+                <Item label="Beverage" value="Beverage" />
+                <Item label="Fruit" value="Fruit" />
           </Picker>
         </Item>
 

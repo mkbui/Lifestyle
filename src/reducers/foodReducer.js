@@ -2,43 +2,61 @@ import {
   SET_VIEW_FILTER, 
   ADD_FOOD,
   REMOVE_FOOD,
-  ViewFilters,
 } from '../actions';
 
 import { combineReducers } from 'redux';
 import uuid from "react-native-uuid";
 const default_image = require("../../assets/default_image.png");
 
+
+
 import data from "../data/data.json"
 
-const {VIEW_ALL} = ViewFilters;
 
+/* Initial food list, could be read from json or database file instead */
 const initialState = {
-  viewFilters:  ViewFilters.VIEW_ALL,
   food: /*data.food*/[
     {
       name: 'Egg',
-      category: 'protein',
-      image: default_image,
+      category: 'Protein',
+      image: require("../../assets/food/egg.png"),
       id: 1,
     },
     {
       name: 'Potato',
-      category: 'vegetable',
-      image: default_image,
+      category: 'Grains',
+      image: require("../../assets/food/potato.png"),
       id: 2,
+    },
+    {
+      name: 'Salmon',
+      category: 'Protein',
+      image: require("../../assets/food/salmon.png"),
+      id: 3,
+    },
+    {
+      name: 'Spinach',
+      category: 'Vegetable',
+      image: require("../../assets/food/spinach.png"),
+      id: 4,
+    },
+    {
+      name: 'Orange',
+      category: 'Fruit',
+      image: require("../../assets/food/orange.png"),
+      id: 5,
     }
   ],
 }
 
 /* reducer for viewFilters state */
-export function foodFilter(state = VIEW_ALL, action){
+/*export function foodFilter(state = VIEW_ALL, action){
   switch (action.type){
     case SET_VIEW_FILTER:
       return action.filter
     default: return state
   }
-}
+}*/
 
 /* state is an array, for food list only */
 export function foodOperate(state = initialState.food, action){
@@ -54,7 +72,7 @@ export function foodOperate(state = initialState.food, action){
             image: default_image,
             id: newId,
           }
-        ]
+        ] 
       
     case REMOVE_FOOD:
       return state.filter((item) =>

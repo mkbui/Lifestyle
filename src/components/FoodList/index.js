@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {SafeAreaView, StyleSheet} from "react-native";
+import {SafeAreaView, StyleSheet, ToastAndroid} from "react-native";
 import {
   Button,
   List,
@@ -17,7 +17,8 @@ import {removeFood} from "../../actions";
 import {foodOperate} from "../../reducers";
 import {ViewFilter} from "../../actions";
 import data from "../../data/data.json";
-
+import FormButton from "../FormButton";
+import {checkFilter} from "../../utils";
 
 
 
@@ -35,28 +36,58 @@ const mapStateToProps = (state) => ({
 
 })*/
 
+/* store data used: exercise list */
 function mapStateToProps(state) {
   return {foodList: state.foodList}
 }
 
+/* store dispatch function used: remove exercise for item removal */
 const mapDispatchToProps = dispatch => ({
   removeFood: (id) => dispatch(removeFood(id))
 })
 
+
+
 class FoodList extends Component {
   
-  removeItem(data){
-    this.props.removeFood(data.id);
-    Toast.show({
-      text: "Removed successfully!",
-      type: "success",
-    })
+  constructor(props){
+    super(props);
+    this.state = {
+      collapse: true,
+    }
   }
 
+  collapseForm(){
+    this.setState({
+      collapse: !this.state.collapse,
+    });
+  }
+
+  /* dispatch function call along with a toast */
+  removeItem(data){
+    this.props.removeFood(data.id);
+    ToastAndroid.show(
+      "Food removed successfully!",
+      ToastAndroid.SHORT
+    )
+  }
+
+
+
   render(){
-    const {foodList} = this.props;
+    const {foodList, search, filter} = this.props;
+    var isFilter = false;
+    filter.map(data => {
+      if (data.checked === true) isFilter = true;
+    })
+    
+    let renderList = foodList.filter(data => 
+      (data.name.indexOf(search) !== -1 && 
+        (!isFilter || checkFilter(data.category, filter) === true)
+      )
+    )
     return(
-        foodList.map(data =>
+        renderList.map(data => 
             <ListItem thumbnail key = {data.id}>
               <Left>
                 <Thumbnail square source={data.image} />
@@ -76,6 +107,7 @@ class FoodList extends Component {
                 </Button> 
               </Right>
             </ListItem>
+      
         )
     )
   }
