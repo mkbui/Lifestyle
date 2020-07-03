@@ -27,7 +27,7 @@ import {
 
 import ActivityList from '../components/ActivityList'
 import AddActivityModal from '../components/ActivityModal/AddActivityModal'
-
+import ModifyNameModal from '../components/ActivityModal/ModifyNameModal'
 
 class ScheduleScreen extends Component {
   constructor(props){
@@ -35,9 +35,20 @@ class ScheduleScreen extends Component {
     this.state = {
       date : new Date(),
       mode : 'time',
-      showModal : false,
+      showModal: false,
+      showModalName: false,
     };
+    this.activity = {
+      id: "",
+      name: "",
+    }
   }
+
+  onNameChange = (id, name) => {
+    this.activity.id = id
+    this.activity.name = name
+  }
+
   setModalVisible = (visible) => {
     this.setState(state => ({
       [visible] : !state[visible]
@@ -45,7 +56,8 @@ class ScheduleScreen extends Component {
   };
 
   render() {
-    const { showModal } = this.state;
+    const { showModal, showModalName } = this.state;
+    const { name, id } = this.activity;
     return (
       <Container style={styles.container}>
         <Header>
@@ -67,9 +79,10 @@ class ScheduleScreen extends Component {
         </Header>
         <Content>
           <View>
-            <ActivityList/>
+            <ActivityList changeName={this.onNameChange} openNameModal={() => {this.setModalVisible('showModalName')}}/>
           </View>
-            {showModal && <AddActivityModal completeAdd={() => {this.setModalVisible('showModal')}}/>}
+          {showModalName && <ModifyNameModal id={id} name={name} completeChange={() => {this.setModalVisible('showModalName')}} />}
+          {showModal && <AddActivityModal completeAdd={() => {this.setModalVisible('showModal')}}/>}
         </Content>
         <Footer backgroundColor="#ffffff">
           <FooterTab>

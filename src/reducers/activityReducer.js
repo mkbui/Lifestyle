@@ -2,6 +2,9 @@ import {
   ADD_ACTIVITY,
   REMOVE_ACTIVITY,
   ACTIVATE_ACTIVITY,
+  MODIFY_ACTIVITY_NAME,
+  // MODIFY_ACTIVITY_TIME,
+  // MODIFY_ACTIVITY_REPEAT
 } from '../actions';
 
 
@@ -26,6 +29,18 @@ export function activityOperate(state = initialState.activity, action){
       return state.map(item =>
           item.id === action.id ? {...item, activate: !item.activate} : item
         )
+    case MODIFY_ACTIVITY_NAME:
+      return state.map(item =>
+          item.id === action.id ? {...item, name: action.name} : item
+        )
+    // case MODIFY_ACTIVITY_TIME:
+    //   return state.map(item =>
+    //       item.id === action.id ? {...item, hour: action.hour, min: action.min} : item
+    //     )
+    //   case MODIFY_ACTIVITY_REPEAT:
+    //     return state.map(item =>
+    //         item.id === action.id ? {...item, repeat: action.repeat} : item
+    //       )
     default: 
       return state
   }

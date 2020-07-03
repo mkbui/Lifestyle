@@ -52,10 +52,6 @@ class Activity {
     this.activate = true;
     this.id = Math.random().toString();
   }
-  // setActivate = () => {
-  //   this.state.activate = !this.state.activate;
-  //   console.log("activated")
-  // }
 }
 
 const mapDispatchToProps = dispatch => ({

@@ -23,16 +23,26 @@ import {
 } from "native-base";
 import {connect} from "react-redux";
 import {removeActivity, activateActivity} from "../../actions";
+import ModifyNameModal from '../ActivityModal/ModifyNameModal'
 
 function mapStateToProps(state) {
   return {activityList: state.activityList}
 }
 const mapDispatchToProps = dispatch => ({
   removeActivity: (id) => dispatch(removeActivity(id)),
-  activateActivity: (id) => dispatch(activateActivity(id))
+  activateActivity: (id) => dispatch(activateActivity(id)),
+  // modifyActivityTime: (id) => dispatch(modifyActivityTime(id, hour, min)),
+  // modifyActivityRepeat: (id) => dispatch(modifyActivityRepeat(id, repeat))
 })
 
 class ActivityList extends Component {
+  constructor(props){
+    super(props)
+    this.activity = {
+      name: "",
+      id: "",
+    }
+  }
   removeItem(activity){
     this.props.removeActivity(activity.id);
     ToastAndroid.show(
@@ -43,19 +53,35 @@ class ActivityList extends Component {
   activateItem(activity){
     this.props.activateActivity(activity.id);
   }
+
+  setModalVisible = (visible) => {
+    this.setState(state => ({
+      [visible] : !state[visible]
+    }));
+  };
+  saveChange = (id, name) => {
+    this.activity.id = id;
+    this.activity.name = name;
+    this.modifyName();
+  }
+  modifyName = () => {
+    const {id, name} = this.activity;
+    this.props.changeName(id, name);
+    this.props.openNameModal();
+  }
   render() {
     const {activityList} = this.props;
     return (
       activityList.map(activity => (
         <ListItem thumbnail key={activity.id} style={styles.activityView}>
-          <Left>
-            <TouchableOpacity onPress={() => {console.log('a')}}>
+          <Left style={{flex: 1}}>
+            <TouchableOpacity onPress={() => {this.saveChange(activity.id, activity.name)}}>
               <Text style={{marginTop : 0.5}}>
                 {activity.name}
               </Text>
             </TouchableOpacity>
           </Left>
-          <Body>
+          <Body style={{flex: 2}}>
             <View style={{flexDirection:'column', alignItems:"center"}}>
               <View>
                 <TouchableOpacity>
@@ -78,7 +104,7 @@ class ActivityList extends Component {
               </View>
             </View>
           </Body>
-          <Right>
+          <Right style={{flex: 1}}>
             <View style={{flexDirection:'column', justifyContent: "space-between"}}>
               <Switch
                 trackColor={{ false: "#767577", true: "#81b0ff" }}
