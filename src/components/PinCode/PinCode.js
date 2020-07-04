@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Animated} from 'react-native';
 import {
   Container,
   Header,
@@ -25,27 +25,44 @@ export const PinStatus = {
 export class PinCode extends Component{
     constructor(props){
         super(props)
-        mainTitle = '',
-        mainTitleFailed = '',
-        mainTitleConfirmFailed = '',
-        mainTitleValidationFailed = '',
-        subtitle = '',
-        errorSubtitle = '',
-        PasswordLength = 4,
+        mainTitle = 'Main Title',
+        mainTitleFailed = 'Main Title Fail',
+        mainTitleConfirmFailed = 'Main Confirm Fail',
+        mainTitleValidationFailed = 'Main Title Validation Fail',
+        subtitle = 'Subtitle',
+        errorSubtitle = 'error subtitle',
+        passwordLength = 4,
+        pinCodeStatus = '',
         delayBetweenAttempts = 2000,
+        endProcess= (pinCode, isErrorValidation) => {},
         this.state = {
             inputValue = '',
             inputLength = 0,
             status: PinStatus,
             failAttempt: false,
             showError: false,
-            changeScreen: false
+            changeScreen: false,
+            springValue: new Animated.Value(0.3)
+        }
+
+
+    }
+
+    componentDidUpdate(prevProps){
+        if (
+          prevProps.pinCodeStatus !== "failure" &&
+          this.props.pinCodeStatus === "failure"
+        ) {
+          this.failedAttempt();
+        }
+        if (
+          prevProps.pinCodeStatus !== "locked" &&
+          this.props.pinCodeStatus === "locked"
+        ) {
+          this.setState({ password: "" });
         }
     }
 
-    componentDidUpdate = async (prevProps) => {
-
-    }
     handleNumberButtonPress = async (number) => {
         const addedInput = this.state.inputValue + number;
         this.setState({inputValue: addedInput});
@@ -54,16 +71,22 @@ export class PinCode extends Component{
 
 
         if (this.state.inputValue.length === this.state.inputLength){
-            switch(this.state)
-            {
+            switch (this.props.status) {
                 case PinStatus.choose:
-                    break;
+                    this.endProcess(inputValue);
+                  break;
+                case PinStatus.confirm:
+                  if (inputValue !== this.props.previousPin) {
+                    this.showError();
+                  } else {
+                    this.endProcess(inputValue);
+                  }
+                  break;
                 case PinStatus.enter:
-                    break;
-                case PinStatus.locked:
-                    break;
+                  this.props.endProcess(inputValue);
+                  await delay(300);
+                  break;
             }
-
         }
     }
     
@@ -91,7 +114,8 @@ export class PinCode extends Component{
             <Text>{number}</Text>
             </Button>
         );
-    }
+    };
+    
     renderDeleteButton = () => {
         return(
             <Button 
@@ -112,7 +136,7 @@ export class PinCode extends Component{
             <Icon name = 'remove' />
             </Button>
         )
-    }
+    };
 
     failedAttempt = async () => {
         await delay(300);
@@ -133,18 +157,32 @@ export class PinCode extends Component{
         changeScreen: false,
         showError: false,
         failAttempt: false,
-        inputValue: ""
+        inputValue: ''
     });
     };
     
     renderPassWordCircle = () => {
-        
-    }
-    doShake = () => {
+        return(
+            <Animated.View
+            style = {{
+                marginLeft: this.state.springValue
+            }}
+            >
+            </Animated.View>
+        )
+    };
 
-    }
+    doShake = async () => {
+        Animated.spring(
+            this.springValue,
+            {
+                toValue: 1,
+                friction: 1
+            }
+        ).start();
+    };
 
-    async showError(isErrorValidation = false) {
+    showError = (isErrorValidation = false) => {
         this.setState({ changeScreen: true });
         await delay(300);
         this.setState({ showError: true, changeScreen: false });
@@ -156,35 +194,23 @@ export class PinCode extends Component{
         await delay(200);
         this.props.endProcess(this.state.password, isErrorValidation);
         if (isErrorValidation) this.setState({ changeScreen: false });
-    }
+    };
 
-
-
-    renderMainTitle = (failAttempt, showError) => {
+    render() {
+        const {failAttempt, showError} = this.state;
         return(
-            <Text> 
+            <View>
+                <Text> 
                 {(failAttempt && this.props.mainTitleFailed) ||
                     (showError && this.props.mainTitleConfirmFailed) ||
                     (showError && this.props.mainTitleValidationFailed) ||
                     this.props.mainTitle
                 }
-            </Text>
-        )
-    }
+                </Text>
 
-    renderSubtitle = (failAttempt, showError) =>{
-        return(
-            <Text>{failAttempt || showError?
+                <Text>{(failAttempt || showError)?
                     this.props.errorSubtitle : this.props.subtitle}</Text>
 
-        )
-    }
-
-    render() {
-        return(
-            <View>
-                {this.renderMainTitle()}
-                {this.renderSubtitle()}
                 {this.renderPassWordCircle()}
 
                 <View>
