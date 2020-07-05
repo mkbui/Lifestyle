@@ -24,7 +24,7 @@ class PinCodeChoose extends Component {
             status: PinStatus.choose,
             inputValue: ''
         }
-
+        pinCodeKeychainName = ""
     }
 
     endChoose = async (inputValue) => {
@@ -37,10 +37,12 @@ class PinCodeChoose extends Component {
         if (this.state.inputValue === inputValue)
         {
             //Save to keychain
-            Keychain.setGenericCredentials(
-                "LifeStyleAppName",
+            Keychain.setInternetCredentials(
+                this.props.pinCodeKeychainName,
+                this.props.pinCodeKeychainName,
                 inputValue
             )
+            if (!!this.props.finishProcess) this.props.finishProcess(pinCode)
         }
         else {
             this.setState({ status: PinStatus.choose })
@@ -56,6 +58,7 @@ class PinCodeChoose extends Component {
                 subTitle = 'for additional security'
                 endProcess = {this.endChoose.bind()}
                 mainTitleFailed = 'Please try again'
+                previousPin = {this.state.inputValue}
             />
             }
             {this.state.status === PinStatus.confirm && 
