@@ -34,10 +34,11 @@ export class PinCode extends Component{
         passwordLength = 4,
         pinCodeStatus = '',
         delayBetweenAttempts = 2000,
-        endProcess= (pinCode, isErrorValidation) => {},
+        previousPin = ''
+        endProcess = this.endProcess.bind();
         this.state = {
-            inputValue = '',
-            inputLength = 0,
+            inputValue: '',
+            inputLength: 0,
             status: PinStatus,
             failAttempt: false,
             showError: false,
@@ -115,7 +116,7 @@ export class PinCode extends Component{
             </Button>
         );
     };
-    
+
     renderDeleteButton = () => {
         return(
             <Button 
@@ -163,12 +164,18 @@ export class PinCode extends Component{
     
     renderPassWordCircle = () => {
         return(
-            <Animated.View
+            /*<Animated.View
             style = {{
                 marginLeft: this.state.springValue
             }}
             >
-            </Animated.View>
+            {
+                
+            }
+            </Animated.View>*/
+            <View>
+                <Text>Hi, I dont know how to do this</Text>
+            </View>
         )
     };
 
