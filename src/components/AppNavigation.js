@@ -16,7 +16,6 @@ import FirstformScreen from '../screens/Firstform';
 // New screen import
 import ScheduleScreen from '../screens/Schedule';
 import ListScreen from '../screens/Display';
-import TrackerScreen from '../screens/Tracker';
 import AdviceScreen from '../screens/Advice';
 import PreForm from '../components/AdviceScreens/PreForm';
 import AdviceAnalysis from '../components/AdviceScreens/AdviceAnalysis';
@@ -24,6 +23,12 @@ import WarningSuggest from '../components/AdviceScreens/WarningSuggest';
 import MainTracker from '../components/StatusManagement/screens/MainTracker';
 import Budget from '../components/StatusManagement/screens/Budget/Budget';
 import Health from '../components/StatusManagement/screens/Health/Health';
+import BudgetItem from '../components/StatusManagement/screens/Budget/ViewStatus/BudgetItem';
+import Income from "../components/StatusManagement/screens/Budget/AddStatus/Income"
+import Expense from './StatusManagement/screens/Budget/AddStatus/Expense';
+import ViewStatus_Health from '../components/StatusManagement/screens/Health/ViewStatus/ViewStatus';
+import Exercise from './StatusManagement/screens/Health/AddStatus/Exercise';
+import Meal from './StatusManagement/screens/Health/AddStatus/Meal';
 
 import FinanceTracker from '../components/TrackerScreens/FinanceTracker';
 import HealthTracker from '../components/TrackerScreens/HealthTracker';
@@ -42,11 +47,11 @@ function DrawerNavigator() {
       }}
     >
       <Drawer.Screen name = 'Home' component = { StackNavigator } />
-      <Drawer.Screen name = 'Tracker' component = { MainTracker } />
+      <Drawer.Screen name = 'Tracker' component = { TrackerNavigator } />
       <Drawer.Screen name = 'My Schedule' component = { ScheduleScreen } />
       <Drawer.Screen name = 'Suggestion List' component = { ListScreen } />
       <Drawer.Screen name = 'Today`s Advice' component = { AdviceScreen } />
-      <Drawer.Screen name = 'Settings' component = { SettingsScreen } />
+      <Drawer.Screen name = 'Settings' component = { SettingsScreen } hiden = {false}/>
     </Drawer.Navigator>
   )
 } 
@@ -82,17 +87,33 @@ function StackNavigator() {
       <Stack.Screen name = 'AdviceAnalysis' component = {AdviceAnalysis} />
       <Stack.Screen name = 'WarningSuggest' component = {WarningSuggest} />
 
-      <Stack.Screen name = 'Tracker' component = {TrackerScreen} />
-      <Stack.Screen name = 'MainTracker' component = {MainTracker} />
       <Stack.Screen name = 'Budget' component = {Budget}/>
       <Stack.Screen name = 'Health' component = {Health}/>
-
+      
       {/* Old tracker template */}
       <Stack.Screen name = 'HealthTracker' component = {HealthTracker}/>
       <Stack.Screen name = 'FinanceTracker' component = {FinanceTracker}/>
     </Stack.Navigator>
   )
 };
+
+function TrackerNavigator() {
+  return (
+    <Stack.Navigator initialRouteName="MainTracker" headerMode="none">
+      <Stack.Screen name="MainTracker" component={MainTracker} />
+      <Stack.Screen name="Budget" component={Budget} />
+      <Stack.Screen name="Health" component={Health} />
+
+      <Stack.Screen name="BudgetItem" component={BudgetItem} />
+      <Stack.Screen name="Income" component={Income} />
+      <Stack.Screen name="Expense" component={Expense} />
+
+      <Stack.Screen name="ViewStatus_Health" component={ViewStatus_Health} />
+      <Stack.Screen name="Exercise" component={Exercise} />
+      <Stack.Screen name="Meal" component={Meal} />
+    </Stack.Navigator>
+  );
+}
 
 /* Main Container with Drawer Navigator as root navigator */
 function AppContainer() {

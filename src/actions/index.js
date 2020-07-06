@@ -13,6 +13,10 @@ export const UPDATE_DAILY_RECORD = 'UPDATE_DAILY_RECORD'
 // Schedule Management
 export const ADD_ACTIVITY = 'ADD_ACTIVITY'
 export const REMOVE_ACTIVITY = 'REMOVE_ACTIVITY'
+export const ACTIVATE_ACTIVITY = 'ACTIVATE_ACTIVITY'
+export const MODIFY_ACTIVITY_NAME = 'MODIFY_ACTIVITY_NAME'
+export const MODIFY_ACTIVITY_TIME = 'MODIFY_ACTIVITY_TIME'
+// export const MODIFY_ACTIVITY_REPEAT = 'MODIFY_ACTIVITY_REPEAT'
 /*
 export const ADD_INCOME_RECORD = 'ADD_INCOME_RECORD'
 export const ADD_EXPENSE_RECORD = 'ADD_EXPENSE_RECORD'
@@ -79,6 +83,21 @@ export function removeActivity(id){
   return { type: REMOVE_ACTIVITY, id };
 }
 
+export function activateActivity(id){
+  return { type: ACTIVATE_ACTIVITY, id };
+}
+
+export function modifyActivityName(id, name){
+  return { type: MODIFY_ACTIVITY_NAME, id, name };
+}
+
+export function modifyActivityTime(id, hour, min){
+  return { type: MODIFY_ACTIVITY_TIME, id, hour, min };
+}
+
+// export function modifyActivityRepeat(id, repeat){
+//   return { type: MODIFY_ACTIVITY_REPEAT, id, repeat };
+// }
 export const actSubmitBudget = (budget) => {
   return{
       type: ActionType.SUBMIT,

@@ -181,8 +181,8 @@ class HomeScreen extends Component {
                 <Text style = {styles.cardText}>0 Kcal</Text>
               </Left>
             </CardItem>
-
-            <CardItem footer bordered button onPress = {() => this.props.navigation.navigate('Health')}>
+            {/* this.props.navigation.navigate('Tracker', { screen: 'Health' }) */}
+            <CardItem footer bordered button onPress = {() => {this.props.navigation.navigate('Tracker', { screen: 'Health' })}}>
               <Text>Go to Health Tracker</Text>
             </CardItem>
           </Card>
@@ -210,7 +210,7 @@ class HomeScreen extends Component {
               </Left>
             </CardItem>
 
-            <CardItem footer bordered button onPress = {() => this.props.navigation.navigate('Budget')}>
+            <CardItem footer bordered button onPress = {() => {this.props.navigation.navigate('Tracker', { screen: 'Budget' })}}>
               <Text>Go to Financial Diary</Text>
             </CardItem>
           </Card>
