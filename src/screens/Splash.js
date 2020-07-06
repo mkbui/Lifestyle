@@ -16,6 +16,7 @@ function mapStateToProps(state) {
   }
 }
 
+/* Splash Screen, turned on every app entrance, last for 5s maximum */
 class SplashScreen extends Component {
 
   componentDidMount(){

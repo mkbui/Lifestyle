@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, Button, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
+/* Simple Initialize Button for collapsing Form (crediting dabbott) */
 class FormButton extends Component{
   constructor(props){
     super(props)

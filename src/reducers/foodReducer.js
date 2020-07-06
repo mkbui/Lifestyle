@@ -2,7 +2,6 @@ import {
   SET_VIEW_FILTER, 
   ADD_FOOD,
   REMOVE_FOOD,
-  ViewFilters,
 } from '../actions';
 
 import { combineReducers } from 'redux';
@@ -13,10 +12,9 @@ const default_image = require("../../assets/default_image.png");
 
 import data from "../data/data.json"
 
-const {VIEW_ALL} = ViewFilters;
 
+/* Initial food list, could be read from json or database file instead */
 const initialState = {
-  viewFilters:  ViewFilters.VIEW_ALL,
   food: /*data.food*/[
     {
       name: 'Egg',
@@ -52,13 +50,13 @@ const initialState = {
 }
 
 /* reducer for viewFilters state */
-export function foodFilter(state = VIEW_ALL, action){
+/*export function foodFilter(state = VIEW_ALL, action){
   switch (action.type){
     case SET_VIEW_FILTER:
       return action.filter
     default: return state
   }
-}
+}*/
 
 /* state is an array, for food list only */
 export function foodOperate(state = initialState.food, action){
@@ -74,7 +72,7 @@ export function foodOperate(state = initialState.food, action){
             image: default_image,
             id: newId,
           }
-        ]
+        ] 
       
     case REMOVE_FOOD:
       return state.filter((item) =>
