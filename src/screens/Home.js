@@ -167,7 +167,7 @@ class HomeScreen extends Component {
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "cash-refund"/>
-                <Text style = {styles.cardText}>{DailyRecord.spent.sum}0 VND</Text>
+                {/* <Text style = {styles.cardText}>{DailyRecord.spent.sum}0 VND</Text> */}
               </Left>
             </CardItem>
 

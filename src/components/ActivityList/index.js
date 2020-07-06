@@ -41,6 +41,8 @@ class ActivityList extends Component {
     this.activity = {
       name: "",
       id: "",
+      hour: 0,
+      min: 0,
     }
   }
   removeItem(activity){
@@ -59,23 +61,24 @@ class ActivityList extends Component {
       [visible] : !state[visible]
     }));
   };
-  saveChange = (id, name) => {
-    this.activity.id = id;
-    this.activity.name = name;
-    this.modifyName();
-  }
-  modifyName = () => {
-    const {id, name} = this.activity;
+  onChangeName = (id, name) => {
     this.props.changeName(id, name);
     this.props.openNameModal();
   }
+
+  onChangeTime = (id, hour, min) => {
+    this.props.changeTime(id, hour, min);
+    this.props.openTimeModal();
+  }
+
+
   render() {
     const {activityList} = this.props;
     return (
       activityList.map(activity => (
         <ListItem thumbnail key={activity.id} style={styles.activityView}>
           <Left style={{flex: 1}}>
-            <TouchableOpacity onPress={() => {this.saveChange(activity.id, activity.name)}}>
+            <TouchableOpacity onPress={() => {this.onChangeName(activity.id, activity.name)}}>
               <Text style={{marginTop : 0.5}}>
                 {activity.name}
               </Text>
@@ -84,7 +87,7 @@ class ActivityList extends Component {
           <Body style={{flex: 2}}>
             <View style={{flexDirection:'column', alignItems:"center"}}>
               <View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => {this.onChangeTime(activity.id, activity.hour, activity.min)}}>
                   <Text style={styles.timeText}>
                     {activity.hour}:{activity.min <= 9 ? '0' + activity.min : activity.min}
                   </Text>

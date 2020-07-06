@@ -28,6 +28,7 @@ import {
 import ActivityList from '../components/ActivityList'
 import AddActivityModal from '../components/ActivityModal/AddActivityModal'
 import ModifyNameModal from '../components/ActivityModal/ModifyNameModal'
+import ModifyTimeModal from '../components/ActivityModal/ModifyTimeModal'
 
 class ScheduleScreen extends Component {
   constructor(props){
@@ -37,16 +38,25 @@ class ScheduleScreen extends Component {
       mode : 'time',
       showModal: false,
       showModalName: false,
+      showModalTime: false,
     };
     this.activity = {
       id: "",
       name: "",
+      hour: 0,
+      min: 0,
     }
   }
 
   onNameChange = (id, name) => {
     this.activity.id = id
     this.activity.name = name
+  }
+
+  onTimeChange = (id, hour, min) => {
+    this.activity.id = id
+    this.activity.hour = hour
+    this.activity.min = min
   }
 
   setModalVisible = (visible) => {
@@ -56,8 +66,8 @@ class ScheduleScreen extends Component {
   };
 
   render() {
-    const { showModal, showModalName } = this.state;
-    const { name, id } = this.activity;
+    const { showModal, showModalName, showModalTime } = this.state;
+    const { name, id, hour, min } = this.activity;
     return (
       <Container style={styles.container}>
         <Header>
@@ -79,9 +89,12 @@ class ScheduleScreen extends Component {
         </Header>
         <Content>
           <View>
-            <ActivityList changeName={this.onNameChange} openNameModal={() => {this.setModalVisible('showModalName')}}/>
+            <ActivityList 
+              changeName={this.onNameChange} openNameModal={() => {this.setModalVisible('showModalName')}}
+              changeTime={this.onTimeChange} openTimeModal={() => {this.setModalVisible('showModalTime')}}/>
           </View>
           {showModalName && <ModifyNameModal id={id} name={name} completeChange={() => {this.setModalVisible('showModalName')}} />}
+          {showModalTime && <ModifyTimeModal id={id} hour={hour} min={min} completeChange={() => {this.setModalVisible('showModalTime')}} />}
           {showModal && <AddActivityModal completeAdd={() => {this.setModalVisible('showModal')}}/>}
         </Content>
         <Footer backgroundColor="#ffffff">
