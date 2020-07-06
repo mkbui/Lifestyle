@@ -14,6 +14,8 @@ const today = getDateString();
 
 /* User initial info, consisting of personal figure and records */
 /* Might consider moving records to a new reducer soon */
+
+
 const User = {
   Info: {
     name: 'A',
