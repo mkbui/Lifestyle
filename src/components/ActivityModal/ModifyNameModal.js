@@ -4,25 +4,10 @@ import {
   Modal,
   TouchableHighlight,
   TextInput,
-  Switch,
 } from 'react-native';
 import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Button,
-  Icon,
-  Left,
-  Right,
-  Body,
   Text,
-  CheckBox,
   View,
-  Footer,
-  FooterTab,
-  ListItem,
-  List,
 } from "native-base";
 import {connect} from "react-redux";
 import {modifyActivityName} from "../../actions";
@@ -40,11 +25,8 @@ class ModifyNameModal extends Component {
     };
   }
 
-
-
   onChangeName = (textChange) => {
     this.activity.name = textChange;
-    
   };
 
   modifyName = () => {

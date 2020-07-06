@@ -11,7 +11,7 @@ export const REMOVE_ACTIVITY = 'REMOVE_ACTIVITY'
 export const ACTIVATE_ACTIVITY = 'ACTIVATE_ACTIVITY'
 export const MODIFY_ACTIVITY_NAME = 'MODIFY_ACTIVITY_NAME'
 export const MODIFY_ACTIVITY_TIME = 'MODIFY_ACTIVITY_TIME'
-export const MODIFY_ACTIVITY_REPEAT = 'MODIFY_ACTIVITY_REPEAT'
+// export const MODIFY_ACTIVITY_REPEAT = 'MODIFY_ACTIVITY_REPEAT'
 export const ADD_INCOME_RECORD = 'ADD_INCOME_RECORD'
 export const ADD_EXPENSE_RECORD = 'ADD_EXPENSE_RECORD'
 export const ADD_CONSUME_RECORD = 'ADD_FITNESS_RECORD'
@@ -85,9 +85,9 @@ export function modifyActivityName(id, name){
   return { type: MODIFY_ACTIVITY_NAME, id, name };
 }
 
-// export function modifyActivityTime(id, hour, min){
-//   return { type: MODIFY_ACTIVITY_TIME, id, hour, min };
-// }
+export function modifyActivityTime(id, hour, min){
+  return { type: MODIFY_ACTIVITY_TIME, id, hour, min };
+}
 
 // export function modifyActivityRepeat(id, repeat){
 //   return { type: MODIFY_ACTIVITY_REPEAT, id, repeat };
