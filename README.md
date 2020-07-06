@@ -8,7 +8,7 @@ Basic specifications (so far):
 - Main Development Framework: React Native
 - Platform: Mobile (currently Android only)
 - Dependencies: React Native libraries, Native Base, React Navigation
-- Database prototype: AsyncStorage + .json data file
+- Database prototype: Redux with persisted AsyncStorage + .json data file
 
 ---
 
@@ -98,10 +98,24 @@ and wait for the project to compile and build successfully. You should be able t
 Virtual Device screen. Sometimes the build takes too long for the first time, so you might have to turn off the Node terminal and
 do *npx react-native run-android* again.
 
+## Project development
+After having run the project finely, it is time to contribute to the projects via your own resource.
+
 ### Editing the projects and push to Github
 After making sure the project runs as expected, open VSCode make some changes to the code in project (some text output if first time). 
 
 After making some changes to the project, you may want to commit the changes to Github. In the tab *Source Control* on the left side bar,
 comment on your changes and choose commit to save your changes. You may also want to create a new branch for your own source, and only
 pull request when confirming changes to the master route.
+
+### Pull and Integrate from Master
+The project is managed through the default branch *master*. This branch will create pull requests from other branches' commits when possible (after completing a component a functionality) and merge into its content. This will count as a contribution from that branch to the repository. 
+
+In order to keep your project up to date with master, simply choose *Pull from (Rebase)* in Source Control tab (after having saved all the commits, pushed and synced with your remote server). This will pull new resources from master and merge with your local folder. 
+
+Before running the app again, make sure to run 
+```
+yarn
+```
+first to install new packages and dependencies added. 
 

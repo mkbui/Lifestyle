@@ -200,7 +200,6 @@ class Expense extends Component {
           </Item>
         </Form>
 
-          
         {/* AMOUNT INPUT */}
         <Form>
           <Item stackedLabel>
