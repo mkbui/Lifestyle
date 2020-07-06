@@ -4,9 +4,11 @@ import {
   Text,
 } from 'native-base';
 
+/* transform React Date() format to dd-mm-yyyy */
 export function getDateString(){
   const date = new Date();
-  const dateString = date.getDate() + '/' + (date.getMonth()+1) + '/' + date.getFullYear();
+  var zero = (date.getMonth()+1<10 ? '0' : '')
+  const dateString = date.getDate() + '-' + zero + (date.getMonth()+1) + '-' + date.getFullYear();
   return dateString;
 }
 
@@ -27,6 +29,17 @@ export function getDateString(){
 "Measure": {"BMI": 24.382716049382715, "BMR": 2534}}
 */
 
+/* looping through filter list to see if the item does match */
+export function checkFilter(name, filterList) {
+  let res = false;
+  filterList.map(item => {
+    if (item.name === name && item.checked === true) {res = true;}
+  })
+  return res;
+};
+
+
+/* Return simple advice based on user info */
 export function fitnessAnalyzer(Record, Today){
   const waterCount = (water) => {
     if (water < 500) 
@@ -66,6 +79,7 @@ export function fitnessAnalyzer(Record, Today){
   )
 }
 
+/* Return simple financial advice on user budget */
 export function financeAnalyzer(money, Today){
   const checkBalance = (spent, earned) => {
     if (spent - earned > 50000) 
@@ -96,6 +110,7 @@ export function financeAnalyzer(money, Today){
   )
 }
 
+/* Present warning on outliers or unusual record */
 export function warningPresent(info, measure){
   if (measure.BMI > 30)
     return <Text style = {styles.script}>You are likely suffering from obesity. This disease
@@ -105,8 +120,9 @@ export function warningPresent(info, measure){
 
 }
 
+/*
 export function suggestFood(info, list, pFood){
-  /*
+  
   let chosenId = Math.floor(Math.random()*list.length);
   let cur = 0;
   list.map(item => {
@@ -125,8 +141,8 @@ export function suggestFood(info, list, pFood){
     //console.log(food);
     cur = cur + 1;
   })
-  */
-}
+  
+}*/
 
 const styles = StyleSheet.create({
   script: {
