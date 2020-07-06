@@ -27,7 +27,8 @@ import {
 
 import ActivityList from '../components/ActivityList'
 import AddActivityModal from '../components/ActivityModal/AddActivityModal'
-import {FAB, Portal} from "react-native-paper";
+import ModifyNameModal from '../components/ActivityModal/ModifyNameModal'
+import ModifyTimeModal from '../components/ActivityModal/ModifyTimeModal'
 // class Activity extends Component {
 //   constructor(props) {
 //     super(props);
