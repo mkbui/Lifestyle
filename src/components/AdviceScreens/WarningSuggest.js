@@ -25,9 +25,9 @@ import {connect} from 'react-redux';
 import {warningPresent} from "../../utils";
 
 
-const analysisBackground = require('../../../assets/analysis.png');
 const default_image = require('../../../assets/default_image.png')
 
+/* store data used: user info and records, food list and exercise list */
 function mapStateToProps(state){
   return {
     userInfo: state.user,
@@ -36,7 +36,7 @@ function mapStateToProps(state){
   }
 }
 
-
+/* Last advice screen for potential warning and suggestions */
 class WarningSuggest extends Component {
   constructor(props){
     super(props);
@@ -51,11 +51,13 @@ class WarningSuggest extends Component {
     }
   }
 
+  /* calling suggestion provision upon arriving, may change to daily? */
   componentDidMount(){
     this.assignFood();
     this.assignExercise();
   }
 
+  /* current food suggestion function: randomize an item */
   assignFood(){
     const {userInfo, foodList} = this.props;
     let chosenId = Math.floor(Math.random()*foodList.length);
@@ -69,7 +71,7 @@ class WarningSuggest extends Component {
       foodCur: chosenId,
     });
   }
-
+  /* current exercise suggestion function: randomize an item */
   assignExercise(){
     const {userInfo, exerciseList} = this.props;
     let chosenId = Math.floor(Math.random()*exerciseList.length);
@@ -77,9 +79,8 @@ class WarningSuggest extends Component {
       exerCur: chosenId,
     });
   }
+
   render(){
-    
-   
     const {indicating, chosenFood, foodCur, exerCur} = this.state;
     const {userInfo, foodList, exerciseList} = this.props;
     const {FinanceRecord, FitnessRecord, DailyRecord} = userInfo;

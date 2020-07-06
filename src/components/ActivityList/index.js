@@ -75,7 +75,7 @@ class ActivityList extends Component {
   render() {
     const {activityList} = this.props;
     return (
-      activityList.map(activity => (
+      activityList.map(activity => 
         <ListItem thumbnail key={activity.id} style={styles.activityView}>
           <Left style={{flex: 1}}>
             <TouchableOpacity onPress={() => {this.onChangeName(activity.id, activity.name)}}>
@@ -124,7 +124,7 @@ class ActivityList extends Component {
             </View>
           </Right>
         </ListItem>
-      ))
+      )
     )
   }
 }

@@ -24,9 +24,9 @@ import {connect} from 'react-redux';
 import {fitnessAnalyzer, financialAnalyzer, financeAnalyzer} from "../../utils";
 
 
-const analysisBackground = require('../../../assets/analysis.png');
 const default_image = require('../../../assets/default_image.png')
 
+/* State used: user info with records, not [food list, exercise list] */
 function mapStateToProps(state){
   return {
     userInfo: state.user,
@@ -44,6 +44,7 @@ class AdviceAnalysis extends Component {
     }
   }
 
+  /* activity indicator for 0.5s */
   componentDidMount(){
     setTimeout(()=>{
       this.stopIndicating();
@@ -59,6 +60,7 @@ class AdviceAnalysis extends Component {
     const {userInfo} = this.props;
     const {FinanceRecord, FitnessRecord, DailyRecord} = userInfo;
     
+    /* There is a whole section for indicating action... */
     if (indicating == true) return (
       <Container style={styles.container}>
 
@@ -86,6 +88,7 @@ class AdviceAnalysis extends Component {
       </Container>
     )
 
+    /* The important presentational view is only here */
     if (indicating == false) return(
       <Container style={styles.container}>
 

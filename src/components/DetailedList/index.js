@@ -17,6 +17,8 @@ import {foodOperate} from "../../reducers";
 import {ViewFilter} from "../../actions";
 import data from "../../data/data.json";
 
+/* UNUSED FILE */
+
 /*
 const showVisibleList = (food, filter) => {
   switch (filter) {

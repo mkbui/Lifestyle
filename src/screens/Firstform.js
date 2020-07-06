@@ -29,6 +29,10 @@ const  mapDispatchToProps = dispatch => {
   }
 }
 
+/* First user personal info management, will be initialized once only */
+/* Currently asking for name, height, weight, gender, may extend more later on */
+
+/* Single user name input form */
 class UsernameForm extends Component {
 
   state = {
@@ -70,6 +74,7 @@ class UsernameForm extends Component {
 
 }
 
+/* Fitness Information Inquiry with height, weight, gender */
 class FitnessForm extends Component {
 
   state = {
@@ -154,6 +159,7 @@ class FitnessForm extends Component {
 
 }
 
+/* Component screen for first form with store interaction */
 class FirstformScreen extends Component {
 
   constructor(props){
@@ -170,22 +176,15 @@ class FirstformScreen extends Component {
     };
   
   }
+
+  /* Class function for saving username to from child screen to state temporarily */
   saveUsername = ({userText}) => {
     const {step} = this.state;
     this.setState({...this.state, step: step + 1, name: userText});
     //this.props.navigation.navigate('Home');
   }
 
-  callSave(){
-    const {dispatch} = this.props;
-    const {name, initInfo} = this.state;
-    //dispatch(createUser(name, initInfo.age, initInfo.height));
-    this.props.createUser(name, initInfo);
-    this.props.calculateInfo(initInfo);
-    //this.props.createNewDaily();
-    this.props.navigation.navigate('Home');
-  }
-
+  /* Class function for saving fitness info to from child screen to state temporarily */
   saveUserInfo = (userInfo) => {
     const {step, initInfo} = this.state;
     const {height, weight, age, gender} = userInfo;
@@ -200,6 +199,16 @@ class FirstformScreen extends Component {
       }
     }), this.callSave.bind(this))
   }
+
+  /* Dispatch function for saving state info to store permanently via redux */
+  callSave(){
+    const {name, initInfo} = this.state;
+    this.props.createUser(name, initInfo);    // dispatch function call, refer to mapDispatchToProps
+    this.props.calculateInfo(initInfo);
+    this.props.navigation.navigate('Home');
+  }
+
+ 
 
   render() {
     const {step} = this.state;
