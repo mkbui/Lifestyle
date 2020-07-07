@@ -20,6 +20,9 @@ export class PINCode extends Component{
 
     changeInternalStatus = (status) => {
         if(status === PinResultStatus.initial)
+        {
+            
+        }
     }
     render(){
         return (
