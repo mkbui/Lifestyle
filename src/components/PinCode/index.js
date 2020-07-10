@@ -3,57 +3,90 @@ import {StyleSheet} from 'react-native';
 import PinCodeChoose from './PinCodeChoose';
 import PinCodeEnter, {PinResultStatus} from './PinCodeEnter';
 import {PinStatus} from './PinCode';
-import LockPetition from './LockPetition';
+import LockPetitionScreen from './LockPetitionScreen';
 import * as Keychain from 'react-native-keychain'
+import {
+    Container,
+    Header,
+    Title,
+    Content,
+    Button,
+    Icon,
+    Text,
+    Left,
+    Right,
+    Body,
+    View,
+  } from "native-base";
+import { Overlay } from "react-native-elements";
 
 const pinKeychainName = "lifestyleAppKeychainName"
 
 
 export class PINCode extends Component{
     constructor(props){
-        super(props)
-        numAttempts = 0;
-        status = PinStatus.choose;
+        super(props);
         this.state = { internalPinStatus: PinResultStatus.initial, pinLocked: false };
-    }
 
+        this.changeInternalStatus = this.changeInternalStatus.bind(this)
+    }
 
     changeInternalStatus = (status) => {
-        if(status === PinResultStatus.initial)
+        if (status === PinResultStatus.success)
         {
-            
+            if (!!this.props.onSuccess())
+                this.props.onSuccess();
         }
+        else if (status === PinResultStatus.failure)
+        {
+
+        }
+        
+        this.setState({internalPinStatus: status})
     }
+
     render(){
+        const {status} = this.props;
         return (
-            <View>
+            <Overlay 
+            fullScreen
+            isVisible
+            >
+                <View>
+                    {(status === PinStatus.choose) &&
+                        <PinCodeChoose 
+                            pinCodeKeychainName = {pinKeychainName}
+                        />
+                    }
+                    {status === PinStatus.enter &&
+                        <PinCodeEnter
+                            changeInternalStatus={this.changeInternalStatus}
+                            finishProcess={this.props.finishProcess}
+                            status = {PinStatus.enter}
+                            pinCodeKeychainName = {pinKeychainName}
+                        />
+                    }
 
-                {this.props.status === PinStatus.choose &&
-                <PinCodeChoose 
-                pinCodeKeychainName = {pinKeychainName}
-                />
-                }
-                {this.props.status === PinStatus.enter &&
-                <PinCodeEnter
-                    changeInternalStatus={this.changeInternalStatus}
-                    finishProcess={this.props.finishProcess? this.props.finishProcess : () => {}}
-                    status = {PinStatus.enter}
-                    numberOfAttempts = {numAttempts}
-                />
-                }
-
-                {  this.state.internalPinStatus === PinResultStatus.locked &&
-                <LockPetition />
-                }
-            </View> 
+                    
+                    { ( this.state.internalPinStatus === PinResultStatus.locked) 
+                        &&
+                    <LockPetitionScreen 
+                        time={this.timeLock} 
+                        changeInternalStatus={this.changeInternalStatus}
+                        />
+                    }
+                </View> 
+            </Overlay>
         )
     }
 }
 
-export function removePinCode(name) {
-    return await Keychain.resetInternetCredentials(name)  
+export async function removePinCode() {
+    return await Keychain.resetInternetCredentials(pinKeychainName)  
 }
 
-export function resetPinCodeState(){
-    
+export async function hasSetPinCode(){
+    return await Keychain.getInternetCredentials(pinKeychainName).then(res => {
+        return !!res && !!res.password
+      })
 }
