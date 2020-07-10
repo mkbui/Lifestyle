@@ -80,6 +80,7 @@ function StackNavigator() {
       <Stack.Screen name = 'Home' component = {HomeScreen} />
       <Stack.Screen name = 'Settings' component = { SettingsScreen } />
       <Stack.Screen name = 'Firstform' component = {FirstformScreen} />
+      
       <Stack.Screen name = 'My Schedule' component = {ScheduleScreen} />
       <Stack.Screen name = 'Suggestion List' component = { ListScreen } />
       
@@ -121,8 +122,7 @@ function TrackerNavigator() {
 /* Main Container with Drawer Navigator as root navigator */
 function AppContainer() {
   return (
-    <NavigationContainer 
-    theme = {DarkTheme}>
+    <NavigationContainer >
       <DrawerNavigator/>
     </NavigationContainer>
   )

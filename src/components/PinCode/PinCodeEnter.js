@@ -31,12 +31,12 @@ class PinCodeEnter extends Component {
         super(props)
         this.state = {
             status: PinStatus.choose,
-            inputValue: '',
             pinCodeStatus: PinResultStatus.initial
         }
-        keychainResult = '',
+        this.pinCodeKeychainName = '',
+        this.keychainResult = '',
         Keychain.getInternetCredentials(
-            "LifeStyleAppName",
+            this.props.pinCodeKeychainName
         ).then(
             (result) => {
                 keyChainResult = result && result.password || undefined
@@ -44,27 +44,34 @@ class PinCodeEnter extends Component {
         ).catch((error) => {
             console.log('PinCodeEnter: ', error)
         })
-        numberOfAttempts = 0
+        this.numberOfAttempts = 0
    }
 
+   componentDidUpdate(prevProps){
+    }
     endProcess = async (inputValue) => {
         this.setState({ pinCodeStatus: PinResultStatus.initial })
         this.props.changeInternalStatus(PinResultStatus.initial)
-        const pinAttempts = this.props.numberOfAttempts;
         const pin = this.keyChainResult;
-        if (pin === this.state.inputValue)
+        if (pin === inputValue)
         {
+            if (!!this.props.onSuccess())
+            {
+                this.props.onSuccess()
+            }
             this.setState({pinCodeStatus: PinResultStatus.success})
             this.props.changeInternalStatus(PinResultStatus.success)
-            if(!!this.props.finishProcess(inputValue))
-                this.props.finishProcess(inputValue)
         }
         else{
-            pinAttempts++;
-            if (pinAttempts >= maxAttempt)
+            if (!!this.props.onFailure())
             {
-                this.setState({})
+                this.props.onFailure()
+            }
+            this.numberOfAttempts++;
+            if (pinAttempts >= maxAttempt)
+            { 
                 this.props.changeInternalStatus(PinResultStatus.locked)
+                this.setState({pinCodeStatus: PinResultStatus.locked})
             }
             else 
             {
@@ -74,9 +81,8 @@ class PinCodeEnter extends Component {
         }
     }
     render() {
-        const pin = this.props.keychainResult;
-        <View style = {{}}>
-            {this.state.status === PinStatus.choose && 
+        const pin = this.keychainResult;
+        return(<View styles = {styles.container}>
             <PinCode
                 status = {PinStatus.enter}
                 mainTitle = 'Enter Your PIN'
@@ -85,11 +91,18 @@ class PinCodeEnter extends Component {
                 mainTitleFailed = 'Please try again'
                 mainTitleConfirmFail = 'Your entries did not match'
                 previousPin = {pin}
+                pinCodeStatus = {this.state.pinCodeStatus}
             />
-            }
-        </View>
+        </View>)
     }
+    
 }
 
-
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center'
+    }
+  })
 export default PinCodeEnter;
