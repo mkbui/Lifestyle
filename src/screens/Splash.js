@@ -6,7 +6,7 @@ const splashBackground = require('../../assets/launchscreen-bg.png');
 const splashLogo = require('../../assets/bootLogo.jpg');
 
 import {connect} from "react-redux";
-
+import {PINCode, hasSetPinCode} from "../components/PinCode/index";
 //const { Dimensions, Platform } = require('react-native');
 //const deviceHeight = Dimensions.get("window").height;
 
@@ -29,7 +29,15 @@ class SplashScreen extends Component {
   proceed(){
     const {userInfo} = this.props;
     let registered = userInfo.Info.registered; 
-    if (registered === true) this.props.navigation.navigate('Home');
+    let hasSetPin = false
+    if (registered === true) 
+      {
+        hasSetPinCode().then( res => {hasSetPin = res})
+        if(hasSetPin){
+          <PINCode status = {'enter'} />
+        }
+        this.props.navigation.navigate('Home');
+      }
     if (registered === false) this.props.navigation.navigate('Firstform');
   }
 

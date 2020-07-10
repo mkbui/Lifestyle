@@ -13,7 +13,6 @@ import SplashScreen from '../screens/Splash';
 import HomeScreen from '../screens/Home';
 import SettingsScreen from '../screens/Settings';
 import FirstformScreen from '../screens/Firstform';
-import ExportPersonalDocumentScreen from '../screens/ExportPersonalDocument';
 // New screen import
 import ScheduleScreen from '../screens/Schedule';
 import ListScreen from '../screens/Display';
@@ -48,8 +47,6 @@ function DrawerNavigator() {
       }}*/
     >
       <Drawer.Screen name = 'Home' component = { StackNavigator } />
-      <Drawer.Screen name = 'Settings' component = { SettingsScreen } />
-      <Drawer.Screen name = 'ExportPersonalDocument' component = { ExportPersonalDocumentScreen } />
       <Drawer.Screen name = 'Tracker' component = { TrackerNavigator } />
       <Drawer.Screen name = 'My Schedule' component = { ScheduleScreen } />
       <Drawer.Screen name = 'Suggestion List' component = { ListScreen } />
@@ -81,7 +78,7 @@ function StackNavigator() {
       <Stack.Screen name = 'Home' component = {HomeScreen} />
       <Stack.Screen name = 'Settings' component = { SettingsScreen } />
       <Stack.Screen name = 'Firstform' component = {FirstformScreen} />
-      <Stack.Screen name = 'ExportPersonalDocument' component = { ExportPersonalDocumentScreen } />
+      
       <Stack.Screen name = 'My Schedule' component = {ScheduleScreen} />
       <Stack.Screen name = 'Suggestion List' component = { ListScreen } />
       
@@ -122,8 +119,7 @@ function TrackerNavigator() {
 /* Main Container with Drawer Navigator as root navigator */
 function AppContainer() {
   return (
-    <NavigationContainer 
-    theme = {DarkTheme}>
+    <NavigationContainer >
       <DrawerNavigator/>
     </NavigationContainer>
   )
