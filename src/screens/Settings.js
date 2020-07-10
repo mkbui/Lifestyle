@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, StyleSheet, Platform} from 'react-native';
+import {StyleSheet, ToastAndroid} from 'react-native';
 import {
   Container,
   Header,
@@ -18,7 +18,10 @@ import {
   Picker,
   Separator,
   Item,
+  View,
 } from "native-base";
+import {PINCode, hasSetPinCode, removePinCode} from "../components/PinCode/index";
+import { Overlay } from "react-native-elements";
 
 //const Item = Picker.Item;
 
@@ -33,7 +36,10 @@ class SettingsScreen extends Component {
       reminder: false,
       stage: 'main',  // main, setpin, editUser
       currency: "$",
+      pinOverlayIsOn: false
     };
+    this.onHandleSetPin = this.onHandleSetPin.bind(this)
+    this.renderSetPin = this.renderSetPin.bind(this)
   }
   
   /* toggle dark mode option switch */
@@ -57,6 +63,56 @@ class SettingsScreen extends Component {
     })
   }
 
+  onHandleSetPin = () => {
+    this.setState({pinOverlayIsOn: true})
+  }
+  renderSetPin = () => {
+    let ans = false;
+    hasSetPinCode().then(
+      res => {
+        ans = res
+      }
+    )
+    return(
+      <View>
+        {!ans &&
+          <PINCode 
+          status = {"enter"} 
+          onSuccess = {() =>
+          {
+            removePinCode();
+            this.setState({pinOverlayIsOn:false})
+            ToastAndroid.show(
+              "PIN remove successfully",
+              ToastAndroid.LONG
+            )
+          }}
+          onFailure = {() =>
+          {
+            this.setState({pinOverlayIsOn:false})
+            ToastAndroid.show(
+              "PIN remove unsuccessfully",
+              ToastAndroid.LONG
+            )
+          }}
+          />
+        }
+        { ans &&
+          <PINCode 
+          status = {"choose"} 
+          onSuccess = {() =>
+          {
+            this.setState({pinOverlayIsOn:false})
+            ToastAndroid.show(
+              "PIN set successfully",
+              ToastAndroid.LONG
+            )
+          }}
+          />
+        }
+      </View>
+    ) 
+  }
   render() {
     return (
       <Container style={styles.container}>
@@ -79,6 +135,7 @@ class SettingsScreen extends Component {
         </Header>
 
         <Content>
+        {this.state.pinOverlayIsOn && this.renderSetPin()}
 
           <Separator bordered noTopBorder style = {styles.separator} />
 
@@ -144,9 +201,11 @@ class SettingsScreen extends Component {
           <Separator bordered style = {styles.separator}/>
 
 
-          <ListItem style = {styles.row} icon onPress = {() => this.setState({stage: 'pin'})}>
+          <ListItem style = {styles.row} icon >
             <Left>
-              <Button style={{ backgroundColor: "#FD3C2D" }}>
+              <Button 
+              style={{ backgroundColor: "#FD3C2D" }}
+              >
                 <Icon active name="lock" />
               </Button>
             </Left>
@@ -154,10 +213,18 @@ class SettingsScreen extends Component {
               <Text>Set PIN code</Text>
             </Body>
             <Right>
-              {Platform.OS === "ios" && <Icon active name="arrow-forward" />}
+              <Switch 
+                value={this.state.darkMode} 
+                trackColor="#50B948" 
+                onValueChange = { () =>
+                  {
+                    this.setState({stage: 'pin'})
+                    this.onHandleSetPin()
+                  }
+                }
+              /> 
             </Right>
           </ListItem>
-
           <ListItem style = {styles.row} icon onPress = {() => this.setState({stage: 'editUser'})}>
             <Left>
               <Button style={{ backgroundColor: "blue" }}>
@@ -170,8 +237,11 @@ class SettingsScreen extends Component {
           </ListItem>
 
           <Separator bordered style = {styles.separator}/>
+          
         </Content>
       </Container>
+
+      
     );
   }
 }
