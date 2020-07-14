@@ -80,7 +80,7 @@ class ActivityList extends Component {
           <Left style={{flex: 1}}>
             <TouchableOpacity onPress={() => {this.onChangeName(activity.id, activity.name)}}>
               <Text style={{marginTop : 0.5}}>
-                {activity.name}
+                {activity.name.length > 0 ? activity.name : "(no name)"}
               </Text>
             </TouchableOpacity>
           </Left>
@@ -95,7 +95,8 @@ class ActivityList extends Component {
               </View>
               <View style={{marginTop: 20, flexDirection:"row", alignItems:"center", justifyContent:"space-evenly"}}>
                 { 
-                  activity.repeat.map(item => {
+                  activity.repeat.filter(item => {return item.value === true}).length > 0 ? 
+                    activity.repeat.map(item => {
                     return(
                       (item.value === true) && <ListItem key={item.day}>
                         <Text style={{fontSize: 10}}>
@@ -103,7 +104,8 @@ class ActivityList extends Component {
                         </Text>
                       </ListItem>
                     )
-                })}
+                  }) : <Text style={{fontSize: 10}}> No repeat </Text>
+                }
               </View>
             </View>
           </Body>
