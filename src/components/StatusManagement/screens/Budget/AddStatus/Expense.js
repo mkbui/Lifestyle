@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  ToastAndroid,
 } from 'react-native';
 import {Content, Button, Text, Form, Item, Label, Input} from 'native-base';
 
@@ -124,6 +125,10 @@ class Expense extends Component {
         categoryImage: '',
         checkedIndex: '',
       });
+      ToastAndroid.show(
+        "Record submitted!",
+        ToastAndroid.SHORT
+      )
     }
   };
 

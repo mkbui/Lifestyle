@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   Picker,
+  ToastAndroid,
 } from 'react-native';
 import {Content, Button, Text, Form, Item, Label} from 'native-base';
 
@@ -58,7 +59,7 @@ class Exercise extends Component {
 
       this.props.onSubmit(this.state);
       this.props.deleteExerciseEdit();
-
+      this.props.updateDailyRecord(this.state);
       this.setState({
         id: '',
         date: currentDate,
@@ -66,6 +67,11 @@ class Exercise extends Component {
         category: '',
         checkedIndex: '',
       });
+
+      ToastAndroid.show(
+        "Record submitted!",
+        ToastAndroid.SHORT
+      )
     }
   };
 
@@ -231,6 +237,9 @@ const mapDispatchToProps = dispatch => {
     deleteExerciseEdit: () => {
       dispatch(actions.actEditExercise(null));
     },
+    updateDailyRecord: exercise => {
+      dispatch(actions.updateDailyRecord())
+    }
   };
 };
 
