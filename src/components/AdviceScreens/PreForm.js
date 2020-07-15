@@ -63,7 +63,6 @@ class PreForm extends Component {
   proceed(){
     const {DailyRecord} = this.props.userInfo;
     const {checkFinance, checkFitness} = this.state;
-    console.log("proceeding")
     if (checkFitness && !DailyRecord.Fitness.updated){
       Alert.alert(
         "Warning",
