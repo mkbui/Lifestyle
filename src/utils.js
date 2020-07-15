@@ -8,8 +8,9 @@ import {
 /* transform React Date() format to dd-mm-yyyy */
 export function getDateString(){
   const date = new Date();
-  var zero = (date.getMonth()+1<10 ? '0' : '')
-  const dateString = date.getDate() + '-' + zero + (date.getMonth()+1) + '-' + date.getFullYear();
+  var zD = (date.getDate() < 10 ? '0' : '')
+  var zM = (date.getMonth()+1<10 ? '0' : '')
+  const dateString = zD + date.getDate() + '-' + zM + (date.getMonth()+1) + '-' + date.getFullYear();
   return dateString;
 }
 
