@@ -28,6 +28,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {connect} from "react-redux";
 import {addActivity} from "../../actions";
 
+import {ScheduledNotification} from '../PushController'
+
 class Activity {
   repeat = [
     {day : "Sun", value : false},
@@ -57,6 +59,7 @@ class Activity {
 const mapDispatchToProps = dispatch => ({
     addActivity: (activity) => dispatch(addActivity(activity))
 })
+
 class AddActivityModal extends Component {
   constructor(props){
     super(props);
@@ -119,8 +122,16 @@ class AddActivityModal extends Component {
       Fri,
       Sat,
     );
+
+    var time = {
+      hour: this.state.date.getHours(),
+      minute: this.state.date.getMinutes(),
+      title: this.activity.name,
+    }
+
     this.props.addActivity(newActivity);
     this.props.completeAdd();
+    ScheduledNotification(time)
     this.activity.name = 'Activity';
   };
 
