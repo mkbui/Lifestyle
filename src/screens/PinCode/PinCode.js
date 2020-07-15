@@ -21,7 +21,6 @@ export const PinStatus = {
     confirm: 'confirm'
 };
 
-
 const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms))
 }
@@ -32,7 +31,6 @@ export default class PinCode extends Component{
         this.passwordLength = 4,
         this.pinCodeStatus = '',
         this.delayBetweenAttempts = 2000,
-        this.previousPin = ''
         this.endProcess = this.endProcess.bind();
         this.emptyCircleDiameter = 4;
         this.fullCircleDiameter = 10;
@@ -44,30 +42,26 @@ export default class PinCode extends Component{
             inputValue: '',
             inputLength: 0,
             failAttempt: false,
-            showError: false,
-            changeScreen: true
+            showError: false
         }
 
         this.endProcess = this.endProcess.bind(this)
-        this.doChangeScreen = this.doChangeScreen.bind(this)
+        this.failedAttempt = this.failedAttempt.bind(this)
+        this.newAttempt = this.newAttempt.bind(this)
     }
 
     componentDidUpdate(prevProps, prevState){
         if (
           prevProps.pinCodeStatus !== "failure" &&
-          this.pinCodeStatus === "failure"
+          this.props.pinCodeStatus === "failure"
         ) {
           this.failedAttempt();
         }
         if (
           prevProps.pinCodeStatus !== "locked" &&
-          this.pinCodeStatus === "locked"
+          this.props.pinCodeStatus === "locked"
         ) {
-          this.setState({ password: "" });
-        }
-        if (prevState.changeScreen != this.state.changeScreen)
-        {
-            this.doChangeScreen()
+          this.setState({ inputValue: "" });
         }
     }
 
@@ -83,25 +77,23 @@ export default class PinCode extends Component{
         if (newLength === this.passwordLength){
             switch (status) {
                 case PinStatus.choose:
-                    this.endProcess(this.state.inputValue);
+                    this.endProcess(addedInput);
                   break;
                 case PinStatus.confirm:
-                  if (this.state.inputValue !== previousPin) {
+                  if (addedInput !== previousPin) {
                     this.showError();
                   } else {
-                    this.endProcess(this.state.inputValue);
+                    this.endProcess(addedInput);
                   }
                   break;
                 case PinStatus.enter:
-                  this.props.endProcess(this.state.inputValue);
-                  await sleep(300);
+                  this.props.endProcess(addedInput);
                   break;
             }
         }
     }
     
     endProcess = async (inputValue) => {
-        this.setState({ changeScreen: true });
         await sleep(200)
         this.props.endProcess(inputValue);
         /*
@@ -163,33 +155,33 @@ export default class PinCode extends Component{
     };
 
     failedAttempt = async () => {
+        await sleep(100)
         this.setState({
           showError: true,
           failAttempt: true,
-          changeScreen: false
+          
         });
         this.doShake();
-        await sleep(200);
+        await sleep(2000);
         this.newAttempt();
     };
     
     newAttempt = async () => {
-    this.setState({ changeScreen: true });
-    this.setState({
-        changeScreen: true,
-        showError: false,
-        failAttempt: false,
-        inputValue: ''
-        
-    });
+    await sleep(1000)
+        this.setState({
+            showError: false,
+            failAttempt: false,
+            inputValue: '',
+            inputLength: 0
+        });
     await sleep(200);
     };
     renderPassWordCircle = () => {
-        const {showError} = this.state
-        const firstCircle   = (this.state.inputLength  >= 1);
-        const secondCircle  = (this.state.inputLength >= 2);
-        const thirdCircle   = (this.state.inputLength >= 3); 
-        const fourthCircle  = (this.state.inputLength >= 4);
+        const {showError, inputLength} = this.state
+        const firstCircle   = (inputLength  >= 1);
+        const secondCircle  = (inputLength >= 2);
+        const thirdCircle   = (inputLength >= 3); 
+        const fourthCircle  = (inputLength >= 4);
         return(
             <Animated.View
             style = {{
@@ -319,141 +311,139 @@ export default class PinCode extends Component{
     doShake = async () => {
         Animated.sequence([
             Animated.timing(this.springValue, 
-                { toValue: 10, duration: 50, useNativeDriver: true }),
+                { toValue: 10, duration: 30, useNativeDriver: true }),
             Animated.timing(this.springValue, 
-                { toValue: -10, duration: 50, useNativeDriver: true }),
+                { toValue: -10, duration: 30, useNativeDriver: true }),
             Animated.timing(this.springValue, 
-                { toValue: 5, duration: 50, useNativeDriver: true }),
+                { toValue: 8, duration: 30, useNativeDriver: true }),
             Animated.timing(this.springValue, 
-                { toValue: -5, duration: 50, useNativeDriver: true }),
+                { toValue: -8, duration: 30, useNativeDriver: true }),
             Animated.timing(this.springValue, 
-                { toValue: 0, duration: 50, useNativeDriver: true })
+                { toValue: 6, duration: 30, useNativeDriver: true }),
+            Animated.timing(this.springValue, 
+                { toValue: -6, duration: 30, useNativeDriver: true }),
+            Animated.timing(this.springValue, 
+                { toValue: 3, duration: 30, useNativeDriver: true }),
+            Animated.timing(this.springValue, 
+                { toValue: -3, duration: 30, useNativeDriver: true }),
+            Animated.timing(this.springValue, 
+                { toValue: 0, duration: 30, useNativeDriver: true })
           ]).start();
     };
 
-    doChangeScreen = async () => {
-        Animated.timing(this.opacityValue, { 
-            toValue: (!this.state.changeScreen), 
-            duration: 200, 
-            useNativeDriver: true 
-        }).start();
-    }
     showError = async (isErrorValidation = false) => {
-        this.setState({ changeScreen: true });
         await sleep(200);
-        this.setState({ showError: true, changeScreen: false });
+        this.setState({ showError: true});
         this.doShake();
         await sleep(2000);
-        this.setState({ showError: false, changeScreen: true, inputValue: "" });
+        this.setState({ showError: false, inputValue: "" });
         await sleep(500);
         this.props.endProcess(this.state.inputValue, isErrorValidation);
-        if (isErrorValidation) {
-            this.setState({ changeScreen: false });
-        }
+        
     };
 
     render() {
         const {failAttempt, showError} = this.state;
         const {mainTitle, mainTitleConfirmFailed,mainTitleValidationFailed, mainTitleFailed,
-                subtitle, errorSubtitle} = this.props
+                subtitle, errorSubtitle, previousPin,} = this.props
         return(
             <View>
-                    <Animated.Text
-                        style = {
-                            {
-                                fontSize: 25,
-                                fontWeight: "200",
-                                textAlign: "center",
-                                marginTop: 80,
-                                opacity: showError? 1: this.opacityValue,
-                                color: (showError)?  this.passwordcolorErr: this.passwordColor
-                            }
-                        }> 
-                        {(failAttempt && mainTitleFailed) ||
-                            (showError && mainTitleConfirmFailed) ||
-                            (showError && mainTitleValidationFailed) ||
-                            mainTitle
-                        }
-                    </Animated.Text>
-
-                    <Animated.Text 
-                        style = {{
-                            fontSize: 15,
+                <Animated.Text
+                    style = {
+                        {
+                            fontSize: 25,
                             fontWeight: "200",
                             textAlign: "center",
-                            marginTop: 10,
+                            marginTop: 80,
                             opacity: showError? 1: this.opacityValue,
                             color: (showError)?  this.passwordcolorErr: this.passwordColor
-                        }}>
-                        {(failAttempt || showError)?
-                    errorSubtitle : subtitle}
-                    </Animated.Text>
+                        }
+                    }> 
+                    {(failAttempt && mainTitleFailed) ||
+                        (showError && mainTitleConfirmFailed) ||
+                        (showError && mainTitleValidationFailed) ||
+                        mainTitle
+                    }
+                </Animated.Text>
 
-                    {this.renderPassWordCircle()}
-                    <View>
-                        <Grid>
-                            <Row
-                            style={styles.row}
-                            >
-                                <Col
-                                style = {styles.colButtonCircle}>
-                                {this.renderNumberButton(1)}
-                                </Col>
-                                <Col
-                                style = {styles.colButtonCircle}>
-                                {this.renderNumberButton(2)}
-                                </Col>
-                                <Col
-                                style = {styles.colButtonCircle}>
-                                {this.renderNumberButton(3)}
-                                </Col>
-                            </Row>
-                            <Row
-                            style={styles.row}>
-                                <Col
-                                style = {styles.colButtonCircle}>
-                                {this.renderNumberButton(4)}
-                                </Col>
-                                <Col
-                                style = {styles.colButtonCircle}>
-                                {this.renderNumberButton(5)}
-                                </Col>
-                                <Col
-                                style = {styles.colButtonCircle}>
-                                {this.renderNumberButton(6)}
-                                </Col>
-                            </Row>
-                            <Row
-                            style={styles.row}>
-                                <Col
-                                style = {styles.colButtonCircle}>
-                                {this.renderNumberButton(7)}
-                                </Col>
-                                <Col 
-                                style = {styles.colButtonCircle}>
-                                {this.renderNumberButton(8)}
-                                </Col>
-                                <Col
-                                style = {styles.colButtonCircle}>
-                                {this.renderNumberButton(9)}
-                                </Col>
-                            </Row>
-                            <Row
-                            style={styles.row}>
-                                <Col
-                                style = {styles.colButtonCircle}>
-                                </Col>
-                                <Col
-                                style = {styles.colButtonCircle}>
-                                {this.renderNumberButton(0)}
-                                </Col>
-                                <Col
-                                style = {styles.colButtonCircle}>
-                                {this.renderDeleteButton()}
-                                </Col>
-                            </Row>
-                        </Grid>
-                    </View>
+                <Animated.Text 
+                    style = {{
+                        fontSize: 15,
+                        fontWeight: "200",
+                        textAlign: "center",
+                        marginTop: 10,
+                        opacity: showError? 1: this.opacityValue,
+                        color: (showError)?  this.passwordcolorErr: this.passwordColor
+                    }}>
+                    {(failAttempt || showError)?
+                errorSubtitle : subtitle}
+                </Animated.Text>
+                {this.renderPassWordCircle()}
+                <View>
+                    <Grid>
+                        <Row
+                        style={styles.row}
+                        >
+                            <Col
+                            style = {styles.colButtonCircle}>
+                            {this.renderNumberButton(1)}
+                            </Col>
+                            <Col
+                            style = {styles.colButtonCircle}>
+                            {this.renderNumberButton(2)}
+                            </Col>
+                            <Col
+                            style = {styles.colButtonCircle}>
+                            {this.renderNumberButton(3)}
+                            </Col>
+                        </Row>
+                        <Row
+                        style={styles.row}>
+                            <Col
+                            style = {styles.colButtonCircle}>
+                            {this.renderNumberButton(4)}
+                            </Col>
+                            <Col
+                            style = {styles.colButtonCircle}>
+                            {this.renderNumberButton(5)}
+                            </Col>
+                            <Col
+                            style = {styles.colButtonCircle}>
+                            {this.renderNumberButton(6)}
+                            </Col>
+                        </Row>
+                        <Row
+                        style={styles.row}>
+                            <Col
+                            style = {styles.colButtonCircle}>
+                            {this.renderNumberButton(7)}
+                            </Col>
+                            <Col 
+                            style = {styles.colButtonCircle}>
+                            {this.renderNumberButton(8)}
+                            </Col>
+                            <Col
+                            style = {styles.colButtonCircle}>
+                            {this.renderNumberButton(9)}
+                            </Col>
+                        </Row>
+                        <Row
+                        style={styles.row}>
+                            <Col
+                            style = {styles.colButtonCircle}>
+                            </Col>
+                            <Col
+                            style = {styles.colButtonCircle}>
+                            {this.renderNumberButton(0)}
+                            </Col>
+                            <Col
+                            style = {styles.colButtonCircle}>
+                            {this.renderDeleteButton()}
+                            </Col>
+                        </Row>
+                    </Grid>
+                </View>
+                
             </View>                
         );
     }
