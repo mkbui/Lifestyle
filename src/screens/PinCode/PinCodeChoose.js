@@ -41,10 +41,17 @@ class PinCodeChoose extends Component {
                 pinCodeKeychainName,
                 pinCodeKeychainName,
                 input)
-            if (!!this.props.onSuccess) this.props.onSuccess(pinCode)
+
+            if (!!this.props.onSuccess())
+            {
+                this.props.onSuccess()
+            }
         }
         else {
-            this.setState({ status: PinStatus.choose })
+            this.setState({ 
+                status: PinStatus.choose,
+                inputValue: ""
+            })
         }
     }
 

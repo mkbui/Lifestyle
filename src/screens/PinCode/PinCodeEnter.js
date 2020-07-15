@@ -1,6 +1,6 @@
 import * as Keychain from 'react-native-keychain'
 import PinCode, {PinStatus} from './PinCode'
-
+import AsyncStorage from '@react-native-community/async-storage'
 import React, { Component } from "react";
 import {StyleSheet, Animated} from 'react-native';
 import {
@@ -25,75 +25,88 @@ export const PinResultStatus = {
 }
 const maxAttempt = 3
 
-class PinCodeEnter extends Component {
+export default class PinCodeEnter extends Component {
     
     constructor(props){
         super(props)
         this.state = {
             status: PinStatus.choose,
-            pinCodeStatus: PinResultStatus.initial
+            pinCodeStatus: PinResultStatus.initial,
         }
-        this.pinCodeKeychainName = '',
-        this.keychainResult = '',
+        this.keychainResult = ""
         Keychain.getInternetCredentials(
             this.props.pinCodeKeychainName
         ).then(
             (result) => {
-                keyChainResult = result && result.password || undefined
+               this.keyChainResult = result && result.password || undefined
               }
         ).catch((error) => {
             console.log('PinCodeEnter: ', error)
         })
-        this.numberOfAttempts = 0
    }
 
-   componentDidUpdate(prevProps){
-    }
     endProcess = async (inputValue) => {
         this.setState({ pinCodeStatus: PinResultStatus.initial })
         this.props.changeInternalStatus(PinResultStatus.initial)
         const pin = this.keyChainResult;
         if (pin === inputValue)
         {
-            if (!!this.props.onSuccess())
-            {
-                this.props.onSuccess()
-            }
             this.setState({pinCodeStatus: PinResultStatus.success})
             this.props.changeInternalStatus(PinResultStatus.success)
-        }
-        else{
-            if (!!this.props.onFailure())
-            {
-                this.props.onFailure()
+            if (!! this.props.onSuccess()){
+                this.props.onSuccess()
             }
-            this.numberOfAttempts++;
-            if (pinAttempts >= maxAttempt)
+            //remove number of attempt, lock time
+            AsyncStorage.multiRemove([
+                this.props.pinAttemptAsyncStorageName,
+                this.props.timeLockAsyncStorageName
+            ])
+        }
+        else {
+            const numAttemptStr = await AsyncStorage.getItem(this.props.pinAttemptAsyncStorageName)
+            let numberOfAttempts = numAttemptStr? parseInt(numAttemptStr): 0;
+            numberOfAttempts++;
+            if (numberOfAttempts >= maxAttempt)
             { 
                 this.props.changeInternalStatus(PinResultStatus.locked)
                 this.setState({pinCodeStatus: PinResultStatus.locked})
+                //save lock time to use in lock petition
+                await AsyncStorage.setItem(
+                    this.props.timeLockAsyncStorageName,
+                    new Date().toISOString()
+                )
             }
-            else 
-            {
+            else {
                 this.setState({pinCodeStatus: PinResultStatus.failure})
                 this.props.changeInternalStatus(PinResultStatus.failure)
+                //add number of attempt
+                await AsyncStorage.setItem(
+                    this.props.pinAttemptAsyncStorageName,
+                    numberOfAttempts.toString()
+                )
+                if (!!this.props.onFailure())
+                {
+                    this.props.onFailure()
+                }
             }
         }
     }
     render() {
-        const pin = this.keychainResult;
-        return(<View styles = {styles.container}>
+        return(
+        <View styles = {styles.container}>
             <PinCode
                 status = {PinStatus.enter}
                 mainTitle = 'Enter Your PIN'
-                subTitle = 'for confirmation'
+                subtitle = ''
                 endProcess = {this.endProcess.bind()}
                 mainTitleFailed = 'Please try again'
-                mainTitleConfirmFail = 'Your entries did not match'
-                previousPin = {pin}
+                errorSubtitle = 'Your entries did not match'
+                previousPin = {this.keyChainResult}
                 pinCodeStatus = {this.state.pinCodeStatus}
             />
-        </View>)
+            <Text>{this.state.numAtt}</Text>
+        </View>
+        )
     }
     
 }
@@ -105,4 +118,3 @@ const styles = StyleSheet.create({
       alignItems: 'center'
     }
   })
-export default PinCodeEnter;

@@ -1,46 +1,61 @@
 import React, { Component } from "react";
 import { View , Text, Button, Icon } from "native-base";
 import {StyleSheet} from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
+import { PinResultStatus } from "./PinCodeEnter";
 
 const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms))
 }
-export class LockPetitionScreen extends Component
+export default class LockPetitionScreen extends Component
 {
     constructor(props)
     {
         super(props)
-        
+        this.timeEndLock = 0
         this.state = {
             timer: 0
         }
         this.updateTimer = this.updateTimer.bind(this)
     }
     componentDidMount(){
-        const {time} = this.props
-        this.setState({timer: (time)? time: 3000});
-        this.updateTimer();
+        AsyncStorage.getItem(this.props.timeLockAsyncStorageName).then( val =>
+            {
+                this.timeEndLock = ( val? (new Date(val).getTime()):(new Date().getTime()) ) + this.props.timeLock
+                this.updateTimer()
+            }
+        )
     }
     updateTimer = async () =>
     {
+        const timeLeft = new Date(this.timeEndLock) - new Date()
+
+        if (timeLeft > 0)
+            this.setState({timer: timeLeft})
+        else
+            this.setState({timer: 0})
+
+
         await sleep(1000)
-        if (this.state.timer === 0)
+        if (timeLeft < 1000)
         {
-            //unlock somehow
+            //remove time start lock, number of attempt
+            AsyncStorage.multiRemove([
+                this.props.timeLockAsyncStorageName,
+                this.props.pinAttemptAsyncStorageName
+            ])
+            this.props.changeInternalStatus(PinResultStatus.initial)
         }
         else
         {
-            const updateTime = this.state.timer - 1;
-            this.setState({timer: updateTime})
             this.updateTimer()
         }
     }
     render() {
-        const mins = Math.floor(this.state.timer / 60) ;
-        const sec = Math.floor(this.state.timer % 60) ;
+        const mins = Math.floor(this.state.timer / 60000) ;
+        const sec = Math.floor((this.state.timer / 1000) % 60) ;
         return(
             <View style = {styles.container}>
-               
                <Icon 
                     style = {{
                         color: 'red',
@@ -65,7 +80,7 @@ export class LockPetitionScreen extends Component
                         textAlign: "center",
                         fontSize: 20
                     }}>
-                        This app is locked for {this.props.time / 60} minutes.</Text> 
+                        This app is locked for {this.props.timeLock / 60000} minutes.</Text> 
                     <Text style = {{
                         justifyContent: 'center',
                         textAlign: "center",
@@ -93,6 +108,6 @@ const styles = StyleSheet.create({
         flex: 0,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 80
+        marginTop: 80,
     }
 })
