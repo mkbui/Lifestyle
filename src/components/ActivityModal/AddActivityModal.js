@@ -82,9 +82,13 @@ class AddActivityModal extends Component {
     if (event.type == "set") {
       const currentDate = selectedDate || this.state.date;
       this.state.date = currentDate;
-      this.setModalVisible('showTime');
       this.setModalVisible('showNameForm');
+      this.setModalVisible('showTime');
     }
+    else {
+      this.props.completeAdd()
+    }
+    
   };
 
   setModalVisible = (visible) => {
@@ -157,6 +161,7 @@ class AddActivityModal extends Component {
                       style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
                       onPress={() => {
                         this.setModalVisible('showNameForm');
+                        this.props.completeAdd();
                       }}
                     >
                       <Text style={styles.textStyle}>Cancel</Text>
@@ -229,6 +234,7 @@ class AddActivityModal extends Component {
                       style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
                       onPress={() => {
                         this.setModalVisible('showRepeat');
+                        this.props.completeAdd()
                       }}
                     >
                       <Text style={styles.textStyle}>Cancel</Text>
