@@ -6,10 +6,6 @@ import {
   ToastAndroid
 } from 'react-native';
 import {
-  Container,
-  Header,
-  Title,
-  Content,
   Button,
   Icon,
   Left,
@@ -104,20 +100,20 @@ class ActivityList extends Component {
                         </Text>
                       </ListItem>
                     )
-                  }) : <Text style={{fontSize: 10}}> No repeat </Text>
+                  }) : <Text style={{fontSize: 10}}> Today </Text>
                 }
               </View>
             </View>
           </Body>
           <Right style={{flex: 1}}>
-            <View style={{flexDirection:'column', justifyContent: "space-between"}}>
+            <View style={{flexDirection:'column'}}>
               <Switch
                 trackColor={{ false: "#767577", true: "#81b0ff" }}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={() => {this.activateItem(activity)}}
                 value={activity.activate}
               />
-              <TouchableOpacity onPress={() => {this.removeItem(activity)}}>
+              <TouchableOpacity onPress={() => {this.removeItem(activity)}} style={styles.binIcon}>
                 <Icon
                   name="trash" 
                   style={styles.binIcon}>
@@ -178,7 +174,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: '#81b0ff',
     marginTop: 20,
-    marginLeft: 25,
+    marginLeft: 15,
   }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityList);
