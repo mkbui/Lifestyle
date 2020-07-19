@@ -25,7 +25,7 @@ class ViewStatus extends Component {
 
 
   render() {
-    const { exerciseList, mealList , budgetList} = this.props;
+    const { exerciseList, mealList , budgetList, userInfo} = this.props;
     var totalTime = 0;
     var totalCarb = 0;
     var totalProtein = 0;
@@ -67,7 +67,7 @@ class ViewStatus extends Component {
         {/* Date Picker */}
         <View>
           <DatePicker
-            style={{ width: 385, margin: 5 }}
+            style={{ width: 335/*385*/, margin: 5 }}
             date={this.state.date}
             mode="date"
             placeholder="select date"
@@ -107,11 +107,11 @@ class ViewStatus extends Component {
         <TouchableOpacity style={styles.viewWH} onPress={this.toggleOverlay}>
           <View style={{ flexDirection: 'row', marginTop:10 }}>
             <Text style={styles.WHtitle}>Weight:</Text>
-            <Text style={styles.WHvalue}>48 kg</Text>
+            <Text style={styles.WHvalue}>{userInfo.Info.weight} kg</Text>
           </View>
           <View style={{ flexDirection: 'row', marginTop:10 }}>
             <Text style={styles.WHtitle}>Height:</Text>
-            <Text style={styles.WHvalue}>168cm</Text>
+            <Text style={styles.WHvalue}>{userInfo.Info.height} cm</Text>
           </View>
         </TouchableOpacity>
      
@@ -321,6 +321,7 @@ const mapStateToProps = state => {
     exerciseList: state.exerciseReducer.exerciseList,
     mealList: state.mealReducer.mealList,
     waterList: state.mealReducer.waterList,
+    userInfo: state.user,
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ViewStatus);
@@ -375,9 +376,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 10,
   },
-  viewValueExerTotal: { flexDirection: 'row', marginLeft: 85, marginTop: 6 },
-  viewValueMealTotal: { flexDirection: 'row', marginLeft: 35, marginTop: 6 },
-  viewValueTotal: { flexDirection: 'row', marginLeft: 170, marginTop: 6 },
+  viewValueExerTotal: { flexDirection: 'row', marginLeft: 55/*85*/, marginTop: 6 },
+  viewValueMealTotal: { flexDirection: 'row', marginLeft: 15/*35*/, marginTop: 6 },
+  viewValueTotal: { flexDirection: 'row', marginLeft: 150/*170*/, marginTop: 6 },
   textTotal: { fontSize: 20, marginTop: 5, color: 'grey' },
 
   textValueTotal: {

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {StyleSheet, Image, ActivityIndicator} from 'react-native';
+import {StyleSheet, Image, ActivityIndicator, Dimensions} from 'react-native';
 import {
   Container,
   Header,
@@ -22,10 +22,10 @@ import * as Progress from 'react-native-progress';
 
 import {connect} from 'react-redux';
 import {fitnessAnalyzer, financialAnalyzer, financeAnalyzer} from "../../utils";
-
+import {tips} from './../../data/tips'
 
 const default_image = require('../../../assets/default_image.png')
-
+let deviceWidth = Dimensions.get('window').width
 /* State used: user info with records, not [food list, exercise list] */
 function mapStateToProps(state){
   return {
@@ -41,6 +41,7 @@ class AdviceAnalysis extends Component {
     super(props);
     this.state = {
       indicating: true,
+      tip: ''
     }
   }
 
@@ -53,6 +54,14 @@ class AdviceAnalysis extends Component {
 
   stopIndicating(){
     this.setState({indicating: false})
+  }
+
+  /* tips generator */
+  assignTips(){
+    let chosenId = Math.floor(Math.random()*tips.length);
+    this.setState({
+      tip: tips[chosenId].text,
+    });
   }
 
   render(){
@@ -116,7 +125,7 @@ class AdviceAnalysis extends Component {
                 <Left>
                   <Icon type = "FontAwesome5" name = "heartbeat" />
                   <Text>  </Text>
-                  <Progress.Bar  progress = {0.8} width = {300} height = {8} color = "#000"/>
+                  <Progress.Bar  progress = {0.8} width = {deviceWidth - 100} height = {8} color = "#000"/>
                 </Left>
               </CardItem>
 
@@ -126,7 +135,7 @@ class AdviceAnalysis extends Component {
                   <Text>  </Text>
                   <Progress.Bar 
                     progress = {DailyRecord.Fitness.waterConsumed/2000.0} 
-                    width = {300} height = {8} color = "#000" 
+                    width = {deviceWidth - 100} height = {8} color = "#000" 
                   />
                 </Left>
               </CardItem>
@@ -135,7 +144,7 @@ class AdviceAnalysis extends Component {
                 <Left>
                   <Icon type = "MaterialCommunityIcons" name = "finance"/>
                   <Text>  </Text>
-                  <Progress.Bar progress = {0.1} width = {300} height = {8} color = "#000"/>
+                  <Progress.Bar progress = {0.1} width = {deviceWidth - 100} height = {8} color = "#000"/>
                 </Left>
               </CardItem>
           </Card>
@@ -165,7 +174,7 @@ class AdviceAnalysis extends Component {
               <CardItem style = {styles.tipBox}>
                 <Left>
                   <Body>
-                    <Text style = {styles.script}>Water is good for H2O.</Text>
+                    <Text style = {styles.tip}>{this.state.tips}</Text>
                   </Body>
                 </Left>
               </CardItem>
@@ -226,8 +235,13 @@ const styles = StyleSheet.create({
   script: {
     fontSize: 18,
   }, 
+  tip: {
+    fontSize: 16,
+    fontStyle: 'italic'
+  },
   progressBar: {
     paddingLeft: 15,
+    paddingRight: 5,
   }
 });
 

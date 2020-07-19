@@ -4,6 +4,7 @@ import {
   Text,
 } from 'native-base';
 
+
 /* transform React Date() format to dd-mm-yyyy */
 export function getDateString(){
   const date = new Date();
