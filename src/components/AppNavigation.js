@@ -51,7 +51,7 @@ function DrawerNavigator() {
       <Drawer.Screen name = 'My Schedule' component = { ScheduleScreen } />
       <Drawer.Screen name = 'Suggestion List' component = { ListScreen } />
       <Drawer.Screen name = 'Today`s Advice' component = { AdviceScreen } />
-      <Drawer.Screen name = 'Settings' component = { SettingsScreen } hiden = {false}/>
+      <Drawer.Screen name = 'Settings' component = { SettingsScreen } />
     </Drawer.Navigator>
   )
 } 
