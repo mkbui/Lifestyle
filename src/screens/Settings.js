@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, StyleSheet, Platform} from 'react-native';
+import {View, StyleSheet, Platform, ToastAndroid} from 'react-native';
 import {
   Container,
   Header,
@@ -19,7 +19,8 @@ import {
   Separator,
   Item,
 } from "native-base";
-
+import {CancelAllNotification} from "../components/PushController"
+import {initializeReminders} from "../utils"
 //const Item = Picker.Item;
 
 /* TO BE ADDED: a mapDispatchToProps and mapStateToProps to save settings to store */
@@ -55,6 +56,16 @@ class SettingsScreen extends Component {
     this.setState({
       currency: value,
     })
+  }
+
+  cancelNotification(){
+    console.log("Removing notifications")
+    CancelAllNotification()
+    ToastAndroid.show(
+      "All notifications removed",
+      ToastAndroid.SHORT
+    )
+    initializeReminders()
   }
 
   render() {
@@ -166,6 +177,17 @@ class SettingsScreen extends Component {
             </Left>
             <Body>
               <Text>Edit personal data</Text>
+            </Body>
+          </ListItem>
+
+          <ListItem style = {styles.row} icon >
+            <Left>
+              <Button style={{ backgroundColor: "brown" }} onPress = {() => CancelAllNotification()}>
+                <Icon active name="notifications-off" />
+              </Button>
+            </Left>
+            <Body>
+              <Text>Remove all notifications</Text>
             </Body>
           </ListItem>
 

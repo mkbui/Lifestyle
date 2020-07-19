@@ -28,7 +28,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {connect} from "react-redux";
 import {addActivity} from "../../actions";
 
-import {ScheduledNotification} from '../PushController'
+import {ScheduledNotification} from '../PushController';
+import {addAlarmNoti} from '../../utils';
 
 class Activity {
   repeat = [
@@ -52,12 +53,12 @@ class Activity {
     this.repeat[5].value = Fri;
     this.repeat[6].value = Sat;
     this.activate = true;
-    this.id = Math.random().toString();
+    this.id = new Date()//Math.random().toString();
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-    addActivity: (activity) => dispatch(addActivity(activity))
+    addActivity: (activity) => dispatch(addActivity(activity)),
 })
 
 class AddActivityModal extends Component {
@@ -123,15 +124,10 @@ class AddActivityModal extends Component {
       Sat,
     );
 
-    var time = {
-      hour: this.state.date.getHours(),
-      minute: this.state.date.getMinutes(),
-      title: this.activity.name,
-    }
-
     this.props.addActivity(newActivity);
+    // Call utility functions to add notification into list (out of redux store)
+    addAlarmNoti(newActivity);
     this.props.completeAdd();
-    ScheduledNotification(time)
     this.activity.name = 'Activity';
   };
 
@@ -191,47 +187,47 @@ class AddActivityModal extends Component {
                 animationType="slide">
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                  <Text style={{fontSize : 20}}>Repeat</Text>
+                  <Text style={{fontSize: 18}}>Repeat Weekdates</Text>
                   <ListItem onPress={() => {this.checkBox('Sun')}}>
                     <CheckBox checked={Sun} onPress={() => {this.checkBox('Sun')}} color="blue"/>
                     <Body>
-                      <Text>Sunday</Text>
+                      <Text style = {styles.dayText}>Sunday</Text>
                     </Body>
                   </ListItem>
                   <ListItem onPress={() => {this.checkBox('Mon')}}>
                     <CheckBox checked={Mon} onPress={() => {this.checkBox('Mon')}} color="blue"/>
                     <Body>
-                      <Text>Monday</Text>
+                      <Text style = {styles.dayText}>Monday</Text>
                     </Body>
                   </ListItem>
                   <ListItem onPress={() => {this.checkBox('Tue')}}>
                     <CheckBox checked={Tue} onPress={() => {this.checkBox('Tue')}} color="blue"/>
                     <Body>
-                      <Text>Tuesday</Text>
+                      <Text style = {styles.dayText}>Tuesday</Text>
                     </Body>
                   </ListItem>
                   <ListItem onPress={() => {this.checkBox('Wed')}}>
                     <CheckBox checked={Wed} onPress={() => {this.checkBox('Wed')}} color="blue"/>
                     <Body>
-                      <Text>Wednesday</Text>
+                      <Text style = {styles.dayText}>Wednesday</Text>
                     </Body>
                   </ListItem>
                   <ListItem onPress={() => {this.checkBox('Thu')}}>
                     <CheckBox checked={Thu} onPress={() => {this.checkBox('Thu')}} color="blue"/>
                     <Body>
-                      <Text>Thursday</Text>
+                      <Text style = {styles.dayText}>Thursday</Text>
                     </Body>
                   </ListItem>
                   <ListItem onPress={() => {this.checkBox('Fri')}}>
                     <CheckBox checked={Fri} onPress={() => {this.checkBox('Fri')}} color="blue"/>
                     <Body>
-                      <Text>Friday</Text>
+                      <Text style = {styles.dayText}>Friday</Text>
                     </Body>
                   </ListItem>
                   <ListItem onPress={() => {this.checkBox('Sat')}}>
                     <CheckBox checked={Sat} onPress={() => {this.checkBox('Sat')}} color="blue"/>
                     <Body>
-                      <Text>Saturday</Text>
+                      <Text style = {styles.dayText}>Saturday</Text>
                     </Body>
                   </ListItem>
                   
@@ -279,7 +275,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
+    minWidth: 300,
   },
   modalView: { //For text and repeat modal
     margin: 30,
@@ -293,7 +290,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 5, 
   },
   openButton: {
     backgroundColor: "#F194FF",
@@ -335,6 +332,9 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontSize: 5,
-  }
+  },
+  dayText: {
+    fontSize: 13,
+  },
 });
 export default connect(null, mapDispatchToProps)(AddActivityModal);
