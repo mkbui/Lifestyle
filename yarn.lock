@@ -6206,6 +6206,11 @@ react-native-grading@^1.0.3:
   resolved "https://registry.yarnpkg.com/react-native-grading/-/react-native-grading-1.0.3.tgz#5d62ee2c46ba1013e0f6aca504191038ff57bd20"
   integrity sha1-XWLuLEa6EBPg9qylBBkQOP9XvSA=
 
+react-native-html-to-pdf@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-html-to-pdf/-/react-native-html-to-pdf-0.8.0.tgz#c6e27296a05de76ac3800406144ebdfd77cfe054"
+  integrity sha512-64Hx7JbX3sZ1iXgouuCI25/C6o8BHyTzOO3RzvLfw4O8VcdpB+wJ4d24iWRtKjeJmArsubN9+WMOebBxQaPzJw==
+
 react-native-image-picker@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-2.3.1.tgz#1977b65e07793d2c0b2d1976fb675c5f75ad7f11"
@@ -6230,6 +6235,11 @@ react-native-keyboard-aware-scroll-view@0.9.1:
   dependencies:
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
+
+react-native-keychain@^6.1.1:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-keychain/-/react-native-keychain-6.1.1.tgz#3c14e4df9e5599f8d5a708da75d27f9d2424d7c1"
+  integrity sha512-WYvAg7FbYPyX8jJ1rY/IQGS+6zK5LtNMRa3E8x1n0M5Lmsm/9CHtakzbmqT+rLvFE7DpPBg7qFawMuUoDjjtYA==
 
 react-native-label-select@^1.0.10:
   version "1.1.0"
