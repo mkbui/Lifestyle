@@ -20,8 +20,9 @@ import {
   Item,
   View,
 } from "native-base";
-import PINCode, {hasSetPinCode, removePinCode, resetLockStatus} from "./PinCode/index";
+import Password, {hasSetPassword, removePassword, resetLockStatus} from "./LockScreen/index";
 import { Overlay } from "react-native-elements";
+import {PasswordType} from './LockScreen/types'
 //const Item = Picker.Item;
 
 /* TO BE ADDED: a mapDispatchToProps and mapStateToProps to save settings to store */
@@ -35,14 +36,9 @@ class SettingsScreen extends Component {
       reminder: false,
       stage: 'main',  // main, setpin, editUser
       currency: "$",
-      pinOverlayIsOn: false,
+      passwordOverlayIsOn: false,
       passwordIsSet: false
     };
-    this.onHandleSetPin = this.onHandleSetPin.bind(this)
-    this.renderSetPin = this.renderSetPin.bind(this)
-    this.onSetPinSuccess = this.onSetPinSuccess.bind(this)
-    this.onEnterPinSuccess = this.onEnterPinSuccess.bind(this)
-    this.onEnterPinFail = this.onEnterPinFail.bind(this)
   }
   
   /* toggle dark mode option switch */
@@ -65,76 +61,40 @@ class SettingsScreen extends Component {
       currency: value,
     })
   }
-  onSetPinSuccess = () => {
-    this.setState({pinOverlayIsOn: false})
+  onSetPasswordSuccess = () => {
+    this.setState({passwordOverlayIsOn: false})
     ToastAndroid.show(
-      "PIN set successfully",
+      "Password set successfully",
       ToastAndroid.LONG
     )
   }
-  onEnterPinSuccess = () => {
+  onEnterPasswordSuccess = () => {
     resetLockStatus();
-    removePinCode();
-    this.setState({pinOverlayIsOn: false})
+    removePassword();
+    this.setState({passwordOverlayIsOn: false})
     ToastAndroid.show(
-      "PIN remove successfully",
+      "Password remove successfully",
       ToastAndroid.SHORT
     )
   }
-  onEnterPinFail = () => {
-    this.setState({pinOverlayIsOn: false})
+  onEnterPasswordFail = () => {
+    this.setState({passwordOverlayIsOn: false})
     ToastAndroid.show(
-      "PIN remove unsuccessfully",
+      "Password remove unsuccessfully",
       ToastAndroid.SHORT
     )
   }
-  onHandleSetPin = () => {
-    this.setState({pinOverlayIsOn: true})
-  }
-  renderSetPin = () => {
-    hasSetPinCode().then(
+  onHandleSetPassword = async () => {
+    
+    hasSetPassword().then(
       res => {
-        this.setState({passwordIsSet: res})
+        this.setState({passwordIsSet: res});
       }
     ).catch(err => console.log(err))
-
-    const {passwordIsSet} = this.state
-    return(
-      <View>
-        {passwordIsSet && 
-        <PINCode
-        status = {"enter"} 
-        onSuccess = {() => 
-          this.onEnterPinSuccess}
-        onFailure = {() => 
-          this.onEnterPinFail}
-        />}
-
-        {!passwordIsSet &&
-        <PINCode
-        status = {"choose"} 
-        onSuccess = {() => 
-          this.onSetPinSuccess}
-        />
-        }
-      </View>
-    )
-    
+    this.setState({passwordOverlayIsOn: true})
   }
   render() {
-    const {pinOverlayIsOn} = this.state
-    if (pinOverlayIsOn)
-    {
-      return(
-        <Overlay
-            isVisible
-            fullScreen
-            animationType = "slide">
-              {this.renderSetPin()}
-          </Overlay> 
-      )
-    }
-    else{
+    const {passwordOverlayIsOn, passwordIsSet} = this.state
       return (
               <Container style={styles.container}>
               
@@ -232,7 +192,7 @@ class SettingsScreen extends Component {
                     </Button>
                   </Left>
                   <Body>
-                    <Text>Set PIN code</Text>
+                    <Text>Set Password</Text>
                   </Body>
                   <Right>
                     <Switch 
@@ -242,7 +202,7 @@ class SettingsScreen extends Component {
                       onValueChange = { () =>
                         {
                           this.setState({stage: 'pin'})
-                          this.onHandleSetPin()
+                          this.onHandleSetPassword()
                         }
                       }
                     /> 
@@ -262,10 +222,31 @@ class SettingsScreen extends Component {
                 <Separator bordered style = {styles.separator}/>
                 
               </Content>
+              <Overlay
+                  isVisible = {passwordOverlayIsOn}
+                  fullScreen
+                  animationType = "slide"
+              >
+                    <View>
+                    {passwordIsSet && 
+                    <Password
+                    status = {"enter"} 
+                    onSuccess = {this.onEnterPasswordSuccess}
+                    onFailure = {this.onEnterPasswordFail}
+                    />}
+
+                    {!passwordIsSet &&
+                    <Password
+                    passwordType = {PasswordType.pattern}
+                    status = {"choose"}
+                    onSuccess = {this.onSetPasswordSuccess}
+                    />
+                    }
+                  </View>
+                </Overlay> 
             </Container>
             
       );
-    }
   }
 }
 

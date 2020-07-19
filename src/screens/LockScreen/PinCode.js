@@ -14,13 +14,7 @@ import {
   View,
 } from "native-base";
 import { Col, Row, Grid } from 'react-native-easy-grid';
-export const PinStatus = {
-    choose: 'choose',
-    enter: 'enter',
-    locked: 'locked',
-    confirm: 'confirm'
-};
-
+import {PasswordStatus} from './types';
 const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms))
 }
@@ -29,7 +23,6 @@ export default class PinCode extends Component{
     constructor(props){
         super(props)
         this.passwordLength = 4,
-        this.pinCodeStatus = '',
         this.delayBetweenAttempts = 2000,
         this.endProcess = this.endProcess.bind();
         this.emptyCircleDiameter = 4;
@@ -50,23 +43,23 @@ export default class PinCode extends Component{
         this.newAttempt = this.newAttempt.bind(this)
     }
 
-    componentDidUpdate(prevProps, prevState){
+    componentDidUpdate(prevProps){
         if (
-          prevProps.pinCodeStatus !== "failure" &&
-          this.props.pinCodeStatus === "failure"
+          prevProps.passwordResultStatus !== "failure" &&
+          this.props.passwordResultStatus === "failure"
         ) {
           this.failedAttempt();
         }
         if (
-          prevProps.pinCodeStatus !== "locked" &&
-          this.props.pinCodeStatus === "locked"
+          prevProps.passwordResultStatus !== "locked" &&
+          this.props.passwordResultStatus === "locked"
         ) {
           this.setState({ inputValue: "" });
         }
     }
 
     handleNumberButtonPress = async (number) => {
-        const {status,previousPin} = this.props
+        const {status,previousPassword} = this.props
 
         const addedInput = this.state.inputValue + number;
         this.setState({inputValue: addedInput});
@@ -76,17 +69,17 @@ export default class PinCode extends Component{
 
         if (newLength === this.passwordLength){
             switch (status) {
-                case PinStatus.choose:
+                case PasswordStatus.choose:
                     this.endProcess(addedInput);
                   break;
-                case PinStatus.confirm:
-                  if (addedInput !== previousPin) {
+                case PasswordStatus.confirm:
+                  if (addedInput !== previousPassword) {
                     this.showError();
                   } else {
                     this.endProcess(addedInput);
                   }
                   break;
-                case PinStatus.enter:
+                case PasswordStatus.enter:
                   this.props.endProcess(addedInput);
                   break;
             }
@@ -188,11 +181,10 @@ export default class PinCode extends Component{
                 flexDirection: "row",
                 height: "auto",
                 justifyContent: "center",
+                top: 120,
+                flex: 2,
                 alignItems: "center",
-                marginTop: 40,
-                opacity: showError? 1: this.opacityValue,
                 transform: [{translateX: this.springValue}]
-                
             }}>
                 <View
                     style = {{
@@ -345,17 +337,17 @@ export default class PinCode extends Component{
     render() {
         const {failAttempt, showError} = this.state;
         const {mainTitle, mainTitleConfirmFailed,mainTitleValidationFailed, mainTitleFailed,
-                subtitle, errorSubtitle, previousPin,} = this.props
+                subtitle, errorSubtitle, previousPassword} = this.props
+
         return(
             <View>
-                <Animated.Text
+                <Text
                     style = {
                         {
                             fontSize: 25,
                             fontWeight: "200",
                             textAlign: "center",
-                            marginTop: 80,
-                            opacity: showError? 1: this.opacityValue,
+                            top: 80,
                             color: (showError)?  this.passwordcolorErr: this.passwordColor
                         }
                     }> 
@@ -364,25 +356,24 @@ export default class PinCode extends Component{
                         (showError && mainTitleValidationFailed) ||
                         mainTitle
                     }
-                </Animated.Text>
+                </Text>
 
-                <Animated.Text 
+                <Text 
                     style = {{
                         fontSize: 15,
                         fontWeight: "200",
                         textAlign: "center",
-                        marginTop: 10,
-                        opacity: showError? 1: this.opacityValue,
+                        top: 90,
                         color: (showError)?  this.passwordcolorErr: this.passwordColor
                     }}>
                     {(failAttempt || showError)?
                 errorSubtitle : subtitle}
-                </Animated.Text>
+                </Text>
                 {this.renderPassWordCircle()}
                 <View>
-                    <Grid>
+                    <Grid style = {styles.grid}>
                         <Row
-                        style={styles.row}
+                        style={styles.row }
                         >
                             <Col
                             style = {styles.colButtonCircle}>
@@ -463,25 +454,19 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFF"
       },
     grid: {
+        alignItems: 'center',
         justifyContent: 'flex-start',
-        width: "100%",
-        flex: 7
     },
     colButtonCircle: {
         flex: 0,
         marginLeft: 10,
         marginRight: 10,
-        alignItems: "center",
         width: 20 * 4,
         height: 20 * 4
     },
     row: {
-        justifyContent: "center",
-        flex: 0,
-        flexShrink: 1,
-        alignItems: "center",
-        height: 20 * 5.5,
-        marginTop:100
+        height: 20 * 5,
+        top: 160
     },
     buttonCircle: {
         alignItems: "center",

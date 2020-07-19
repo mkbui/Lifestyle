@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View , Text, Button, Icon } from "native-base";
 import {StyleSheet} from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
-import { PinResultStatus } from "./PinCodeEnter";
+import { PasswordResultStatus } from "./types";
 
 const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms))
@@ -42,9 +42,9 @@ export default class LockPetitionScreen extends Component
             //remove time start lock, number of attempt
             AsyncStorage.multiRemove([
                 this.props.timeLockAsyncStorageName,
-                this.props.pinAttemptAsyncStorageName
+                this.props.passwordAttemptAsyncStorageName
             ])
-            this.props.changeInternalStatus(PinResultStatus.initial)
+            this.props.changeInternalStatus(PasswordResultStatus.initial)
         }
         else
         {

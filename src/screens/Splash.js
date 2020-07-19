@@ -6,7 +6,7 @@ const splashBackground = require('../../assets/launchscreen-bg.png');
 const splashLogo = require('../../assets/bootLogo.jpg');
 import { Overlay } from "react-native-elements";
 import {connect} from "react-redux";
-import PINCode ,{hasSetPinCode} from "./PinCode/index";
+import Password ,{hasSetPassword} from "./LockScreen/index";
 //const { Dimensions, Platform } = require('react-native');
 //const deviceHeight = Dimensions.get("window").height;
 
@@ -22,7 +22,7 @@ class SplashScreen extends Component {
   {
     super(props)
     this.state = {
-      hasSetPin: false
+      hasSetPassword: false
     }
   }
   componentDidMount(){
@@ -31,48 +31,43 @@ class SplashScreen extends Component {
       this.proceed();
     }, 5000);
   }
-  onEnterPinSuccess = () => {
-    this.setState({hasSetPin: false})
+  onEnterPasswordSuccess = () => {
+    this.setState({hasSetPassword: false})
     this.props.navigation.navigate('Home');
   }
-  onEnterPinFail = () => console.log("login fail")
-  renderLockScreen = () => {
-    return(
-      <Overlay
-        isVisible
-        fullScreen
-        animationType = "slide">
-        {
-          <PINCode 
-            status = "enter" 
-            onSuccess = {() => 
-              this.onEnterPinSuccess.bind(this)}
-            onFailure = {() => {this.onEnterPinFail.bind(this)}}
-          />
-        }
-      </Overlay> 
-    )
-  }
+  onEnterPasswordFail = () => console.log("login fail")
+
   proceed(){
     const {userInfo} = this.props;
     let registered = userInfo.Info.registered; 
     if (registered === true) 
       {
-        hasSetPinCode().then( res => {
-          this.setState({hasSetPin: res})
+        hasSetPassword().then( res => {
+          this.setState({hasSetPassword: res})
         }
         ).catch(err => console.log(err))
         
-        
+        this.props.navigation.navigate('Home');
       }
     if (registered === false) this.props.navigation.navigate('Firstform');
   }
 
   render(){
-    const {hasSetPin} = this.state
+    const {hasSetPassword} = this.state
     return(
       <Container>
-        {hasSetPin && this.renderLockScreen()}
+        <Overlay
+        isVisible = {this.state.hasSetPassword}
+        fullScreen
+        animationType = "slide">
+        {
+          <Password 
+            status = "enter" 
+            onSuccess = {this.onEnterPasswordSuccess}
+            onFailure = {this.onEnterPasswordFail}
+          />
+        }
+      </Overlay> 
         <StatusBar barStyle="light-content" />
         <ImageBackground source={splashBackground} style={{flex: 1}}>
           <View style={styles.logoContainer}>
