@@ -16,13 +16,9 @@ import {
   Left,
   Right,
   Body,
-  Text,
-  CheckBox,
+  Fab,
   View,
   Footer,
-  FooterTab,
-  ListItem,
-  List,
 } from "native-base";
 
 import ActivityList from '../components/ActivityList'
@@ -99,15 +95,24 @@ class ScheduleScreen extends Component {
           {showModalTime && <ModifyTimeModal id={id} hour={hour} min={min} completeChange={() => {this.setModalVisible('showModalTime')}} />}
           {showModal && <AddActivityModal completeAdd={() => {this.setModalVisible('showModal')}}/>}
         </Content>
-        <Footer backgroundColor="#ffffff">
+        {/* <Footer backgroundColor="#ffffff">
           <FooterTab>
-              <Button onPress={() => {this.setModalVisible('showModal')}}>
-               <Text style={styles.buttonContainer}>
-                  New activity
-                 </Text>
-               </Button>
-           </FooterTab>
-         </Footer>
+            <Button onPress={() => {this.setModalVisible('showModal')}}>
+              <Text style={styles.buttonContainer}>
+                New activity
+              </Text>
+            </Button>
+          </FooterTab>
+        </Footer> */}
+        <Fab
+          active={true}
+          direction="up"
+          containerStyle={{ }}
+          style={{ backgroundColor: '#5067FF' }}
+          position="bottomRight"
+          onPress={() => {this.setModalVisible('showModal')}}>
+            <Icon type="Entypo" name="plus"/>
+        </Fab>
       </Container>
     );
   }

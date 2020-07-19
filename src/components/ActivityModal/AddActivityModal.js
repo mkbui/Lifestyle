@@ -184,43 +184,43 @@ class AddActivityModal extends Component {
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                   <Text style={{fontSize : 20}}>Repeat</Text>
-                  <ListItem onPress={() => {this.checkBox('Sun')}}>
+                  <ListItem onPress={() => {this.checkBox('Sun')}} style={{borderBottomWidth: 0}}>
                     <CheckBox checked={Sun} onPress={() => {this.checkBox('Sun')}} color="blue"/>
                     <Body>
                       <Text>Sunday</Text>
                     </Body>
                   </ListItem>
-                  <ListItem onPress={() => {this.checkBox('Mon')}}>
+                  <ListItem onPress={() => {this.checkBox('Mon')}} style={{borderBottomWidth: 0}}>
                     <CheckBox checked={Mon} onPress={() => {this.checkBox('Mon')}} color="blue"/>
                     <Body>
                       <Text>Monday</Text>
                     </Body>
                   </ListItem>
-                  <ListItem onPress={() => {this.checkBox('Tue')}}>
+                  <ListItem onPress={() => {this.checkBox('Tue')}} style={{borderBottomWidth: 0}}>
                     <CheckBox checked={Tue} onPress={() => {this.checkBox('Tue')}} color="blue"/>
                     <Body>
                       <Text>Tuesday</Text>
                     </Body>
                   </ListItem>
-                  <ListItem onPress={() => {this.checkBox('Wed')}}>
+                  <ListItem onPress={() => {this.checkBox('Wed')}} style={{borderBottomWidth: 0}}>
                     <CheckBox checked={Wed} onPress={() => {this.checkBox('Wed')}} color="blue"/>
                     <Body>
                       <Text>Wednesday</Text>
                     </Body>
                   </ListItem>
-                  <ListItem onPress={() => {this.checkBox('Thu')}}>
+                  <ListItem onPress={() => {this.checkBox('Thu')}} style={{borderBottomWidth: 0}}>
                     <CheckBox checked={Thu} onPress={() => {this.checkBox('Thu')}} color="blue"/>
                     <Body>
                       <Text>Thursday</Text>
                     </Body>
                   </ListItem>
-                  <ListItem onPress={() => {this.checkBox('Fri')}}>
+                  <ListItem onPress={() => {this.checkBox('Fri')}} style={{borderBottomWidth: 0}}>
                     <CheckBox checked={Fri} onPress={() => {this.checkBox('Fri')}} color="blue"/>
                     <Body>
                       <Text>Friday</Text>
                     </Body>
                   </ListItem>
-                  <ListItem onPress={() => {this.checkBox('Sat')}}>
+                  <ListItem onPress={() => {this.checkBox('Sat')}} style={{borderBottomWidth: 0}}>
                     <CheckBox checked={Sat} onPress={() => {this.checkBox('Sat')}} color="blue"/>
                     <Body>
                       <Text>Saturday</Text>
