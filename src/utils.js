@@ -3,7 +3,13 @@ import {View, StyleSheet} from 'react-native';
 import {
   Text,
 } from 'native-base';
-
+import {reminderList} from './data/reminder'
+import {
+  ScheduledAlarmNotification, 
+  ScheduledNotification, 
+  CancelNotification, 
+  DailyReminder
+} from './components/PushController'
 
 /* transform React Date() format to dd-mm-yyyy */
 export function getDateString(){
@@ -12,6 +18,30 @@ export function getDateString(){
   var zM = (date.getMonth()+1<10 ? '0' : '')
   const dateString = zD + date.getDate() + '-' + zM + (date.getMonth()+1) + '-' + date.getFullYear();
   return dateString;
+}
+
+
+export function addAlarmNoti(activity){
+  //ScheduledNotification();
+  var i;
+  let rep = activity.repeat;
+  for (i = 0; i < 7; i++) {
+    if (rep[i].value === true){
+      ScheduledAlarmNotification(activity, i);
+    }
+  }
+}
+
+export function removeAlarmNoti(activity){
+  var i;
+  let rep = activity.repeat;
+  for (i = 0; i < 7; i++) {
+    if (rep[i].value === true){
+      index = new Date(activity.id.getTime() + i)
+      console.log(index)
+      CancelNotification(index);
+    }
+  }
 }
 
 /*
@@ -40,6 +70,12 @@ export function checkFilter(name, filterList) {
   return res;
 };
 
+/* Initialize all reminders and suggestion for user daily (called when register/ reset notif) */
+export function initializeReminders(){
+  reminderList.map(reminder => {
+    DailyReminder(reminder)
+  })
+}
 
 /* Return simple advice based on user info */
 export function fitnessAnalyzer(Record, Today){
