@@ -28,8 +28,6 @@ function mapStateToProps(state) {
 const mapDispatchToProps = dispatch => ({
   removeActivity: (id) => dispatch(removeActivity(id)),
   activateActivity: (id) => dispatch(activateActivity(id)),
-  // modifyActivityTime: (id) => dispatch(modifyActivityTime(id, hour, min)),
-  // modifyActivityRepeat: (id) => dispatch(modifyActivityRepeat(id, repeat))
 })
 
 class ActivityList extends Component {
