@@ -38,7 +38,7 @@ class Activity {
     {day : "Fri", value : false},
     {day : "Sat", value : false},
   ];
-  setComponent(name, hour, min, Sun, Mon, Tue, Wed, Thu, Fri, Sat) {
+  constructor(name, hour, min, Sun, Mon, Tue, Wed, Thu, Fri, Sat) {
     this.name = name;
     this.hour = hour;
     this.min = min;
@@ -82,13 +82,12 @@ class AddActivityModal extends Component {
     if (event.type == "set") {
       const currentDate = selectedDate || this.state.date;
       this.state.date = currentDate;
-      this.setModalVisible('showNameForm');
       this.setModalVisible('showTime');
+      this.setModalVisible('showNameForm');
     }
     else {
       this.props.completeAdd()
     }
-    
   };
 
   setModalVisible = (visible) => {
@@ -110,8 +109,7 @@ class AddActivityModal extends Component {
 
   createActivity = () => {
     const {Sun, Mon, Tue, Wed, Thu, Fri, Sat} = this.state;
-    let newActivity = new Activity();
-    newActivity.setComponent(
+    let newActivity = new Activity(
       this.activity.name,
       this.state.date.getHours(),
       this.state.date.getMinutes(),
