@@ -25,6 +25,7 @@ import ActivityList from '../components/ActivityList'
 import AddActivityModal from '../components/ActivityModal/AddActivityModal'
 import ModifyNameModal from '../components/ActivityModal/ModifyNameModal'
 import ModifyTimeModal from '../components/ActivityModal/ModifyTimeModal'
+import ModifyRepeatModal from '../components/ActivityModal/ModifyRepeatModal'
 
 
 class ScheduleScreen extends Component {
@@ -36,12 +37,14 @@ class ScheduleScreen extends Component {
       showModal: false,
       showModalName: false,
       showModalTime: false,
+      showModalRepeat: false,
     };
     this.activity = {
       id: "",
       name: "",
       hour: 0,
       min: 0,
+      repeat: [],
     }
   }
 
@@ -56,6 +59,11 @@ class ScheduleScreen extends Component {
     this.activity.min = min
   }
 
+  onRepeatChange = (id, repeat) => {
+    this.activity.id = id
+    this.activity.repeat = repeat
+  }
+
   setModalVisible = (visible) => {
     this.setState(state => ({
       [visible] : !state[visible]
@@ -63,8 +71,8 @@ class ScheduleScreen extends Component {
   };
 
   render() {
-    const { showModal, showModalName, showModalTime } = this.state;
-    const { name, id, hour, min } = this.activity;
+    const { showModal, showModalName, showModalTime, showModalRepeat } = this.state;
+    const { name, id, hour, min, repeat } = this.activity;
     return (
       <Container style={styles.container}>
         <Header>
@@ -89,21 +97,14 @@ class ScheduleScreen extends Component {
             <ActivityList 
               changeName={this.onNameChange} openNameModal={() => {this.setModalVisible('showModalName')}}
               changeTime={this.onTimeChange} openTimeModal={() => {this.setModalVisible('showModalTime')}}
+              changeRepeat={this.onRepeatChange} openRepeatModal={() => {this.setModalVisible('showModalRepeat')}}
             />
           </View>
           {showModalName && <ModifyNameModal id={id} name={name} completeChange={() => {this.setModalVisible('showModalName')}} />}
           {showModalTime && <ModifyTimeModal id={id} hour={hour} min={min} completeChange={() => {this.setModalVisible('showModalTime')}} />}
+          {showModalRepeat && <ModifyRepeatModal id={id} repeat={repeat} completeChange={() => {this.setModalVisible('showModalRepeat')}} />}
           {showModal && <AddActivityModal completeAdd={() => {this.setModalVisible('showModal')}}/>}
         </Content>
-        {/* <Footer backgroundColor="#ffffff">
-          <FooterTab>
-            <Button onPress={() => {this.setModalVisible('showModal')}}>
-              <Text style={styles.buttonContainer}>
-                New activity
-              </Text>
-            </Button>
-          </FooterTab>
-        </Footer> */}
         <Fab
           active={true}
           direction="up"
