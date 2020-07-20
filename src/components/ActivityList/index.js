@@ -41,6 +41,7 @@ class ActivityList extends Component {
   }
   removeItem(activity){
     this.props.removeActivity(activity.id);
+    removeAlarmNoti(activity);
     ToastAndroid.show(
       "Activity removed",
       ToastAndroid.SHORT

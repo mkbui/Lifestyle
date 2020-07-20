@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   Modal,
   Alert,
+   Image,
+  FlatList,
 } from 'react-native';
 import {
   Container,
@@ -21,7 +23,7 @@ import {
   Body,
 } from 'native-base';
 
-import DatePicker from 'react-native-modern-datepicker';
+import {ButtonGroup} from 'react-native-elements';
 import moment from 'moment';
 
 
@@ -32,7 +34,58 @@ import ExerciseChart from './ExerciseChart'
 import ExerciseLineChart from './ExerciseLineChart';
 import MealLineChart from './MealLineChart';
 
+const DATA = [
+  {
+    id: '01',
+    month: 'January',
+  },
+  {
+    id: '02',
+    month: 'February',
+  },
+  {
+    id: '03',
+    month: 'March',
+  },
+  {
+    id: '04',
+    month: 'April',
+  },
+  {
+    id: '05',
+    month: 'May',
+  },
+  {
+    id: '06',
+    month: 'June',
+  },
+  {
+    id: '07',
+    month: 'July',
+  },
 
+  {
+    id: '08',
+    month: 'August',
+  },
+
+  {
+    id: '09',
+    month: 'September',
+  },
+  {
+    id: '10',
+    month: 'October',
+  },
+  {
+    id: '11',
+    month: 'November',
+  },
+  {
+    id: '12',
+    month: 'December',
+  },
+];
 
 export default class Chart extends Component {
   constructor() {
@@ -40,6 +93,11 @@ export default class Chart extends Component {
     this.state = {
       selectedMonth: '',
       modalVisible: false,
+      checkedMonth: moment().format('MM'),
+      checkedYear:moment().format('YYYY'),
+      selectedIndex: 0,
+      buttons: 'Exercise',
+     
      
     };
   }
@@ -57,8 +115,13 @@ export default class Chart extends Component {
       this.setState({...this.state, selectedEntry: JSON.stringify(entry)});
     }
   }
+  updateIndex(selectedIndex) {
+    this.setState({selectedIndex});
+  }
   render() {
     const {selectedMonth, modalVisible} = this.state;
+    const buttons = ['Exercise', 'Meal'];
+    const {selectedIndex} = this.state;
     return (
       <Container>
         {/* Header */}
@@ -89,7 +152,7 @@ export default class Chart extends Component {
     <Content padder> 
 
       {/* Modal select month */}
-    <Modal
+      <Modal
       animationType="slide"
       transparent={true}
       visible={this.state.modalVisible}
@@ -97,25 +160,58 @@ export default class Chart extends Component {
         Alert.alert('Modal has been closed.');
       }}>
       <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <DatePicker
-            current={this.state.selectedMonth.split('-').join(' ')}
-            mode="monthYear"
-            selectorStartingYear={2000}
-            onMonthYearChange={selectedDate =>
-              this.setState({
-                selectedMonth: selectedDate.split(' ').join('-'),
-              })
-            }
-            style={styles.datePicker}
+        <View 
+        style={[styles.modalView, {height:430,}]}
+        >
+   
+          <View style={{flexDirection:"row", marginVertical:10, marginBottom:30}}>
+          <TouchableOpacity onPress={()=>{
+            this.setState({
+              checkedYear: Number(this.state.checkedYear) -1,
+              selectedMonth: Number(this.state.checkedYear) -1 +'-'+ this.state.checkedMonth
+            }) }}>
+            <Image style={{height:20, width:20}}source={require("../../../../../../assets/left_arrow.png")}/>
+          </TouchableOpacity>
+          <Text style={{marginHorizontal:50}} >{this.state.checkedYear}</Text>
+          <TouchableOpacity  onPress={()=>{
+            this.setState({
+              checkedYear: Number(this.state.checkedYear) +1,
+              selectedMonth: Number(this.state.checkedYear) +1 +'-'+ this.state.checkedMonth
+            }) }} >
+            <Image style={{height:20, width:20}} source={require("../../../../../../assets/right_arrow.png")}/>
+          </TouchableOpacity>
+          </View>
+          <FlatList  
+            data={DATA}
+            renderItem={({item}) => (
+              <TouchableOpacity
+              key={item.id}
+                onPress={() =>
+                  this.setState({
+                    checkedMonth: item.id,
+                    selectedMonth:this.state.checkedYear + '-' + item.id,
+                  })
+                }
+                style={[
+                  styles.item,{backgroundColor:this.state.checkedMonth === item.id ? '#22d6f2' : 'white', },
+                ]}>
+               
+                <Text style={{fontSize:16, color:this.state.checkedMonth === item.id ? 'white' : 'black',}}>{item.month}</Text>
+              </TouchableOpacity>
+            )}
+            numColumns={3}
           />
+
           <TouchableOpacity
             style={styles.openButton}
             onPress={() => {
-              this.setState({modalVisible: false});
+              this.setState({
+                modalVisible: false,
+              })
             }}>
             <Text style={styles.textStyle}> OK </Text>
           </TouchableOpacity>
+          {console.log("selectedMonth",this.state.selectedMonth)}
         </View>
       </View>
     </Modal>
@@ -133,12 +229,29 @@ export default class Chart extends Component {
           .join('-')}
       </Text>
     </TouchableOpacity>
-     
-    {/* Chart component */}
-      <ExerciseChart selectedMonth={selectedMonth} modalVisible={modalVisible}/>
+    <ButtonGroup
+          onPress={this.updateIndex.bind(this)}
+          selectedIndex={selectedIndex}
+          buttons={buttons}
+          containerStyle={{height: 35}}
+        />
+
+        {this.state.selectedIndex === 0 ? 
+        <>
+         <ExerciseChart selectedMonth={selectedMonth} modalVisible={modalVisible}/>
       <ExerciseLineChart selectedMonth={selectedMonth} modalVisible={modalVisible}/>
-      <MealChart selectedMonth={selectedMonth} modalVisible={modalVisible}/>
+        </>
+        :
+        <>
+         <MealChart selectedMonth={selectedMonth} modalVisible={modalVisible}/>
       <MealLineChart  selectedMonth={selectedMonth} modalVisible={modalVisible}/>
+        </>
+      
+      }
+
+    {/* Chart component */}
+     
+     
     </Content>
 
      </Container>
@@ -195,6 +308,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: 'green',
+  },
+  item: {
+    width: 80,
+    height: 35,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10,
+    marginHorizontal: 2,
   },
  
 });

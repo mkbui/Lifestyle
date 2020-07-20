@@ -18,7 +18,6 @@ import {
   CardItem,
   Thumbnail,
 } from "native-base";
-import {getDateString} from "../utils";
 
 import {connect} from "react-redux";
 import {createNewDaily} from "../actions";
@@ -32,6 +31,9 @@ const splashLogo = require('../../assets/bootLogo.jpg');
 const heart = require("../../assets/heart.png");
 const finance = require("../../assets/finance.png");
 
+/* Other services */
+import {LocalNotification, ScheduledNotification} from "../components/PushController"
+import {getDateString} from "../utils";
 const today = getDateString();
 
 /* Store data used: userInfo */
@@ -58,29 +60,18 @@ class HomeScreen extends Component {
     this.state = {
       fActive: false,
     }
-    console.log(this.props.userInfo);
+    //console.log(this.props.userInfo);
     let lastRecordDate = this.props.userInfo.DailyRecord.date;
     if (today !== lastRecordDate) {
       console.log('Initiating new daily record...');
       this.props.createNewDaily();
     }
   }
-  calIncome = () => {
-    const {budgetList} = this.props;
-    var incomeTotal = 0;
-    {
-      budgetList.map(budget => {
-        if (
-          budget.type === 'Income' &&
-          budget.date === today
-        ) {
-          incomeTotal += Number(budget.amount);
-        }
-      });
-    }
-    return incomeTotal;
-  }
 
+  handleNotification = () => {
+    console.log('New notification triggered')
+  }
+  
   render() {
     const {userInfo, budgetList, mealList} = this.props;
     const {DailyRecord, Info} = this.props.userInfo;
@@ -113,8 +104,7 @@ class HomeScreen extends Component {
           </Body>
           <Right style = {{flex: 0.5}}>
             <Button 
-              transparent 
-              onPress={() => this.props.navigation.goBack()}>
+              onPress={() => ScheduledNotification() }>
               <Icon name = "paper-plane" />
             </Button>
           </Right>
@@ -181,7 +171,6 @@ class HomeScreen extends Component {
                 <Text style = {styles.cardText}>0 Kcal</Text>
               </Left>
             </CardItem>
-            {/* this.props.navigation.navigate('Tracker', { screen: 'Health' }) */}
             <CardItem footer bordered button onPress = {() => {this.props.navigation.navigate('Tracker', { screen: 'Health' })}}>
               <Text>Go to Health Tracker</Text>
             </CardItem>
@@ -199,14 +188,14 @@ class HomeScreen extends Component {
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "cash-refund"/>
-                <Text style = {styles.cardText}>{incomeTotal/*DailyRecord.Finance.spent.sum*/} VND</Text>
+                <Text style = {styles.cardText}>{expenseTotal/*DailyRecord.Finance.spent.sum*/} VND</Text>
               </Left>
             </CardItem>
 
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "credit-card-plus"/>
-                <Text style = {styles.cardText}>{expenseTotal/*DailyRecord.Finance.earned.sum*/} VND</Text>
+                <Text style = {styles.cardText}>{incomeTotal/*DailyRecord.Finance.earned.sum*/} VND</Text>
               </Left>
             </CardItem>
 

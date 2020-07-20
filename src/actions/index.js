@@ -9,6 +9,7 @@ export const REMOVE_EXERCISE = 'REMOVE_EXERCISE'
 export const CREATE_USER = 'CREATE_USER'
 export const CALCULATE_INFO = 'CALCULATE_INFO'
 export const CREATE_NEW_DAILY = 'CREATE_NEW_DAILY'
+export const UPDATE_DAILY_RECORD = 'UPDATE_DAILY_RECORD'
 // Schedule Management
 export const ADD_ACTIVITY = 'ADD_ACTIVITY'
 export const REMOVE_ACTIVITY = 'REMOVE_ACTIVITY'
@@ -36,6 +37,11 @@ export const EDIT_M = "EDIT_M";
 // //water
 // export const SUBMIT_W = "SUBMIT_W";
 
+/*
+export const ADD_INCOME_RECORD = 'ADD_INCOME_RECORD'
+export const ADD_EXPENSE_RECORD = 'ADD_EXPENSE_RECORD'
+export const ADD_CONSUME_RECORD = 'ADD_FITNESS_RECORD'
+export const ADD_EXERCISE_RECORD = 'ADD_EXERCISE_RECORD'*/
 
 export function createUser(name, initInfo){
   
@@ -48,6 +54,10 @@ export function calculateInfo(info){
 
 export function createNewDaily(){
   return { type: CREATE_NEW_DAILY}
+}
+
+export function updateDailyRecord(){
+  return { type: UPDATE_DAILY_RECORD }
 }
 
 export function addFood(name, category){
