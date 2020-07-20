@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   Image,
+  ToastAndroid,
 } from 'react-native';
 import {
   Content,
@@ -119,6 +120,7 @@ class Meal extends Component {
       var currentDate = moment().format("DD-MM-YYYY");
 
       this.props.onSubmit(this.state);
+      this.props.updateDailyRecord(this.state);
       this.props.deleteMealEdit();
       this.setState({
         id: '',
@@ -130,6 +132,11 @@ class Meal extends Component {
         filePath: {},
         isUpload: false
       })
+
+      ToastAndroid.show(
+        "Record submitted!",
+        ToastAndroid.SHORT
+      )
     }
   };
 
@@ -327,6 +334,9 @@ const mapDispatchToProps = dispatch => {
     deleteMealEdit: () => {
       dispatch(actions.actEditMeal(null));
     },
+    updateDailyRecord: meal => {
+      dispatch(actions.updateDailyRecord())
+    }
   };
 };
 

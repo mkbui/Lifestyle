@@ -28,6 +28,9 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {connect} from "react-redux";
 import {addActivity} from "../../actions";
 
+import {ScheduledNotification} from '../PushController';
+import {addAlarmNoti} from '../../utils';
+
 class Activity {
   repeat = [
     {day : "Sun", value : false},
@@ -50,13 +53,14 @@ class Activity {
     this.repeat[5].value = Fri;
     this.repeat[6].value = Sat;
     this.activate = true;
-    this.id = Math.random().toString();
+    this.id = new Date()//Math.random().toString();
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-    addActivity: (activity) => dispatch(addActivity(activity))
+    addActivity: (activity) => dispatch(addActivity(activity)),
 })
+
 class AddActivityModal extends Component {
   constructor(props){
     super(props);
@@ -121,7 +125,10 @@ class AddActivityModal extends Component {
       Fri,
       Sat,
     );
+
     this.props.addActivity(newActivity);
+    // Call utility functions to add notification into list (out of redux store)
+    addAlarmNoti(newActivity);
     this.props.completeAdd();
     this.activity.name = 'Activity';
   };
@@ -263,7 +270,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
+    minWidth: 300,
   },
   modalView: { //For text and repeat modal
     margin: 30,
@@ -277,7 +285,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 5, 
   },
   openButton: {
     backgroundColor: "#F194FF",
@@ -319,6 +327,9 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontSize: 5,
-  }
+  },
+  dayText: {
+    fontSize: 13,
+  },
 });
 export default connect(null, mapDispatchToProps)(AddActivityModal);
