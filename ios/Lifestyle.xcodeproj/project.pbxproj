@@ -35,6 +35,7 @@
 		278917A4A4814B72A1E96A0F /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3699C3AC9EE4E2592F31243 /* rubicon-icon-font.ttf */; };
 		B2AD1272DED9426FBC9F2CB6 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 89748CD61B344C65B81F417B /* SimpleLineIcons.ttf */; };
 		542B5799143441BA883097E2 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A8E63DAA5A2C4F7CB0C2D895 /* Zocial.ttf */; };
+
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		C3699C3AC9EE4E2592F31243 /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		89748CD61B344C65B81F417B /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		A8E63DAA5A2C4F7CB0C2D895 /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,6 +180,7 @@
 				00E356EF1AD99517003FC87E /* LifestyleTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
+
 				A00055AB389F48B598CF5DF5 /* Resources */,
 			);
 			indentWidth = 2;
@@ -196,6 +199,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+
 		A00055AB389F48B598CF5DF5 /* Resources */ = {
 			isa = "PBXGroup";
 			children = (
@@ -361,6 +365,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+
 				60FAE45618E84753A94D32EC /* AntDesign.ttf in Resources */,
 				920364BC5EE245F18AE6DBBB /* Entypo.ttf in Resources */,
 				28426B073A1E48B9B38116B0 /* EvilIcons.ttf in Resources */,

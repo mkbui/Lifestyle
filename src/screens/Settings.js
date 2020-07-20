@@ -1,6 +1,8 @@
 
+
 import {View, StyleSheet, Platform, Switch, ToastAndroid} from 'react-native';
 import React, { Component, useState } from "react";
+
 import {
   Container,
   Header,
@@ -23,6 +25,7 @@ import {
 } from "native-base";
 import {CancelAllNotification} from "../components/PushController"
 import {initializeReminders} from "../utils"
+
 import PINCode, {hasSetPinCode, removePinCode, resetLockStatus} from "./PinCode/index";
 import { Overlay } from "react-native-elements";
 //const Item = Picker.Item;
@@ -86,6 +89,50 @@ class SettingsScreen extends Component {
       currency: value,
     })
   }
+  onSetPinSuccess = () => {
+    this.setState({pinOverlayIsOn: false})
+    ToastAndroid.show(
+      "PIN set successfully",
+      ToastAndroid.LONG
+    )
+  }
+  onEnterPinSuccess = () => {
+    resetLockStatus();
+    removePinCode();
+    this.setState({pinOverlayIsOn: false})
+    ToastAndroid.show(
+      "PIN remove successfully",
+      ToastAndroid.SHORT
+    )
+  }
+  onEnterPinFail = () => {
+    this.setState({pinOverlayIsOn: false})
+    ToastAndroid.show(
+      "PIN remove unsuccessfully",
+      ToastAndroid.SHORT
+    )
+  }
+  onHandleSetPin = () => {
+    this.setState({pinOverlayIsOn: true})
+  }
+  renderSetPin = () => {
+    hasSetPinCode().then(
+      res => {
+        this.setState({passwordIsSet: res})
+      }
+    ).catch(err => console.log(err))
+
+    const {passwordIsSet} = this.state
+    return(
+      <View>
+        {passwordIsSet && 
+        <PINCode
+        status = {"enter"} 
+        onSuccess = {() => 
+          this.onEnterPinSuccess}
+        onFailure = {() => 
+          this.onEnterPinFail}
+        />}
 
   cancelNotification(){
     console.log("Removing notifications")
@@ -141,6 +188,7 @@ class SettingsScreen extends Component {
         onFailure = {() => 
           this.onEnterPinFail}
         />}
+
 
         {!passwordIsSet &&
         <PINCode
@@ -279,7 +327,6 @@ class SettingsScreen extends Component {
                     /> 
                   </Right>
                 </ListItem>
-                
                 <ListItem style = {styles.row} icon onPress = {() => this.setState({stage: 'editUser'})}>
                   <Left>
                     <Button style={{ backgroundColor: "blue" }}>
