@@ -135,7 +135,7 @@ class SettingsScreen extends Component {
           <ListItem style = {styles.row} icon last>
             <Left>
               <Button style={{ backgroundColor: "#4CDA64" }}>
-                <Icon name="arrow-dropdown" />
+                <Icon type = "MaterialIcons" name="arrow-drop-down" />
               </Button>
             </Left>
             <Body>
@@ -164,7 +164,7 @@ class SettingsScreen extends Component {
               <Button 
               style={{ backgroundColor: "#FD3C2D" }}
               >
-                <Icon active name="lock" />
+                <Icon type = "FontAwesome5" active name="lock" />
               </Button>
             </Left>
             <Body>
