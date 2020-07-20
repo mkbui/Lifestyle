@@ -21,6 +21,8 @@ import PropTypes from 'prop-types';
 
 import {connect} from "react-redux";
 import {createUser, calculateInfo, createNewDaily} from "../actions";
+import {initializeReminders} from "../utils";
+
 const  mapDispatchToProps = dispatch => {
   return {
     createUser: (name, initInfo) => dispatch(createUser(name, initInfo)),
@@ -205,6 +207,7 @@ class FirstformScreen extends Component {
     const {name, initInfo} = this.state;
     this.props.createUser(name, initInfo);    // dispatch function call, refer to mapDispatchToProps
     this.props.calculateInfo(initInfo);
+    initializeReminders();
     this.props.navigation.navigate('Home');
   }
 

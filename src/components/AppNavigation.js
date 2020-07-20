@@ -32,6 +32,7 @@ import Meal from './StatusManagement/screens/Health/AddStatus/Meal';
 
 import FinanceTracker from '../components/TrackerScreens/FinanceTracker';
 import HealthTracker from '../components/TrackerScreens/HealthTracker';
+import ExportPersonalDocumentScreen from '../screens/ExportPersonalDocument';
 /* Drawer navigator containing side list of main screens and stack navigator itself */
 const Drawer = createDrawerNavigator();
 function DrawerNavigator() {
@@ -52,6 +53,7 @@ function DrawerNavigator() {
       <Drawer.Screen name = 'Suggestion List' component = { ListScreen } />
       <Drawer.Screen name = 'Today`s Advice' component = { AdviceScreen } />
       <Drawer.Screen name = 'Settings' component = { SettingsScreen } />
+      <Stack.Screen name = 'ExportPersonalDocument' component = { ExportPersonalDocumentScreen } />
     </Drawer.Navigator>
   )
 } 
@@ -94,6 +96,7 @@ function StackNavigator() {
       {/* Old tracker template */}
       <Stack.Screen name = 'HealthTracker' component = {HealthTracker}/>
       <Stack.Screen name = 'FinanceTracker' component = {FinanceTracker}/>
+      <Stack.Screen name = 'ExportPersonalDocument' component = { ExportPersonalDocumentScreen } />
     </Stack.Navigator>
   )
 };

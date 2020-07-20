@@ -1,5 +1,8 @@
-import React, { Component } from "react";
-import {StyleSheet, ToastAndroid} from 'react-native';
+
+
+import {View, StyleSheet, Platform, Switch, ToastAndroid} from 'react-native';
+import React, { Component, useState } from "react";
+
 import {
   Container,
   Header,
@@ -20,18 +23,39 @@ import {
   Item,
   View,
 } from "native-base";
+import {CancelAllNotification} from "../components/PushController"
+import {initializeReminders} from "../utils"
+
 import PINCode, {hasSetPinCode, removePinCode, resetLockStatus} from "./PinCode/index";
 import { Overlay } from "react-native-elements";
 //const Item = Picker.Item;
+import {lightStyle, darkStyle} from "./Style"
+import { ToggleTheme, isDarkTheme as dt } from "./Theme";
 
 /* TO BE ADDED: a mapDispatchToProps and mapStateToProps to save settings to store */
+function Toggle() {
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
+  return (
+    <View style={styles.container}>
+      <Switch
+        trackColor={{ false: "#767577", true: "#81b0ff" }}
+        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={toggleSwitch}
+        value={isEnabled}
+      />
+    </View>
+  );
+}
 /* Presentational component for managing redirection to setting changes */
 class SettingsScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       darkMode: false,
+      isDarkTheme: dt,
       reminder: false,
       stage: 'main',  // main, setpin, editUser
       currency: "$",
@@ -109,6 +133,62 @@ class SettingsScreen extends Component {
         onFailure = {() => 
           this.onEnterPinFail}
         />}
+
+  cancelNotification(){
+    console.log("Removing notifications")
+    CancelAllNotification()
+    ToastAndroid.show(
+      "All notifications removed",
+      ToastAndroid.SHORT
+    )
+    initializeReminders()
+  }
+
+  onSetPinSuccess = () => {
+    this.setState({pinOverlayIsOn: false})
+    ToastAndroid.show(
+      "PIN set successfully",
+      ToastAndroid.LONG
+    )
+  }
+  onEnterPinSuccess = () => {
+    resetLockStatus();
+    removePinCode();
+    this.setState({pinOverlayIsOn: false})
+    ToastAndroid.show(
+      "PIN remove successfully",
+      ToastAndroid.SHORT
+    )
+  }
+  onEnterPinFail = () => {
+    this.setState({pinOverlayIsOn: false})
+    ToastAndroid.show(
+      "PIN remove unsuccessfully",
+      ToastAndroid.SHORT
+    )
+  }
+  onHandleSetPin = () => {
+    this.setState({pinOverlayIsOn: true})
+  }
+  renderSetPin = () => {
+    hasSetPinCode().then(
+      res => {
+        this.setState({passwordIsSet: res})
+      }
+    ).catch(err => console.log(err))
+
+    const {passwordIsSet} = this.state
+    return(
+      <View>
+        {passwordIsSet && 
+        <PINCode
+        status = {"enter"} 
+        onSuccess = {() => 
+          this.onEnterPinSuccess}
+        onFailure = {() => 
+          this.onEnterPinFail}
+        />}
+
 
         {!passwordIsSet &&
         <PINCode
@@ -236,7 +316,6 @@ class SettingsScreen extends Component {
                   </Body>
                   <Right>
                     <Switch 
-
                       value={this.state.darkMode}
                       trackColor="#50B948" 
                       onValueChange = { () =>
@@ -258,9 +337,18 @@ class SettingsScreen extends Component {
                     <Text>Edit personal data</Text>
                   </Body>
                 </ListItem>
+                <ListItem style = {styles.row} icon >
+                  <Left>
+                    <Button style={{ backgroundColor: "brown" }} onPress = {() => CancelAllNotification()}>
+                      <Icon active name="notifications-off" />
+                    </Button>
+                  </Left>
+                  <Body>
+                    <Text>Remove all notifications</Text>
+                  </Body>
+                </ListItem>
 
                 <Separator bordered style = {styles.separator}/>
-                
               </Content>
             </Container>
             
