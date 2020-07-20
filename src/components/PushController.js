@@ -73,7 +73,7 @@ export const ScheduledAlarmNotification = (activity, weekDay) => {
     vibration: 500,
     playSound: true,
     soundName: 'default',
-    actions: '["Yes", "No"]',
+    actions: '["OK"]',
     allowWhileIdle: true,
     date: date,
     repeatType: 'week',
