@@ -61,7 +61,7 @@ class AdviceAnalysis extends Component {
     let chosenId = Math.floor(Math.random()*tips.length);
     this.setState({
       tip: tips[chosenId].text,
-    });
+    }, console.log(this.state.tip));
   }
 
   render(){
