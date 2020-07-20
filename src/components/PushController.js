@@ -1,4 +1,6 @@
 import PushNotification from 'react-native-push-notification'
+import {View, ToastAndroid} from 'react-native';
+import {initializeReminders} from '../utils';
 const splashLogo = require('../../assets/bootLogo.jpg');
 
 PushNotification.configure({
@@ -88,8 +90,10 @@ export const DailyReminder = (reminder) => {
     title = reminder.title;
     if (reminder.message) message = reminder.message;
     time = reminder.time; hour = time.hour; min = time.min;
-    date = new Date(year, month, day, hour, min, 0);
+    date = new Date(year, month, day+1, hour, min, 0);
   }
+  console.log(date);
+
   var id = reminder.id;
   return PushNotification.localNotificationSchedule({
     id: id,
@@ -142,8 +146,9 @@ export const ScheduledNotification = (time) => {
 }
 
 export const CancelAllNotification = () => {
+
   PushNotification.cancelAllLocalNotifications();
-  CancelAllNotification()
+  console.log("Canceling")
   ToastAndroid.show(
     "All notifications removed",
     ToastAndroid.SHORT

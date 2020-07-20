@@ -35,7 +35,7 @@ class SplashScreen extends Component {
       {
         this.props.navigation.navigate('Home')
       }
-    if (registered === false) this.props.navigation.navigate('Home');
+    if (registered === false) this.props.navigation.navigate('Firstform');
   }
 
   render(){
