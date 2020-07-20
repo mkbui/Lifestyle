@@ -20,7 +20,6 @@ import {
 } from "native-base";
 import {connect} from "react-redux";
 import {removeActivity, activateActivity} from "../../actions";
-import ModifyNameModal from '../ActivityModal/ModifyNameModal'
 
 function mapStateToProps(state) {
   return {activityList: state.activityList}
@@ -66,6 +65,10 @@ class ActivityList extends Component {
     this.props.openTimeModal();
   }
 
+  onChangeRepeat = (id, repeat) => {
+    this.props.changeRepeat(id, repeat);
+    this.props.openRepeatModal();
+  }
 
   render() {
     const {activityList} = this.props;
@@ -81,7 +84,7 @@ class ActivityList extends Component {
                 </TouchableOpacity>
               </Left>
               <Body style={{flex: 2, alignItems:"center"}}>
-                <View style={{flexDirection:'column', alignItems:"center"}}>
+
                   <View>
                     <TouchableOpacity onPress={() => {this.onChangeTime(activity.id, activity.hour, activity.min)}}>
                       <Text style={styles.timeText}>
@@ -89,21 +92,27 @@ class ActivityList extends Component {
                       </Text>
                     </TouchableOpacity>
                   </View>
-                  <View style={{marginTop: 20, flexDirection:"row", alignItems:"center", justifyContent:"space-evenly"}}>
-                    { 
-                      activity.repeat.filter(item => {return item.value === true}).length > 0 ? 
-                        activity.repeat.map(item => {
-                        return(
-                          (item.value === true) && <ListItem key={item.day} style={{borderBottomWidth: 0}}>
-                            <Text style={{fontSize: 10}}>
-                              {item.day}
-                            </Text>
-                          </ListItem>
-                        )
-                      }) : <Text style={{fontSize: 10}}> Today </Text>
-                    }
-                  </View>
-                </View>
+                  <TouchableOpacity onPress={() => {this.onChangeRepeat(activity.id, activity.repeat)}}>
+                    <View style={{marginTop: 20, flexDirection:"column", alignItems:"center"}}>
+                      <Text style={{fontSize: 15}}>Repeat</Text>
+                      <View style={{flexDirection:"row", alignItems:"center", justifyContent:"space-evenly"}} button={true}>
+                      { 
+                        activity.repeat.filter(item => {return item.value === true}).length > 0 ? 
+                          activity.repeat.map(item => {
+                          return(
+                            (item.value === true) &&
+                            <ListItem key={item.day} style={{borderBottomWidth: 0}}>
+                              <Text style={{fontSize: 10}}>
+                                {item.day}
+                              </Text>
+                            </ListItem>
+                          )
+                        }) : <Text style={{fontSize: 10}}> No </Text>
+                      }
+                      </View>  
+                    </View>
+                  </TouchableOpacity>
+
               </Body>
               <Right style={{flex: 1}}>
                 <View style={{flexDirection:'column', alignItems: "flex-end"}}>

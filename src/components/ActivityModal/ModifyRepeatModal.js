@@ -3,178 +3,62 @@ import {
   StyleSheet,
   Modal,
   TouchableHighlight,
-  TextInput,
-  Switch,
 } from 'react-native';
 import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Button,
-  Icon,
-  Left,
-  Right,
-  Body,
   Text,
-  CheckBox,
   View,
-  Footer,
-  FooterTab,
   ListItem,
-  List,
+  CheckBox,
+  Body,
 } from "native-base";
-import DateTimePicker from '@react-native-community/datetimepicker';
 import {connect} from "react-redux";
-import {addActivity} from "../../actions";
+import {modifyActivityRepeat} from "../../actions";
 
-class Activity {
-  repeat = [
-    {day : "Sun", value : false},
-    {day : "Mon", value : false},
-    {day : "Tue", value : false},
-    {day : "Wed", value : false},
-    {day : "Thu", value : false},
-    {day : "Fri", value : false},
-    {day : "Sat", value : false},
-  ];
-  constructor(name, hour, min, Sun, Mon, Tue, Wed, Thu, Fri, Sat) {
-    this.name = name;
-    this.hour = hour;
-    this.min = min;
-    this.repeat[0].value = Sun;
-    this.repeat[1].value = Mon;
-    this.repeat[2].value = Tue;
-    this.repeat[3].value = Wed;
-    this.repeat[4].value = Thu;
-    this.repeat[5].value = Fri;
-    this.repeat[6].value = Sat;
-    this.activate = true;
-    this.id = Math.random().toString();
-  }
-}
 
 const mapDispatchToProps = dispatch => ({
-    addActivity: (activity) => dispatch(addActivity(activity))
+    modifyActivityRepeat: (id, repeat) => dispatch(modifyActivityRepeat(id, repeat))
 })
-class AddActivityModal extends Component {
+class ModifyRepeatModal extends Component {
   constructor(props){
     super(props);
     this.state = {
-      date : new Date(),
-      mode : 'time',
-      showNameForm : false,
-      showTime : true,
-      showRepeat : false,
-      Sun : false,
-      Mon : false,
-      Tue : false,
-      Wed : false,
-      Sat : false,
-      Fri : false,
-      Thu : false,
-    };
-    this.activity = {
-      name : 'Activity',
+      Sun : this.props.repeat[0].value,
+      Mon : this.props.repeat[1].value,
+      Tue : this.props.repeat[2].value,
+      Wed : this.props.repeat[3].value,
+      Thu : this.props.repeat[4].value,
+      Fri : this.props.repeat[5].value,
+      Sat : this.props.repeat[6].value,
     };
   }
-  onChangeTime = (event, selectedDate) => {
-    if (event.type == "set") {
-      const currentDate = selectedDate || this.state.date;
-      this.state.date = currentDate;
-      this.setModalVisible('showTime');
-      this.setModalVisible('showNameForm');
-    }
-    else {
-      this.props.completeAdd()
-    }
-  };
-
-  setModalVisible = (visible) => {
-    this.setState(state => ({
-      [visible] : !state[visible]
-    }));
-  };
-
-  
   checkBox = (checkDate) => {
     this.setState(state => ({
       [checkDate] : !state[checkDate]
     }));
   };
 
-  onChangeName = (textChange) => {
-    this.activity.name = textChange;
-  };
-
-  createActivity = () => {
-    const {Sun, Mon, Tue, Wed, Thu, Fri, Sat} = this.state;
-    let newActivity = new Activity(
-      this.activity.name,
-      this.state.date.getHours(),
-      this.state.date.getMinutes(),
-      Sun,
-      Mon,
-      Tue,
-      Wed,
-      Thu,
-      Fri,
-      Sat,
-    );
-    this.props.addActivity(newActivity);
-    this.props.completeAdd();
-    this.activity.name = 'Activity';
+  modify = () => {
+    const {Sun, Mon, Tue, Wed, Thu, Fri, Sat} = this.state
+    this.props.modifyActivityRepeat(
+      this.props.id, 
+      [
+        {day : "Sun", value : Sun},
+        {day : "Mon", value : Mon},
+        {day : "Tue", value : Tue},
+        {day : "Wed", value : Wed},
+        {day : "Thu", value : Thu},
+        {day : "Fri", value : Fri},
+        {day : "Sat", value : Sat},
+      ]
+    )
+    this.props.completeChange()
   };
 
   render() {
-    const { mode, date, showTime, showNameForm, showRepeat } = this.state;
-    const {Sun, Mon, Tue, Wed, Thu, Fri, Sat} = this.state;
+    const {Sun, Mon, Tue, Wed, Thu, Fri, Sat} = this.state
     return (
       <View style={styles.centeredView}>
-        {
-        showTime && <DateTimePicker
-                      testID="dateTimePicker"
-                      value={date}
-                      mode={mode}
-                      is24Hour={true}
-                      display="default"
-                      onChange={this.onChangeTime}/>
-        }
-        <Modal
-          transparent={true} 
-          visible={showNameForm}
-          animationType="slide">
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Activity Name: </Text>
-                <TextInput 
-                  style={{height: 40, fontSize: 15}}
-                  placeholder="Please insert activity name!"
-                  onChangeText={this.onChangeName}
-                  defaultValue={this.activity.name}
-                  textAlign="center"/>
-                  <View style={styles.modalButton}>
-                    <TouchableHighlight
-                      style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                      onPress={() => {
-                        this.setModalVisible('showNameForm');
-                        this.props.completeAdd();
-                      }}>
-                      <Text style={styles.textStyle}>Cancel</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight
-                      style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                      onPress={() => {
-                        this.setModalVisible('showNameForm');
-                        this.setModalVisible('showRepeat');
-                      }}>
-                      <Text style={styles.textStyle}>OK</Text>
-                    </TouchableHighlight>
-                  </View>
-                </View>
-          </View>
-        </Modal>
-        <Modal transparent={true} visible={showRepeat} animationType="slide">
+        <Modal transparent={true} visible={true} animationType="slide">
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={{fontSize : 20}}>Repeat</Text>
@@ -224,21 +108,17 @@ class AddActivityModal extends Component {
                   <TouchableHighlight
                     style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
                     onPress={() => {
-                      this.setModalVisible('showRepeat');
-                      this.props.completeAdd()
+                      this.props.completeChange()
                     }}>
                     <Text style={styles.textStyle}>Cancel</Text>
                   </TouchableHighlight>
                   <TouchableHighlight
                     style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                    onPress={() => {
-                      this.setModalVisible('showRepeat');
-                      this.createActivity();
-                    }}>
-                    <Text style={styles.textStyle}>Add</Text>
+                    onPress={() => {this.modify()}}>
+                    <Text style={styles.textStyle}>OK</Text>
                   </TouchableHighlight>
                 </View>
-                </View>
+            </View>
           </View>
         </Modal>
       </View>
@@ -321,4 +201,4 @@ const styles = StyleSheet.create({
     fontSize: 5,
   }
 });
-export default connect(null, mapDispatchToProps)(AddActivityModal);
+export default connect(null, mapDispatchToProps)(ModifyRepeatModal);
