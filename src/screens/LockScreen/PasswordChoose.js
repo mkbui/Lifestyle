@@ -18,6 +18,22 @@ import {
   Body,
   View,
 } from "native-base";
+import { connect } from 'react-redux';
+import { activatePassword, setPasswordType, resetAttemptNumber, resetPasswordType, deactivatePassword, updateTimelock } from "../../actions";
+
+function mapStateToProps(state) {
+    return {lockState: state.lockState}
+}
+
+const mapDispatchToProps = dispatch => ({
+    activatePassword:() => dispatch(activatePassword()),
+    setPasswordType: (passwordType) => dispatch(setPasswordType(passwordType)),
+    removeTimeLock: () => dispatch(removeTimeLock()),
+    resetAttemptNumber: () => dispatch(resetAttemptNumber()),
+    resetPasswordType: () => dispatch(resetPasswordType()),
+    deactivatePassword: () => dispatch(deactivatePassword()),
+    updateTimelock: () => dispatch(updateTimelock())
+})
 
 class PasswordChoose extends Component {
     constructor(props){
@@ -43,7 +59,9 @@ class PasswordChoose extends Component {
                 passwordKeychainName,
                 passwordKeychainName,
                 input)
-
+            // set hasSetPassword, setpasswordType
+            this.props.activatePassword();
+            this.props.setPasswordType(this.props.passwordType)
             if (!!this.props.onSuccess())
             {
                 this.props.onSuccess()
@@ -59,8 +77,9 @@ class PasswordChoose extends Component {
 
     render() {
         const {passwordType} = this.props
+        console.log(passwordType)
         if(passwordType === PasswordType.none) return null
-        if (passwordType === PasswordType.pin){
+        else if (passwordType === PasswordType.pin){
             return(
                 <View>
                     {this.state.status === PasswordStatus.choose && 
@@ -85,9 +104,10 @@ class PasswordChoose extends Component {
             )
         }
 
-        if (passwordType === PasswordType.string){
+        else if (passwordType === PasswordType.string){
             return(
                 <View>
+
                     {this.state.status === PasswordStatus.choose && 
                     <StringPassword
                         status = {PasswordStatus.choose}
@@ -110,7 +130,7 @@ class PasswordChoose extends Component {
             )
         }
 
-        if (passwordType === PasswordType.pattern){
+        else if (passwordType === PasswordType.pattern){
             return(
                 <View style = {{
                     position:"absolute"
@@ -136,10 +156,8 @@ class PasswordChoose extends Component {
                 </View>
             )
         }
+        else return null
     }
 }
 
-const styles = StyleSheet.create({
-  })
-
-  export default PasswordChoose;
+export default connect(mapStateToProps, mapDispatchToProps)(PasswordChoose);

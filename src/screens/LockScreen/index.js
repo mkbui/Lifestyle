@@ -18,15 +18,24 @@ import {
     Body,
     View,
   } from "native-base";
-import AsyncStorage from '@react-native-community/async-storage'
+import { setPasswordType, resetAttemptNumber, resetPasswordType, deactivatePassword } from "../../actions";
+import {connect} from "react-redux";
 
 const passwordKeychainName = "lifestyleAppKeychainName"
-const timeLockAsyncStorageName = "timeLockASName"
-const passwordAttemptAsyncStorageName = "passwordAttemptASName"
-const passwordTypeAsyncStorageName = "passwordTypeASName"
 
+function mapStateToProps(state) {
+    return {lockState: state.lockState}
+}
 
-export default class Password extends Component{
+const mapDispatchToProps = dispatch => ({
+    setPasswordType: (passwordType) => dispatch(setPasswordType(passwordType)),
+    removeTimeLock: () => dispatch(removeTimeLock()),
+    resetAttemptNumber: () => dispatch(resetAttemptNumber()),
+    resetPasswordType: () => dispatch(resetPasswordType()),
+    deactivatePassword: () => dispatch(deactivatePassword())
+})
+
+class Password extends Component{
     constructor(props){
         super(props);
         this.state = { 
@@ -34,20 +43,20 @@ export default class Password extends Component{
             isLocked: false,
             type: PasswordType.none
         };
-        AsyncStorage.multiGet([
-            timeLockAsyncStorageName,
-            passwordTypeAsyncStorageName
-        ]).then((key) => {
-            this.setState({isLocked: (key[0][1] !== null) , type: key[1][1]})
-        }).catch(err => console.log(err))
-
     }
 
     componentDidMount() {
+        
         if (this.props.status === PasswordStatus.choose){
-            const {passwordType} = this.props
-            AsyncStorage.setItem(passwordTypeAsyncStorageName, passwordType);
-            this.setState({type: passwordType})
+            const type = this.props.passwordType
+            this.setState({type: type})
+        }
+        else{
+            //get time lock, get passwordType
+            const isLocked = (this.props.lockState.timeLock !== "")
+            const type = (this.props.lockState.passwordType)
+
+            this.setState({isLocked, type})
         }
     }
     changeInternalStatus = (status) => {
@@ -57,11 +66,12 @@ export default class Password extends Component{
     render(){
         const {status, passwordType} = this.props;
         const {internalPasswordStatus, isLocked, type} = this.state
+        if (type === "none") return null
         return (
             <View>
                 {(status === PasswordStatus.choose) &&
                     <PasswordChoose
-                        passwordType = {passwordType}
+                        passwordType = {type}
                         passwordKeychainName = {passwordKeychainName}
                         onSuccess = {this.props.onSuccess}
                     />
@@ -76,8 +86,6 @@ export default class Password extends Component{
                         passwordKeychainName = {passwordKeychainName}
                         onSuccess = {this.props.onSuccess}
                         onFailure = {this.props.onFailure}
-                        timeLockAsyncStorageName = {timeLockAsyncStorageName}
-                        passwordAttemptAsyncStorageName = {passwordAttemptAsyncStorageName}
                     />
                 }
 
@@ -88,8 +96,6 @@ export default class Password extends Component{
                 <LockPetitionScreen
                     timeLock = {300000}
                     changeInternalStatus={this.changeInternalStatus}
-                    timeLockAsyncStorageName = {timeLockAsyncStorageName}
-                    passwordAttemptAsyncStorageName = {passwordAttemptAsyncStorageName}
                 />
                 }
             </View>
@@ -97,21 +103,4 @@ export default class Password extends Component{
     }
 }
 
-export async function removePassword() {
-    return await Keychain.resetInternetCredentials(passwordKeychainName)  
-}
-
-export async function hasSetPassword(){
-    return await Keychain.getInternetCredentials(passwordKeychainName).then(res => {
-        return !!res && !!res.password
-      })
-}
-
-
-export async function resetLockStatus(){
-    return AsyncStorage.multiRemove([
-        timeLockAsyncStorageName,
-        passwordAttemptAsyncStorageName,
-        passwordTypeAsyncStorageName
-    ])
-}
+export default connect(mapStateToProps, mapDispatchToProps)(Password);

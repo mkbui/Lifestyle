@@ -6,13 +6,15 @@ const splashBackground = require('../../assets/launchscreen-bg.png');
 const splashLogo = require('../../assets/bootLogo.jpg');
 import { Overlay } from "react-native-elements";
 import {connect} from "react-redux";
-import Password ,{hasSetPassword} from "./LockScreen/index";
+import Password from "./LockScreen/index";
+import BiometricScreen from "./LockScreen/BiometricScreen"
 //const { Dimensions, Platform } = require('react-native');
 //const deviceHeight = Dimensions.get("window").height;
 
 function mapStateToProps(state) {
   return{
   userInfo: state.user,
+  lockState: state.lockState
   }
 }
 
@@ -22,7 +24,8 @@ class SplashScreen extends Component {
   {
     super(props)
     this.state = {
-      hasSetPassword: false
+      passwordOverlayIsOn: false,
+      hasSetBiometric: false
     }
   }
   componentDidMount(){
@@ -31,33 +34,48 @@ class SplashScreen extends Component {
       this.proceed();
     }, 5000);
   }
+
   onEnterPasswordSuccess = () => {
-    this.setState({hasSetPassword: false})
+    this.setState({passwordOverlayIsOn: false})
     this.props.navigation.navigate('Home');
   }
   onEnterPasswordFail = () => console.log("login fail")
 
+  onBiometricFail = () => {
+    this.setState({biometricOverlayIsOn: false})
+  }
+
+  onBiometricSuccess = () => {
+    this.setState({biometricOverlayIsOn: false})
+    this.setState({passwordOverlayIsOn: false})
+    this.props.navigation.navigate('Home');
+  }
   proceed(){
     const {userInfo} = this.props;
     let registered = userInfo.Info.registered; 
-    if (registered === true) 
+    let isPasswordSet = this.props.lockState.isPasswordSet
+    let isBiometricSet = this.props.lockState.isBiometricSet
+    if(isBiometricSet){
+      this.setState({biometricOverlayIsOn: true})
+    }
+    if (registered === true && isPasswordSet) 
       {
-        hasSetPassword().then( res => {
-          this.setState({hasSetPassword: res})
-        }
-        ).catch(err => console.log(err))
-        
-        this.props.navigation.navigate('Home');
+        this.setState({passwordOverlayIsOn: true})
       }
-    if (registered === false) this.props.navigation.navigate('Firstform');
+    else if (registered === false) this.props.navigation.navigate('Firstform');
+    else this.props.navigation.navigate('Home');
   }
 
   render(){
-    const {hasSetPassword} = this.state
     return(
       <Container>
+         {this.state.biometricOverlayIsOn && 
+          <BiometricScreen 
+          onSuccess = {this.onBiometricSuccess}
+          onFailure = {this.onEnterPasswordFail}
+          />}
         <Overlay
-        isVisible = {this.state.hasSetPassword}
+        isVisible = {this.state.passwordOverlayIsOn}
         fullScreen
         animationType = "slide">
         {
@@ -65,6 +83,7 @@ class SplashScreen extends Component {
             status = "enter" 
             onSuccess = {this.onEnterPasswordSuccess}
             onFailure = {this.onEnterPasswordFail}
+            removePassword = {false}
           />
         }
       </Overlay> 

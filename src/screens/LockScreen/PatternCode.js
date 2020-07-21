@@ -241,7 +241,7 @@ export default class PatternCode extends Component{
                 this.refs.line.setNativeProps({end: {x,y}})
                 let nextChar = null
 
-                if (!this.isInCircle({x,y},this.state.dots[this.lastIndex], Radius / 3))
+                if (!this.isInCircle({x,y},this.state.dots[this.lastIndex], Radius / 1.5))
                 {
                     nextChar = this.getTouchChar({x,y})
 
@@ -303,7 +303,7 @@ export default class PatternCode extends Component{
     {
         for (let i = 0; i < 9 ; ++i)
         {
-           if (this.isInCircle(point, this.state.dots[i], Radius / 3))
+           if (this.isInCircle(point, this.state.dots[i], Radius / 1.5))
             {
                 return String(i)
             }

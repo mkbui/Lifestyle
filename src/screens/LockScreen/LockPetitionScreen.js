@@ -1,13 +1,22 @@
 import React, { Component } from "react";
 import { View , Text, Button, Icon } from "native-base";
 import {StyleSheet} from "react-native";
-import AsyncStorage from "@react-native-community/async-storage";
 import { PasswordResultStatus } from "./types";
-
+import { connect } from 'react-redux';
+import {removeTimeLock, resetAttemptNumber} from "../../actions/index"
 const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms))
 }
-export default class LockPetitionScreen extends Component
+
+function mapStateToProps(state) {
+    return {lockState: state.lockState}
+}
+
+const mapDispatchToProps = dispatch => ({
+    removeTimeLock: () => dispatch(removeTimeLock()),
+    resetAttemptNumber: () => dispatch(resetAttemptNumber()),
+})
+class LockPetitionScreen extends Component
 {
     constructor(props)
     {
@@ -19,12 +28,9 @@ export default class LockPetitionScreen extends Component
         this.updateTimer = this.updateTimer.bind(this)
     }
     componentDidMount(){
-        AsyncStorage.getItem(this.props.timeLockAsyncStorageName).then( val =>
-            {
-                this.timeEndLock = ( val? (new Date(val).getTime()):(new Date().getTime()) ) + this.props.timeLock
-                this.updateTimer()
-            }
-        )
+        this.timeEndLock = new Date(this.props.lockState.timeLock).getTime() + this.props.timeLock
+
+        this.updateTimer()
     }
     updateTimer = async () =>
     {
@@ -40,10 +46,8 @@ export default class LockPetitionScreen extends Component
         if (timeLeft < 1000)
         {
             //remove time start lock, number of attempt
-            AsyncStorage.multiRemove([
-                this.props.timeLockAsyncStorageName,
-                this.props.passwordAttemptAsyncStorageName
-            ])
+            this.props.removeTimeLock()
+            this.props.resetAttemptNumber()
             this.props.changeInternalStatus(PasswordResultStatus.initial)
         }
         else
@@ -111,3 +115,6 @@ const styles = StyleSheet.create({
         marginTop: 80,
     }
 })
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(LockPetitionScreen);
