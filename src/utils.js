@@ -104,6 +104,17 @@ export function fitnessAnalyzer(Record, Today){
         Try to consistently keep this progress to match your goal.</Text>  
   }
 
+  const exercise = (time) => {
+    if (time < 30)
+      return <Text style = {styles.script}>Also, please consider exercising a little bit more each day
+        to maintain a fresh condition. Even 30 minutes of light jogging is enough.</Text>
+    if (time > 120)
+      return <Text style = {styles.script}>It looks like you are enjoying workouts really fondly. However,
+        note that overexercising can cause exhaustion and side effects, so do it at a maintainable rate.</Text>
+      return <Text style = {styles.script}>Good job with your exercise today! Let's hope you could improve
+        your workrate and duration tomorrow.</Text> 
+  }
+
   const overall = (todays) => {
     return <Text style = {styles.script}>You are in good health today!</Text>
   }
@@ -150,10 +161,17 @@ export function financeAnalyzer(money, Today){
 
 /* Present warning on outliers or unusual record */
 export function warningPresent(info, measure){
-  if (measure.BMI > 30)
-    return <Text style = {styles.script}>You are likely suffering from obesity. This disease
-      is crucial to note for your age, as it can lead to a lot of complications in later stages</Text>
 
+  var bmi = true;
+  var height = true;
+  var age = true;
+
+  if (measure.BMI > 30)
+  return <Text style = {styles.script}>You are likely suffering from obesity. This disease
+    is crucial to note for your age, as it can lead to a lot of complications in later stages</Text>
+  if (measure.BMI < 17)
+  return <Text style = {styles.script}>Your BMI is dangerously low. It could be the sign of 
+    malnutrition and decreasing health. Look out more for your health!</Text>
   return <Text style = {styles.script}>There is no warning today! Keep up the good work.</Text>
 
 }
