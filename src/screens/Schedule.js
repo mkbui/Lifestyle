@@ -28,6 +28,9 @@ import {
 import ActivityList from '../components/ActivityList'
 import AddActivityModal from '../components/ActivityModal/AddActivityModal'
 import {FAB, Portal} from "react-native-paper";
+
+
+
 // class Activity extends Component {
 //   constructor(props) {
 //     super(props);

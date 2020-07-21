@@ -18,7 +18,6 @@ import {
   CardItem,
   Thumbnail,
 } from "native-base";
-import {getDateString} from "../utils";
 
 import {connect} from "react-redux";
 import {createNewDaily} from "../actions";
@@ -32,6 +31,11 @@ const splashLogo = require('../../assets/bootLogo.jpg');
 const heart = require("../../assets/heart.png");
 const finance = require("../../assets/finance.png");
 
+import {backgrounds} from "../data/image";
+
+/* Other services */
+import {LocalNotification, ScheduledNotification} from "../components/PushController"
+import {getDateString} from "../utils";
 const today = getDateString();
 
 /* Store data used: userInfo */
@@ -55,10 +59,12 @@ class HomeScreen extends Component {
 
   constructor(props){
     super(props);
+    id = Math.floor(Math.random()*7);
     this.state = {
       fActive: false,
+      background: backgrounds[id]
     }
-    console.log(this.props.userInfo);
+    //console.log(this.props.userInfo);
     let lastRecordDate = this.props.userInfo.DailyRecord.date;
     if (today !== lastRecordDate) {
       console.log('Initiating new daily record...');
@@ -66,6 +72,17 @@ class HomeScreen extends Component {
     }
   }
 
+  componentDidMount = () => {
+    id = Math.floor(Math.random()*7);
+    this.setState({
+      background: backgrounds[id]
+    });
+  }
+
+  handleNotification = () => {
+    console.log('New notification triggered')
+  }
+  
   render() {
     const {userInfo, budgetList, mealList} = this.props;
     const {DailyRecord, Info} = this.props.userInfo;
@@ -98,8 +115,7 @@ class HomeScreen extends Component {
           </Body>
           <Right style = {{flex: 0.5}}>
             <Button 
-              transparent 
-              onPress={() => this.props.navigation.goBack()}>
+              onPress={() => ScheduledNotification() }>
               <Icon name = "paper-plane" />
             </Button>
           </Right>
@@ -126,7 +142,7 @@ class HomeScreen extends Component {
                     height: 200,
                     flex: 1
                   }}
-                  source={default_background}
+                  source={this.state.background}
                 />
             </CardItem>
           </Card>

@@ -1,12 +1,9 @@
 import React, {Component} from 'react';
 import { View, StyleSheet, Platform, ImageBackground, StatusBar } from 'react-native';
 import { Container, Button, Text, Header, Body, Title } from 'native-base';
-
 const splashBackground = require('../../assets/launchscreen-bg.png');
 const splashLogo = require('../../assets/bootLogo.jpg');
-import { Overlay } from "react-native-elements";
 import {connect} from "react-redux";
-import PINCode ,{hasSetPinCode} from "./PinCode/index";
 //const { Dimensions, Platform } = require('react-native');
 //const deviceHeight = Dimensions.get("window").height;
 
@@ -22,7 +19,6 @@ class SplashScreen extends Component {
   {
     super(props)
     this.state = {
-      hasSetPin: false
     }
   }
   componentDidMount(){
@@ -31,49 +27,20 @@ class SplashScreen extends Component {
       this.proceed();
     }, 5000);
   }
-  onEnterPinSuccess = () => {
-    this.setState({hasSetPin: false})
-    this.props.navigation.navigate('Home');
-  }
-  onEnterPinFail = () => console.log("login fail")
-  renderLockScreen = () => {
-    return(
-      <Overlay
-        isVisible
-        fullScreen
-        animationType = "slide">
-        {
-          <PINCode 
-            status = "enter" 
-            onSuccess = {() => 
-              this.onEnterPinSuccess.bind(this)}
-            onFailure = {() => {this.onEnterPinFail.bind(this)}}
-          />
-        }
-      </Overlay> 
-    )
-  }
+
   proceed(){
     const {userInfo} = this.props;
     let registered = userInfo.Info.registered; 
     if (registered === true) 
       {
-        hasSetPinCode().then( res => {
-          this.setState({hasSetPin: res})
-        }
-        ).catch(err => console.log(err))
-        
-        
+        this.props.navigation.navigate('Home')
       }
     if (registered === false) this.props.navigation.navigate('Firstform');
   }
 
   render(){
-    const {hasSetPin} = this.state
     return(
       <Container>
-        {hasSetPin && this.renderLockScreen()}
-        <StatusBar barStyle="light-content" />
         <ImageBackground source={splashBackground} style={{flex: 1}}>
           <View style={styles.logoContainer}>
             <ImageBackground source={splashLogo} style={styles.logo} />
