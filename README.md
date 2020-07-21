@@ -1,16 +1,37 @@
 # Lifestyle
-> github repository for project in Software Engineering
-> develop a lifestyle monitoring and advisor mobile app
+> Github repository for project in Software Engineering
+
+> Development of a lifestyle monitoring and advisor mobile app
 
 ## Introduction & Specifications
 This readme serves as an outline and configuration specifications for the project.
 Basic specifications (so far):
 - Main Development Framework: React Native
-- Platform: Mobile (currently Android only)
-- Dependencies: React Native libraries, Native Base, React Navigation
+- Platform: Mobile (currently Android (v28.0.3 and up) only)
+- Dependencies: React Native libraries, Native Base, React Navigation, React Redux, and other UI Libraries
 - Database prototype: Redux with persisted AsyncStorage + .json data file
 
+Note: As of July release, the mobile app only supports offline storage and services (like notifications, suggestion lists, etc). Thus, internet connection is not required to run the software overall.
+
+Note: As of 20/07/2020, Native Base is installed as version 2.13.13 in latest updates while React Navigation is installed in its newest version v5. These libraries, as well as other open-source RN Packages, can become deprecated quickly if it becomes abandoned or neglected in the future, due to the rapid changes happening in React Native themes overall. Many problems have actually occured during development process due to this. Please take this into consideration when installing and maintaining project packages.
+
 ---
+
+## Features & Properties
+
+### Daily record tracking
+Allow user to track their daily lifestyle (financial, exercising, nutritional, and personal) via the use of form input, database storage and graphical charts / summary.
+### Schedule Management
+Create and receive notifications from alarm-like activity list that has weekday options, as well as precise daytime and activeness.
+### Food and Exercise Suggestion & Addition
+Access to a neat offline database of food and exercises along with options to add / remove your own items of choice.
+### Advice and Recommendation
+Simple analysis provides overall health and financial advice for users, presented in forms of rating, suggestions, warnings and daily suggestions.
+### Customizable settings
+- PIN Code Security
+- Personal data customization
+- Notification management
+- External storage document export (summarising user's records and information)
 
 ## Installation
 This installation is important to accurately set up and run the project without error.
@@ -111,11 +132,16 @@ pull request when confirming changes to the master route.
 ### Pull and Integrate from Master
 The project is managed through the default branch *master*. This branch will create pull requests from other branches' commits when possible (after completing a component a functionality) and merge into its content. This will count as a contribution from that branch to the repository. 
 
-In order to keep your project up to date with master, simply choose *Pull from (Rebase)* in Source Control tab (after having saved all the commits, pushed and synced with your remote server). This will pull new resources from master and merge with your local folder. 
+In order to keep your project up to date with master, simply choose *Pull from* in Source Control tab (after having saved all the commits, pushed and synced with your remote server). This will pull new resources from *remote/master* and merge with your local folder. 
 
 Before running the app again, make sure to run 
 ```
 yarn
 ```
-first to install new packages and dependencies added. 
 
+and, if necessary,
+```
+yarn upgrade --latest
+```
+
+first to install new packages and dependencies added. 
