@@ -32,26 +32,27 @@ import Meal from './StatusManagement/screens/Health/AddStatus/Meal';
 
 import FinanceTracker from '../components/TrackerScreens/FinanceTracker';
 import HealthTracker from '../components/TrackerScreens/HealthTracker';
+//import ExportPersonalDocumentScreen from '../screens/ExportPersonalDocument';
 /* Drawer navigator containing side list of main screens and stack navigator itself */
 const Drawer = createDrawerNavigator();
 function DrawerNavigator() {
   return(
     <Drawer.Navigator
-      /*initialRouteName='Home'
+      initialRouteName='Home'
       drawerStyle={{
         width: 250,
         backgroundColor: '#c6cbef'
       }}  
       drawerContentOptions = {{
         activeTintColor: "#e91e63"
-      }}*/
+      }}
     >
       <Drawer.Screen name = 'Home' component = { StackNavigator } />
       <Drawer.Screen name = 'Tracker' component = { TrackerNavigator } />
       <Drawer.Screen name = 'My Schedule' component = { ScheduleScreen } />
       <Drawer.Screen name = 'Suggestion List' component = { ListScreen } />
       <Drawer.Screen name = 'Today`s Advice' component = { AdviceScreen } />
-      <Drawer.Screen name = 'Settings' component = { SettingsScreen } hiden = {false}/>
+      <Drawer.Screen name = 'Settings' component = { SettingsScreen } />
     </Drawer.Navigator>
   )
 } 
@@ -72,7 +73,7 @@ function StackNavigator() {
   return(
     <Stack.Navigator
       initialRouteName = 'Splash'
-      
+      headerMode = 'none'
     >
       <Stack.Screen name = 'Splash' component = {SplashScreen}/>
       <Stack.Screen name = 'Home' component = {HomeScreen} />

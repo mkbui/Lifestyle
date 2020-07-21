@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import { View, StyleSheet, Platform, ImageBackground, StatusBar } from 'react-native';
 import { Container, Button, Text, Header, Body, Title } from 'native-base';
-
 const splashBackground = require('../../assets/launchscreen-bg.png');
 const splashLogo = require('../../assets/bootLogo.jpg');
-import { Overlay } from "react-native-elements";
 import {connect} from "react-redux";
 import Password from "./LockScreen/index";
 import BiometricScreen from "./LockScreen/BiometricScreen"

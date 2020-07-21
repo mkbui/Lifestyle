@@ -24,6 +24,7 @@ import {
 import {connect} from "react-redux";
 import {removeActivity, activateActivity} from "../../actions";
 import ModifyNameModal from '../ActivityModal/ModifyNameModal'
+import {removeAlarmNoti} from "../../utils";
 
 function mapStateToProps(state) {
   return {activityList: state.activityList}
@@ -47,6 +48,7 @@ class ActivityList extends Component {
   }
   removeItem(activity){
     this.props.removeActivity(activity.id);
+    removeAlarmNoti(activity);
     ToastAndroid.show(
       "Activity removed",
       ToastAndroid.SHORT

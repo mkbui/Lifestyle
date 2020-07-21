@@ -1,5 +1,8 @@
-import React, { Component } from "react";
-import {StyleSheet, ToastAndroid} from 'react-native';
+
+
+import {View, StyleSheet, Platform, ToastAndroid} from 'react-native';
+import React, { Component, useState } from "react";
+
 import {
   Container,
   Header,
@@ -37,8 +40,9 @@ import {
   deactivateBiometric
 } from "../actions/index"
 //const Item = Picker.Item;
+import {CancelAllNotification} from "../components/PushController"
+import {initializeReminders} from "../utils"
 
-/* TO BE ADDED: a mapDispatchToProps and mapStateToProps to save settings to store */
 
 /* Presentational component for managing redirection to setting changes */
 
@@ -73,6 +77,7 @@ class SettingsScreen extends Component {
     };
     this.passwordType = this.props.lockState.passwordType
     this.passwordType = this.props.lockState.passwordType
+
   }
   
   componentDidMount() {
@@ -98,6 +103,16 @@ class SettingsScreen extends Component {
       currency: value,
     })
   }
+  cancelNotification(){
+    console.log("Removing notifications")
+    CancelAllNotification()
+    ToastAndroid.show(
+      "All notifications removed",
+      ToastAndroid.SHORT
+    )
+    initializeReminders()
+  }
+
   onSetPasswordSuccess = () => {
     this.setState({passwordOverlayIsOn: false})
     ToastAndroid.show(
@@ -207,22 +222,22 @@ class SettingsScreen extends Component {
           <Container style={styles.container}>
           
           <Header>
-            <Left style = {{flex: 1}}>
-              <Button transparent onPress={() => this.props.navigation.openDrawer()}>
-                <Icon name="menu" />
-              </Button>
-            </Left>
-            <Body style = {{flex: 1}}>
-              <Title style = {styles.headerText}>Settings</Title>
-            </Body>
-            <Right style = {{flex: 1}}>
-              <Button 
-                transparent 
-                onPress={() => this.props.navigation.goBack()}>
-                <Icon name = "arrow-back" />
-              </Button>
-            </Right>
-          </Header>
+          <Left style = {{flex: 1}}>
+            <Button transparent onPress={() => this.props.navigation.openDrawer()}>
+              <Icon name="menu" />
+            </Button>
+          </Left>
+          <Body style = {{flex: 1}}>
+            <Title style = {styles.headerText}>Settings</Title>
+          </Body>
+          <Right style = {{flex: 1}}>
+            <Button 
+              transparent 
+              onPress={() => this.props.navigation.goBack()}>
+              <Icon name = "arrow-back" />
+            </Button>
+          </Right>
+        </Header>
 
           <Content>
           
@@ -248,44 +263,44 @@ class SettingsScreen extends Component {
             </ListItem>
 
             <ListItem style = {styles.row} icon>
-              <Left>
-                <Button style={{ backgroundColor: "orange" }}>
-                  <Icon active name="notifications" />
-                </Button>
-              </Left>
-              <Body>
-                <Text>Daily reminder notification</Text>
-              </Body>
-              <Right>
-                <Radio
-                  selected = {this.state.reminder}
-                  onPress = {this.toggleReminder.bind(this)}
-                />
-              </Right>
-            </ListItem>
+            <Left>
+              <Button style={{ backgroundColor: "orange" }}>
+                <Icon active name="notifications" />
+              </Button>
+            </Left>
+            <Body>
+              <Text>Daily reminder notification</Text>
+            </Body>
+            <Right>
+              <Radio
+                selected = {this.state.reminder}
+                onPress = {this.toggleReminder.bind(this)}
+              />
+            </Right>
+          </ListItem>
             
-            <ListItem style = {styles.row} icon last>
-              <Left>
-                <Button style={{ backgroundColor: "#4CDA64" }}>
-                  <Icon name="arrow-dropdown" />
-                </Button>
-              </Left>
-              <Body>
-                <Text>Currency</Text>
-              </Body>
-              <Right>
-                <Picker
-                  note
-                  mode="dropdown"
-                  style={{ width: 100 }}
-                  selectedValue={this.state.currency}
-                  onValueChange={this.onCurrencyChoose.bind(this)}
-                >
-                  <Item label="$" value="$" />
-                  <Item label="VND" value="VND" />
-                </Picker>
-              </Right>
-            </ListItem>
+          <ListItem style = {styles.row} icon last>
+            <Left>
+              <Button style={{ backgroundColor: "#4CDA64" }}>
+                <Icon type = "MaterialIcons" name="arrow-drop-down" />
+              </Button>
+            </Left>
+            <Body>
+              <Text>Currency</Text>
+            </Body>
+            <Right>
+              <Picker
+                note
+                mode="dropdown"
+                style={{ width: 100 }}
+                selectedValue={this.state.currency}
+                onValueChange={this.onCurrencyChoose.bind(this)}
+              >
+                <Item label="$" value="$" />
+                <Item label="VND" value="VND" />
+              </Picker>
+            </Right>
+          </ListItem>
 
 
             <Separator bordered style = {styles.separator}/>
@@ -302,7 +317,7 @@ class SettingsScreen extends Component {
                   )
                 }}
                 >
-                  <Icon active name="lock" />
+                  <Icon type = "FontAwesome5" active name="lock" />
                 </Button>
               </Left>
               <Body>
@@ -401,16 +416,26 @@ class SettingsScreen extends Component {
               </Right>
             </ListItem>
             <ListItem style = {styles.row} icon onPress = {() => this.setState({stage: 'editUser'})}>
+            <Left>
+              <Button style={{ backgroundColor: "blue" }}>
+                <Icon active name="person" />
+              </Button>
+            </Left>
+            <Body>
+              <Text>Edit personal data</Text>
+            </Body>
+          </ListItem>
+
+            <ListItem style = {styles.row} icon >
               <Left>
-                <Button style={{ backgroundColor: "blue" }}>
-                  <Icon active name="person" />
+                <Button style={{ backgroundColor: "brown" }} onPress = {() => CancelAllNotification()}>
+                  <Icon active name="notifications-off" />
                 </Button>
               </Left>
               <Body>
-                <Text>Edit personal data</Text>
+                <Text>Remove all notifications</Text>
               </Body>
             </ListItem>
-
             <Separator bordered style = {styles.separator}/>
             
           </Content>
@@ -452,6 +477,7 @@ class SettingsScreen extends Component {
   }
 }
 
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFF"
@@ -470,9 +496,6 @@ const styles = StyleSheet.create({
     //backgroundColor: '#FFF',
   },
  
-  row: {
-  
-  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen);
