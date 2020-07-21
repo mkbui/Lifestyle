@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {StyleSheet, Image} from 'react-native';
+import {StyleSheet, Image, Modal} from 'react-native';
 import {
   Container,
   Header,
@@ -18,6 +18,7 @@ import {
   CardItem,
   Thumbnail,
 } from "native-base";
+import { Overlay} from 'react-native-elements'
 
 import {connect} from "react-redux";
 import {createNewDaily} from "../actions";
@@ -59,10 +60,11 @@ class HomeScreen extends Component {
 
   constructor(props){
     super(props);
-    id = Math.floor(Math.random()*7);
+    id = Math.floor(Math.random()*10);
     this.state = {
       fActive: false,
-      background: backgrounds[id]
+      background: backgrounds[id],
+      viewAbout: false,
     }
     //console.log(this.props.userInfo);
     let lastRecordDate = this.props.userInfo.DailyRecord.date;
@@ -73,7 +75,7 @@ class HomeScreen extends Component {
   }
 
   componentDidMount = () => {
-    id = Math.floor(Math.random()*7);
+    id = Math.floor(Math.random()*10);
     this.setState({
       background: backgrounds[id]
     });
@@ -83,11 +85,12 @@ class HomeScreen extends Component {
     console.log('New notification triggered')
   }
   
+
   render() {
     const {userInfo, budgetList, mealList} = this.props;
     const {DailyRecord, Info} = this.props.userInfo;
     var incomeTotal = 0, expenseTotal = 0, totalConsumed = 0;
-
+    var money = Info.money
     /* calculate total expense and income today */
     budgetList.map(budget => {
       if (budget.date === today) {
@@ -115,13 +118,29 @@ class HomeScreen extends Component {
           </Body>
           <Right style = {{flex: 0.5}}>
             <Button 
-              onPress={() => ScheduledNotification() }>
+              onPress={() => this.setState({viewAbout: true}) }>
               <Icon name = "paper-plane" />
             </Button>
           </Right>
         </Header>
 
         <Content padder>
+          <Modal
+            visible={this.state.viewAbout}
+            transparent={true}
+            //onBackdropPress = {() => this.setState({viewAbout: false,})}
+          >
+            <View style = {styles.formView}>
+              <Text style = {styles.formTitleText}>About Our Project</Text>
+              <Text style = {styles.aboutScript}>Lifestyle Monitoring Software</Text>
+              <Text style = {styles.aboutScript}>Release Date: 20/07/20</Text>
+              <Text style = {styles.aboutScript}>This portable mobile app aims to improve user lifestyle via daily tracking, 
+                advisory and recommendation</Text>
+              <Button style = {styles.button} onPress = {() => this.setState({viewAbout: false,})}>
+                <Text>OK</Text>
+              </Button>
+            </View>
+          </Modal>
 
           <Card style = {styles.mb}>
             <CardItem>
@@ -172,7 +191,7 @@ class HomeScreen extends Component {
             <CardItem bordered>
               <Left>
                 <Icon type = "FontAwesome5" name = "utensils"/>
-                <Text style = {styles.cardText}>{totalConsumed} Kcal</Text>
+                <Text style = {styles.cardText}> {totalConsumed} Kcal</Text>
               </Left>
             </CardItem>
 
@@ -210,6 +229,13 @@ class HomeScreen extends Component {
               </Left>
             </CardItem>
 
+            <CardItem bordered>
+              <Left>
+                <Icon type = "MaterialCommunityIcons" name = "account-cash"/>
+                <Text style = {styles.cardText}>{money} VND</Text>
+              </Left>
+            </CardItem>
+
             <CardItem footer bordered button onPress = {() => {this.props.navigation.navigate('Tracker', { screen: 'Budget' })}}>
               <Text>Go to Financial Diary</Text>
             </CardItem>
@@ -240,6 +266,43 @@ const styles = StyleSheet.create({
   cardText: {
     fontWeight: '800',
     fontSize: 16,
+  },
+  formTitleText:{
+    fontSize: 23,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 18,
+    marginBottom: 20,
+  },
+  formView: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 90,
+
+    margin: 30,
+    backgroundColor: "#00fa9a",
+    borderRadius: 20,
+    borderWidth: 2,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  aboutScript: {
+    marginTop: 10,
+    marginBottom: 10,
+    alignContent: 'flex-start',
+    textAlign: 'center',
+  },
+  button: {
+    marginTop: 20,
+    borderWidth: 1,
   }
 });
 
