@@ -70,44 +70,47 @@ class PasswordEnter extends Component {
    }
 
     endProcess = async (inputValue) => {
-        this.setState({ passwordResultStatus: PasswordResultStatus.initial })
-        this.props.changeInternalStatus(PasswordResultStatus.initial)
-        const password = this.keyChainResult;
-        if (password === inputValue)
-        {
-            this.setState({passwordResultStatus: PasswordResultStatus.success})
-            this.props.changeInternalStatus(PasswordResultStatus.success)
-            if (!!this.props.onSuccess()){
-                this.props.onSuccess()
-            }
-            //remove number of attempt, lock time
-            this.props.resetAttemptNumber()
-            this.props.removeTimeLock()
-           if(this.props.removePassword){
-               return await Keychain.resetInternetCredentials(passwordKeychainName)
-           }
-        }
-        else {
-            let numberOfAttempts =this.props.lockState.passwordAttempt
-            numberOfAttempts++;
-            if (numberOfAttempts >= maxAttempt)
-            { 
-                this.props.changeInternalStatus(PasswordResultStatus.locked)
-                this.setState({passwordResultStatus: PasswordResultStatus.locked})
-                //save lock time to use in lock petition
-                this.props.updateTimeLock()
+        this.setState({ passwordResultStatus: PasswordResultStatus.initial }, async () =>{
+            console.log(this.state.passwordResultStatus + " initial has been set")
+            this.props.changeInternalStatus(PasswordResultStatus.initial)
+            const password = this.keyChainResult;
+            if (password === inputValue)
+            {
+                this.setState({passwordResultStatus: PasswordResultStatus.success})
+                this.props.changeInternalStatus(PasswordResultStatus.success)
+                if (!!this.props.onSuccess()){
+                    this.props.onSuccess()
+                }
+                //remove number of attempt, lock time
+                this.props.resetAttemptNumber()
+                this.props.removeTimeLock()
+                if(this.props.removePassword){
+                    return await Keychain.resetInternetCredentials(this.props.passwordKeychainName)
+                }
             }
             else {
-                this.setState({passwordResultStatus: PasswordResultStatus.failure})
-                this.props.changeInternalStatus(PasswordResultStatus.failure)
-                //add number of attempt
-                this.props.increaseAttemptNumber()
-                this.props.onFailure()
-                
+                let numberOfAttempts =this.props.lockState.passwordAttempt
+                numberOfAttempts++;
+                if (numberOfAttempts >= maxAttempt)
+                { 
+                    this.props.changeInternalStatus(PasswordResultStatus.locked)
+                    this.setState({passwordResultStatus: PasswordResultStatus.locked})
+                    //save lock time to use in lock petition
+                    this.props.updateTimeLock()
+                }
+                else {
+                    
+                    //add number of attempt
+                    this.props.increaseAttemptNumber()
+                    this.props.onFailure()
+                    this.setState({passwordResultStatus: PasswordResultStatus.failure})
+                    this.props.changeInternalStatus(PasswordResultStatus.failure)
+                }
             }
-        }
+        })
     }
     render() {
+        console.log(this.state.passwordResultStatus + " hey")
         const {passwordType} = this.props
         if(passwordType === PasswordType.none) return null
         else if (passwordType === PasswordType.pin){

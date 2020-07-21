@@ -59,6 +59,7 @@ class Password extends Component{
             this.setState({isLocked, type})
         }
     }
+
     changeInternalStatus = (status) => {
         this.setState({internalPasswordStatus: status})
     }
@@ -96,6 +97,9 @@ class Password extends Component{
                 <LockPetitionScreen
                     timeLock = {300000}
                     changeInternalStatus={this.changeInternalStatus}
+                    passwordKeychainName = {passwordKeychainName}
+                    onSecurityPasswordSuccess = {this.props.onSuccess}
+                    onSecurityPasswordFailure = {this.props.onFailure}
                 />
                 }
             </View>

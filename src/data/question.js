@@ -1,34 +1,34 @@
 export const question = [
     {
-        question: "How many pet have you own?",
+        q: "How many pet have you own?",
         id: 1
     },
     {
-        question: "What is your lucky number?",
+        q: "What is your lucky number?",
         id: 2
     },
     {
-        question: "How old is your younger sibling?",
+        q: "How old is your younger sibling?",
         id: 3
     },
     {
-        question: "At what age did you go to highschool?",
+        q: "At what age did you go to highschool?",
         id: 4
     },
     {
-        question: "The number of pets you have?",
+        q: "The number of pets you have?",
         id: 5
     },
     {
-        question: "How old is your parent?",
+        q: "How old is your parent?",
         id: 6
     },
     {
-        question: "How many sport did you play in school?",
+        q: "How many sport did you play in school?",
         id: 7
     },
     {
-        question: "How many job have you taken?",
+        q: "How many job have you taken?",
         id: 8
     }
 ]

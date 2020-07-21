@@ -67,19 +67,16 @@ class SettingsScreen extends Component {
       stage: 'main',  // main, setpin, editUser
       currency: "$",
       passwordOverlayIsOn: false,
-      passwordIsSet: false,
       showMenu: false,
-      passwordType: "none",
       biometricOverlayIsOn: false,
-      isBiometricSet: false,
+      isBiometricSet: false
     };
+    this.passwordType = this.props.lockState.passwordType
+    this.passwordType = this.props.lockState.passwordType
   }
   
-  componentDidMount(){
-    const passwordType = this.props.lockState.passwordType
-    const isBiometricSet = this.props.lockState.isBiometricSet
-    this.setState({isBiometricSet, passwordType})
-
+  componentDidMount() {
+    this.setState({isBiometricSet: this.props.lockState.isBiometricSet})
   }
   /* toggle dark mode option switch */
   toggleMode(){
@@ -111,15 +108,17 @@ class SettingsScreen extends Component {
   onEnterPasswordSuccess = () => {
     this.resetLockStatus()
     this.removePassword()
-    this.setState({passwordOverlayIsOn: false})
-    ToastAndroid.show(
-      "Password remove successfully",
-      ToastAndroid.SHORT
-    )
     if(this.props.lockState.isBiometricSet){
       this.setState({isBiometricSet: false})
       this.props.deactivateBiometric()
     }
+    this.setState({passwordOverlayIsOn: false})
+    let toast = this.props.lockState.isBiometricSet?
+          "Password and Biometric removed successfully": "Password removed successfully"
+    ToastAndroid.show(
+      toast ,
+      ToastAndroid.SHORT
+    )
   }
   onEnterPasswordFail = () => {
     this.setState({passwordOverlayIsOn: false})
@@ -127,16 +126,18 @@ class SettingsScreen extends Component {
       "Password remove unsuccessfully",
       ToastAndroid.SHORT
     )
+    this.passwordType = this.props.lockState.passwordType
   }
-  onHandleSetPassword = async () => {
+  onHandleSetPassword = () => {
     const ans = this.hasSetPassword()
-    this.setState({passwordIsSet: ans})
-    this.renderPasswordScreen()
+    this.passwordIsSet= ans
+    this.renderPasswordScreen(ans)
   }
-  renderPasswordScreen = async () => {
-    if (this.state.passwordIsSet === false ||
-      this.state.passwordIsSet === true && this.state.passwordType === "none") 
+  renderPasswordScreen = (val) => {
+    if (val === false ||
+      val === true && this.passwordType === "none") {
       this.setState({passwordOverlayIsOn: true})
+      }
   }
 
   hasSetPassword = () => {
@@ -195,15 +196,13 @@ class SettingsScreen extends Component {
   }
   onAuthenticateBiometricFail = (text) => {
     this.setState({biometricOverlayIsOn: false})
-    
-    console.log("hsdfgsdfgfsdgere")
     ToastAndroid.show(
-      ("Biometric remove unsuccessfully" + text),
+      ("Biometric remove unsuccessfully: " + text),
       ToastAndroid.SHORT
     )
   }
   render() {
-    const {passwordOverlayIsOn, passwordIsSet, passwordType, isBiometricSet} = this.state
+    const {passwordOverlayIsOn, passwordIsSet} = this.state
       return (
           <Container style={styles.container}>
           
@@ -296,6 +295,12 @@ class SettingsScreen extends Component {
               <Left>
                 <Button 
                 style={{ backgroundColor: "#FD3C2D" }}
+                onPress = {() => {
+                  ToastAndroid.show(
+                    ("Password Type: Pin, Pattern, Traditional Password"),
+                    ToastAndroid.SHORT
+                  )
+                }}
                 >
                   <Icon active name="lock" />
                 </Button>
@@ -315,10 +320,10 @@ class SettingsScreen extends Component {
             <ListItem 
             style = {styles.row} 
             onPress = {() => {
-              this.setState({passwordType: "none"})
+              this.passwordType= "none"
               this.onHandleSetPassword()
             }}
-            selected = {passwordType === "none"}>
+            selected = {this.passwordType === "none"}>
               <Body>
                 <Text>None</Text>
               </Body>
@@ -328,11 +333,11 @@ class SettingsScreen extends Component {
             <ListItem 
             style = {styles.row} 
             onPress = {() => {
-              this.setState({passwordType: "string"})
+              this.passwordType = "string"
               this.onHandleSetPassword()
             }} 
-            disabled = {passwordType !== "none"}
-            selected = {passwordType === "string"}>
+            disabled = {this.passwordType !== "none"}
+            selected = {this.passwordType === "string"}>
               <Body>
                 <Text>Password</Text>
               </Body>
@@ -342,11 +347,11 @@ class SettingsScreen extends Component {
             <ListItem 
             style = {styles.row} 
             onPress = {() => {
-              this.setState({passwordType: "pin"})
+              this.passwordType= "pin"
               this.onHandleSetPassword()
             }}  
-            disabled = {passwordType !== "none"}
-            selected = {passwordType === "pin"}>
+            disabled = {this.passwordType !== "none"}
+            selected = {this.passwordType === "pin"}>
               <Body>
                 <Text>Pin</Text>
               </Body>
@@ -356,11 +361,11 @@ class SettingsScreen extends Component {
             <ListItem 
             style = {styles.row} 
             onPress = {() => {
-              this.setState({passwordType: "pattern"})
+              this.passwordType="pattern"
               this.onHandleSetPassword()
             }} 
-            disabled = {passwordType !== "none"}
-            selected = {passwordType === "pattern"}>
+            disabled = {this.passwordType !== "none"}
+            selected = {this.passwordType === "pattern"}>
               <Body>
                 <Text>Pattern</Text>
               </Body>
@@ -374,6 +379,12 @@ class SettingsScreen extends Component {
               <Left>
                 <Button 
                 style={{ backgroundColor: "black" }}
+                onPress = {() => {
+                  ToastAndroid.show(
+                    ("Biometric authentication can be enable if password is set"),
+                    ToastAndroid.SHORT
+                  )
+                }}
                 >
                   <Icon active name="fingerprint" type = "Entypo"/>
                 </Button>
@@ -409,7 +420,7 @@ class SettingsScreen extends Component {
               animationType = "slide"
           >
                 <View>
-                {passwordIsSet && passwordType === "none" && 
+                {this.passwordIsSet && this.passwordType === "none" && 
                 <Password
                 status = {"enter"} 
                 onSuccess = {this.onEnterPasswordSuccess}
@@ -417,9 +428,9 @@ class SettingsScreen extends Component {
                 removePassword = {true}
                 />}
 
-                {!passwordIsSet && passwordType !== "none" &&
+                {!this.passwordIsSet && this.passwordType !== "none" &&
                 <Password
-                passwordType = {passwordType}
+                passwordType = {this.passwordType}
                 status = {"choose"}
                 onSuccess = {this.onSetPasswordSuccess}
                 />
@@ -429,9 +440,9 @@ class SettingsScreen extends Component {
           </Overlay>
           {this.state.biometricOverlayIsOn && 
           <BiometricScreen 
-          onSuccess = {isBiometricSet? 
+          onSuccess = {this.state.isBiometricSet? 
             this.onAuthenticateBiometricSuccess: this.onSetBiometricSuccess}
-          onFailure = {isBiometricSet? 
+          onFailure = {this.state.isBiometricSet? 
             this.onAuthenticateBiometricFail: this.onSetBiometricFail}
           />}
         </Container>

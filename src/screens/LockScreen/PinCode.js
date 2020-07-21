@@ -58,7 +58,7 @@ export default class PinCode extends Component{
         }
     }
 
-    handleNumberButtonPress = async (number) => {
+    handleNumberButtonPress = (number) => {
         const {status,previousPassword} = this.props
 
         const addedInput = this.state.inputValue + number;

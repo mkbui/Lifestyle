@@ -18,3 +18,5 @@ export const PasswordResultStatus = {
     failure: 'failure',
     locked: 'locked'
 }
+
+export const securityQnAAsyncStorageName = "securityQnAASName"
