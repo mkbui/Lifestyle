@@ -44,7 +44,19 @@ class UsernameForm extends Component {
   handlePress = () => {
     const {saveUsername} = this.props;
     const {userText} = this.state;
-    saveUsername({userText});
+    if (userText === ''){
+      Alert.alert(
+        "Warning",
+        "Your name should not be a blank string",
+        [
+          { text: "OK"}
+        ],
+        { cancelable: false }
+      );
+    }
+    else {
+      saveUsername({userText});
+    }
   }
   
   render(){
@@ -80,22 +92,74 @@ class UsernameForm extends Component {
 class FitnessForm extends Component {
 
   state = {
-    age: 1,
-    height: 150,
-    weight: 50,
+    age: '',
+    height: '',
+    weight: '',
+    money: '',
     gender: "",
   }
 
   handlePress = () => {
     const {saveUserInfo} = this.props;
-    const {age, height, weight, gender} = this.state;
-    const userInfo = {
+    const {age, height, weight, gender, money} = this.state;
+    ageN = parseFloat(age); heightN = parseFloat(height); weightN = parseFloat(weight);
+    moneyN = parseFloat(money);
+    console.log(Number.isInteger(heightN));
+    console.log(heightN)
+    if (Number.isInteger(ageN) === false || ageN < 0 || isNaN(ageN)){
+      Alert.alert(
+        "Warning",
+        "Please enter valid age as a positive integer",
+        [
+          { text: "OK"}
+        ],
+        { cancelable: false }
+      );
+    }
+    else {if (!Number.isInteger(heightN)|| !Number.isInteger(weightN)
+      || parseInt(heightN, 10) < 0 || parseInt(weightN, 10) < 0 || isNaN(heightN) || isNaN(weightN)){
+      Alert.alert(
+        "Warning",
+        "Please enter valid height and weight as positive integer",
+        [
+          { text: "OK"}
+        ],
+        { cancelable: false }
+      );
+    }
+
+    else {if (isNaN(moneyN) === true){
+      Alert.alert(
+        "Warning",
+        "Account must be a number",
+        [
+          { text: "OK"}
+        ],
+        { cancelable: false }
+      );
+    }
+
+    else {if (gender === ''){
+      Alert.alert(
+        "Warning",
+        "Please select your gender",
+        [
+          { text: "OK"}
+        ],
+        { cancelable: false }
+      );
+    }
+
+    else{
+      const userInfo = {
         age: parseInt(age, 10),
         height: parseInt(height, 10),
         weight: parseInt(weight, 10),
         gender: gender,
-    }
-    saveUserInfo(userInfo);
+        money: parseFloat(money),
+      }
+      saveUserInfo(userInfo);
+    }}}}
   }
   
   onGenderChoose(value){
@@ -115,20 +179,31 @@ class FitnessForm extends Component {
             <Input 
               placeholder = "Enter your age in number"
               onChangeText = { (text) => this.setState({age: text})}
+              maxLength = {3}
             />
           </Item>
           <Item stackedLabel>
             <Label>Height</Label>
             <Input 
-              placeholder = "Your height in cm"
+              placeholder = "Your height in rounded cm"
               onChangeText = { (text) => this.setState({height: text})}
+              maxLength = {4}
             />
           </Item>
           <Item stackedLabel>
             <Label>Weight</Label>
             <Input 
-              placeholder = "Your weight in kg"
+              placeholder = "Your weight in rounded kg"
               onChangeText = { (text) => this.setState({weight: text})}
+              maxLength = {4}
+            />
+          </Item>
+          <Item stackedLabel>
+            <Label>Money</Label>
+            <Input 
+              placeholder = "Your current account balance in your currency"
+              onChangeText = { (text) => this.setState({money: text})}
+              maxLength = {20}
             />
           </Item>
           <Item picker >
@@ -189,7 +264,7 @@ class FirstformScreen extends Component {
   /* Class function for saving fitness info to from child screen to state temporarily */
   saveUserInfo = (userInfo) => {
     const {step, initInfo} = this.state;
-    const {height, weight, age, gender} = userInfo;
+    const {height, weight, age, gender, money} = userInfo;
     this.setState( prevState => ({
       step: step + 1, 
       initInfo: {
@@ -198,6 +273,7 @@ class FirstformScreen extends Component {
         weight: weight,
         age: age,
         gender: gender,
+        money: money
       }
     }), this.callSave.bind(this))
   }
