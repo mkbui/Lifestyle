@@ -3,7 +3,6 @@ import PinCode from './PinCode'
 import PatternCode from './PatternCode'
 import StringPassword from './StringPassword';
 import {PasswordStatus, PasswordType, PasswordResultStatus} from './types';
-import AsyncStorage from '@react-native-community/async-storage'
 import React, { Component } from "react";
 import {StyleSheet, Animated} from 'react-native';
 import {
@@ -19,11 +18,36 @@ import {
   Body,
   View,
 } from "native-base";
+import { connect } from 'react-redux';
+import { 
+    activatePassword, 
+    setPasswordType, 
+    resetAttemptNumber, 
+    resetPasswordType, 
+    deactivatePassword, 
+    updateTimeLock,
+    increaseAttemptNumber,
+    removeTimeLock 
+} from "../../actions";
 
+function mapStateToProps(state) {
+    return {lockState: state.lockState}
+}
+
+const mapDispatchToProps = dispatch => ({
+    activatePassword:() => dispatch(activatePassword()),
+    setPasswordType: (passwordType) => dispatch(setPasswordType(passwordType)),
+    removeTimeLock: () => dispatch(removeTimeLock()),
+    resetAttemptNumber: () => dispatch(resetAttemptNumber()),
+    resetPasswordType: () => dispatch(resetPasswordType()),
+    deactivatePassword: () => dispatch(deactivatePassword()),
+    updateTimeLock: () =>dispatch(updateTimeLock()),
+    increaseAttemptNumber: () => dispatch(increaseAttemptNumber())
+})
 
 const maxAttempt = 3
 
-export default class PasswordEnter extends Component {
+class PasswordEnter extends Component {
     
     constructor(props){
         super(props)
@@ -57,33 +81,27 @@ export default class PasswordEnter extends Component {
                 this.props.onSuccess()
             }
             //remove number of attempt, lock time
-            AsyncStorage.multiRemove([
-                this.props.passwordAttemptAsyncStorageName,
-                this.props.timeLockAsyncStorageName
-            ])
+            this.props.resetAttemptNumber()
+            this.props.removeTimeLock()
+           if(this.props.removePassword){
+               return await Keychain.resetInternetCredentials(passwordKeychainName)
+           }
         }
         else {
-            const numAttemptStr = await AsyncStorage.getItem(this.props.passwordAttemptAsyncStorageName)
-            let numberOfAttempts = numAttemptStr? parseInt(numAttemptStr): 0;
+            let numberOfAttempts =this.props.lockState.passwordAttempt
             numberOfAttempts++;
             if (numberOfAttempts >= maxAttempt)
             { 
                 this.props.changeInternalStatus(PasswordResultStatus.locked)
                 this.setState({passwordResultStatus: PasswordResultStatus.locked})
                 //save lock time to use in lock petition
-                await AsyncStorage.setItem(
-                    this.props.timeLockAsyncStorageName,
-                    new Date().toISOString()
-                )
+                this.props.updateTimeLock()
             }
             else {
                 this.setState({passwordResultStatus: PasswordResultStatus.failure})
                 this.props.changeInternalStatus(PasswordResultStatus.failure)
                 //add number of attempt
-                await AsyncStorage.setItem(
-                    this.props.passwordAttemptAsyncStorageName,
-                    numberOfAttempts.toString()
-                )
+                this.props.increaseAttemptNumber()
                 this.props.onFailure()
                 
             }
@@ -92,7 +110,6 @@ export default class PasswordEnter extends Component {
     render() {
         const {passwordType} = this.props
         if(passwordType === PasswordType.none) return null
-
         else if (passwordType === PasswordType.pin){
             return(
                 <PinCode
@@ -148,3 +165,6 @@ const styles = StyleSheet.create({
     container: {
     }
   })
+
+  
+export default connect(mapStateToProps, mapDispatchToProps)(PasswordEnter);
