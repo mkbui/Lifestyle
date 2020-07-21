@@ -49,6 +49,7 @@ class SplashScreen extends Component {
     this.setState({biometricOverlayIsOn: false})
     this.setState({passwordOverlayIsOn: false})
     this.props.navigation.navigate('Home');
+    console.log("dafuhauidhf")
   }
   proceed(){
     const {userInfo} = this.props;

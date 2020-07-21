@@ -28,7 +28,7 @@ class Point extends Component {
     }
 
     render(){
-        const {x,y, isActive} = this.props
+        const {x,y, isActive, failAttempt} = this.props
                 
         return (
             <View
@@ -52,7 +52,7 @@ class Point extends Component {
                 style = {
                     isActive? 
                     {
-                        backgroundColor:"black",
+                        backgroundColor: failAttempt? "#DCDCDC":"black",
                         width: Radius / 2,
                         height: Radius / 2,
                         borderRadius: Radius / 4
@@ -218,7 +218,7 @@ export default class PatternCode extends Component{
             let y = event.nativeEvent.pageY - ((HEIGHT - WIDTH) / 2.0);
 
             let startPoint = this.getTouchChar({x,y});
-            if(!!startPoint) {
+            if(!!startPoint && (!this.state.failAttempt)) {
                 this.startAnimation = true;
                 this.lastIndex = parseInt(startPoint);
                 this.inputValue += startPoint
@@ -343,7 +343,7 @@ export default class PatternCode extends Component{
         }
     }
 
-    handleEnd = async (inputValue) => {
+    handleEnd = (inputValue) => {
         const {status,previousPassword} = this.props
         if (status === PasswordStatus.choose && inputValue.length < 4){
             this.failedAttempt()
@@ -389,7 +389,6 @@ export default class PatternCode extends Component{
         this.setState({
           showError: true,
           failAttempt: true,
-          
         });
         
         await sleep(2000);

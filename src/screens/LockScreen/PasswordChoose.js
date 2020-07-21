@@ -20,7 +20,9 @@ import {
 } from "native-base";
 import { connect } from 'react-redux';
 import { activatePassword, setPasswordType, resetAttemptNumber, resetPasswordType, deactivatePassword, updateTimelock } from "../../actions";
-
+import {securityQnAAsyncStorageName as key} from "./types"
+import AsyncStorage from "@react-native-community/async-storage";
+import SecurityQuestion from "./SecurityQuestion"
 function mapStateToProps(state) {
     return {lockState: state.lockState}
 }
@@ -42,6 +44,9 @@ class PasswordChoose extends Component {
             status: PasswordStatus.choose,
             inputValue: ''
         }
+        this.isSecurityQuestionSet =false
+        AsyncStorage.getItem(key).then(res =>
+            this.isSecurityQuestionSet = !!res)
     }
 
     endChoose = (inputValue) => {
@@ -62,7 +67,11 @@ class PasswordChoose extends Component {
             // set hasSetPassword, setpasswordType
             this.props.activatePassword();
             this.props.setPasswordType(this.props.passwordType)
-            if (!!this.props.onSuccess())
+
+            if(!this.isSecurityQuestionSet){
+                this.setState({secureQuestionOverlayIsOn: true})
+            }
+            else if (!!this.props.onSuccess())
             {
                 this.props.onSuccess()
             }
@@ -74,10 +83,24 @@ class PasswordChoose extends Component {
             })
         }
     }
-
+    handleSetSecurityQuestion = () => {
+        console.log("yess")
+        if (!!this.props.onSuccess())
+        {
+            this.props.onSuccess()
+        }
+    }
     render() {
         const {passwordType} = this.props
         console.log(passwordType)
+        if(this.state.secureQuestionOverlayIsOn){
+            return (
+                <View>
+                <SecurityQuestion
+                onSuccess = {this.handleSetSecurityQuestion} />
+                </View>
+            )
+        }
         if(passwordType === PasswordType.none) return null
         else if (passwordType === PasswordType.pin){
             return(
