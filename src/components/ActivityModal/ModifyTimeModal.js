@@ -40,7 +40,7 @@ class ModifyTimeModal extends Component {
       mode : 'time',
     };
     this.activity = {
-      date : new Date(2020, 7, 4, this.props.hour, this.props.hour, 1, 1),
+      date : new Date(2020, 7, 4, this.props.hour, this.props.min, 1, 1),
     };
   }
   onChangeTime = (event, selectedDate) => {
