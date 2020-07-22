@@ -6,10 +6,6 @@ import {
   ToastAndroid
 } from 'react-native';
 import {
-  Container,
-  Header,
-  Title,
-  Content,
   Button,
   Icon,
   Left,
@@ -19,12 +15,11 @@ import {
   CheckBox,
   View,
   ListItem,
-  Toast,
+  Card,
+  CardItem,
 } from "native-base";
 import {connect} from "react-redux";
 import {removeActivity, activateActivity} from "../../actions";
-import ModifyNameModal from '../ActivityModal/ModifyNameModal'
-import {removeAlarmNoti} from "../../utils";
 
 function mapStateToProps(state) {
   return {activityList: state.activityList}
@@ -32,8 +27,6 @@ function mapStateToProps(state) {
 const mapDispatchToProps = dispatch => ({
   removeActivity: (id) => dispatch(removeActivity(id)),
   activateActivity: (id) => dispatch(activateActivity(id)),
-  // modifyActivityTime: (id) => dispatch(modifyActivityTime(id, hour, min)),
-  // modifyActivityRepeat: (id) => dispatch(modifyActivityRepeat(id, repeat))
 })
 
 class ActivityList extends Component {
@@ -73,59 +66,73 @@ class ActivityList extends Component {
     this.props.openTimeModal();
   }
 
+  onChangeRepeat = (id, repeat) => {
+    this.props.changeRepeat(id, repeat);
+    this.props.openRepeatModal();
+  }
 
   render() {
     const {activityList} = this.props;
     return (
       activityList.map(activity => 
-        <ListItem thumbnail key={activity.id} style={styles.activityView}>
-          <Left style={{flex: 1}}>
-            <TouchableOpacity onPress={() => {this.onChangeName(activity.id, activity.name)}}>
-              <Text style={{marginTop : 0.5}}>
-                {activity.name}
-              </Text>
-            </TouchableOpacity>
-          </Left>
-          <Body style={{flex: 2}}>
-            <View style={{flexDirection:'column', alignItems:"center"}}>
-              <View>
-                <TouchableOpacity onPress={() => {this.onChangeTime(activity.id, activity.hour, activity.min)}}>
-                  <Text style={styles.timeText}>
-                    {activity.hour}:{activity.min <= 9 ? '0' + activity.min : activity.min}
+        <Card key={activity.id}>
+          <CardItem style={styles.activityView}>
+              <Left style={{flex: 1}}>
+                <TouchableOpacity onPress={() => {this.onChangeName(activity.id, activity.name)}}>
+                  <Text style={{marginLeft : -5}}>
+                    {activity.name.length > 0 ? activity.name : "(no name)"}
                   </Text>
                 </TouchableOpacity>
-              </View>
-              <View style={{marginTop: 20, flexDirection:"row", alignItems:"center", justifyContent:"space-evenly"}}>
-                { 
-                  activity.repeat.map(item => {
-                    return(
-                      (item.value === true) && <ListItem key={item.day}>
-                        <Text style={{fontSize: 10}}>
-                          {item.day}
-                        </Text>
-                      </ListItem>
-                    )
-                })}
-              </View>
-            </View>
-          </Body>
-          <Right style={{flex: 1}}>
-            <View style={{flexDirection:'column', justifyContent: "space-between"}}>
-              <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={() => {this.activateItem(activity)}}
-                value={activity.activate}
-              />
-              <TouchableOpacity onPress={() => {this.removeItem(activity)}}>
-                <Icon
-                  name="trash" 
-                  style={styles.binIcon}>
-                </Icon>
-              </TouchableOpacity>
-            </View>
-          </Right>
-        </ListItem>
+              </Left>
+              <Body style={{flex: 2, alignItems:"center"}}>
+
+                  <View>
+                    <TouchableOpacity onPress={() => {this.onChangeTime(activity.id, activity.hour, activity.min)}}>
+                      <Text style={styles.timeText}>
+                        {activity.hour}:{activity.min <= 9 ? '0' + activity.min : activity.min}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <TouchableOpacity onPress={() => {this.onChangeRepeat(activity.id, activity.repeat)}}>
+                    <View style={{marginTop: 20, flexDirection:"column", alignItems:"center"}}>
+                      <Text style={{fontSize: 15}}>Repeat</Text>
+                      <View style={{flexDirection:"row", alignItems:"center", justifyContent:"space-evenly"}} button={true}>
+                      { 
+                        activity.repeat.filter(item => {return item.value === true}).length > 0 ? 
+                          activity.repeat.map(item => {
+                          return(
+                            (item.value === true) &&
+                            <ListItem key={item.day} style={{borderBottomWidth: 0}}>
+                              <Text style={{fontSize: 10}}>
+                                {item.day}
+                              </Text>
+                            </ListItem>
+                          )
+                        }) : <Text style={{fontSize: 10}}> No </Text>
+                      }
+                      </View>  
+                    </View>
+                  </TouchableOpacity>
+
+              </Body>
+              <Right style={{flex: 1}}>
+                <View style={{flexDirection:'column', alignItems: "flex-end"}}>
+                  <Switch
+                    trackColor={{ false: "#767577", true: "#81b0ff" }}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={() => {this.activateItem(activity)}}
+                    value={activity.activate}
+                  />
+                  <TouchableOpacity onPress={() => {this.removeItem(activity)}} style={styles.binIcon}>
+                    <Icon
+                      name="trash" 
+                      style={styles.binIcon}>
+                    </Icon>
+                  </TouchableOpacity>
+                </View>
+              </Right>
+          </CardItem>
+        </Card>
       )
     )
   }
@@ -155,7 +162,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   activityView: {
-    marginLeft : 1,
     backgroundColor: "white",
     borderRadius: 5,
     padding: 5,
@@ -178,7 +184,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: '#81b0ff',
     marginTop: 20,
-    marginLeft: 25,
   }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityList);
