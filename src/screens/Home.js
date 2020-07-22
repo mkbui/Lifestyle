@@ -31,6 +31,8 @@ const splashLogo = require('../../assets/bootLogo.jpg');
 const heart = require("../../assets/heart.png");
 const finance = require("../../assets/finance.png");
 
+import {backgrounds} from "../data/image";
+
 /* Other services */
 import {LocalNotification, ScheduledNotification} from "../components/PushController"
 import {getDateString} from "../utils";
@@ -57,8 +59,10 @@ class HomeScreen extends Component {
 
   constructor(props){
     super(props);
+    id = Math.floor(Math.random()*7);
     this.state = {
       fActive: false,
+      background: backgrounds[id]
     }
     //console.log(this.props.userInfo);
     let lastRecordDate = this.props.userInfo.DailyRecord.date;
@@ -66,6 +70,13 @@ class HomeScreen extends Component {
       console.log('Initiating new daily record...');
       this.props.createNewDaily();
     }
+  }
+
+  componentDidMount = () => {
+    id = Math.floor(Math.random()*7);
+    this.setState({
+      background: backgrounds[id]
+    });
   }
 
   handleNotification = () => {
@@ -131,7 +142,7 @@ class HomeScreen extends Component {
                     height: 200,
                     flex: 1
                   }}
-                  source={default_background}
+                  source={this.state.background}
                 />
             </CardItem>
           </Card>
