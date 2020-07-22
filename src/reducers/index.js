@@ -8,7 +8,7 @@ import {activityOperate} from "./activityReducer";
 import {budgetReducer} from "./budgetReducer";
 import mealReducer from "./mealReducer";
 import exerciseReducer from "./exerciseReducer"
-
+import lockReducer from "./lockReducer"
 /* make a combination reducer for all sep. type */
 /* This will be the store reference for mapStateToProps when accessing data */
 const appReducer = combineReducers({
@@ -19,6 +19,7 @@ const appReducer = combineReducers({
   budgetReducer: budgetReducer,
   exerciseReducer,
   mealReducer,
+  lockState: lockReducer
 })
 
 export default appReducer;
