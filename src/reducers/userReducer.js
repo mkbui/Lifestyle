@@ -88,6 +88,7 @@ export function userAccess(state = User, action){
           height: action.initInfo.height,
           weight: action.initInfo.weight,
           gender: action.initInfo.gender,
+          money: action.initInfo.money,
           registered: true,
         }
       })
@@ -126,7 +127,7 @@ export function userAccess(state = User, action){
             waterConsumed: 0,
             energyConsumed: 0,
             energyBurned: 0,
-            weight: state.Info.weight,
+            weight: state.DailyRecord.Fitness.weight,
           },
           Finance: {
             date: todays,
