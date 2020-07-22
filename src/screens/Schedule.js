@@ -16,58 +16,16 @@ import {
   Left,
   Right,
   Body,
-  Text,
-  CheckBox,
+  Fab,
   View,
   Footer,
-  FooterTab,
-  ListItem,
-  List,
 } from "native-base";
 
 import ActivityList from '../components/ActivityList'
 import AddActivityModal from '../components/ActivityModal/AddActivityModal'
-import {FAB, Portal} from "react-native-paper";
-
-
-
-// class Activity extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       activate : true,
-//     };
-//     this.repeat = [
-//       {day : "Sun", value : false},
-//       {day : "Mon", value : false},
-//       {day : "Tue", value : false},
-//       {day : "Wed", value : false},
-//       {day : "Thu", value : false},
-//       {day : "Fri", value : false},
-//       {day : "Sat", value : false},
-//     ];
-//     i++;
-//   }
-//   static i = 0;
-//   setComponent(name, hour, min, Sun, Mon, Tue, Wed, Thu, Fri, Sat) {
-//     this.name = name;
-//     this.hour = hour;
-//     this.min = min;
-//     this.repeat[0].value = Sun;
-//     this.repeat[1].value = Mon;
-//     this.repeat[2].value = Tue;
-//     this.repeat[3].value = Wed;
-//     this.repeat[4].value = Thu;
-//     this.repeat[5].value = Fri;
-//     this.repeat[6].value = Sat;
-//   }
-//   id = (i).toString();
-//   setActivate = () => {
-//     this.state.activate = !this.state.activate;
-//     console.log("activated")
-//   }
-// }
-
+import ModifyNameModal from '../components/ActivityModal/ModifyNameModal'
+import ModifyTimeModal from '../components/ActivityModal/ModifyTimeModal'
+import ModifyRepeatModal from '../components/ActivityModal/ModifyRepeatModal'
 
 
 class ScheduleScreen extends Component {
@@ -79,12 +37,14 @@ class ScheduleScreen extends Component {
       showModal: false,
       showModalName: false,
       showModalTime: false,
+      showModalRepeat: false,
     };
     this.activity = {
       id: "",
       name: "",
       hour: 0,
       min: 0,
+      repeat: [],
     }
   }
 
@@ -99,6 +59,11 @@ class ScheduleScreen extends Component {
     this.activity.min = min
   }
 
+  onRepeatChange = (id, repeat) => {
+    this.activity.id = id
+    this.activity.repeat = repeat
+  }
+
   setModalVisible = (visible) => {
     this.setState(state => ({
       [visible] : !state[visible]
@@ -106,8 +71,8 @@ class ScheduleScreen extends Component {
   };
 
   render() {
-    const { showModal, showModalName, showModalTime } = this.state;
-    const { name, id, hour, min } = this.activity;
+    const { showModal, showModalName, showModalTime, showModalRepeat } = this.state;
+    const { name, id, hour, min, repeat } = this.activity;
     return (
       <Container style={styles.container}>
         <Header>
@@ -131,21 +96,24 @@ class ScheduleScreen extends Component {
           <View>
             <ActivityList 
               changeName={this.onNameChange} openNameModal={() => {this.setModalVisible('showModalName')}}
-              changeTime={this.onTimeChange} openTimeModal={() => {this.setModalVisible('showModalTime')}}/>
+              changeTime={this.onTimeChange} openTimeModal={() => {this.setModalVisible('showModalTime')}}
+              changeRepeat={this.onRepeatChange} openRepeatModal={() => {this.setModalVisible('showModalRepeat')}}
+            />
           </View>
           {showModalName && <ModifyNameModal id={id} name={name} completeChange={() => {this.setModalVisible('showModalName')}} />}
           {showModalTime && <ModifyTimeModal id={id} hour={hour} min={min} completeChange={() => {this.setModalVisible('showModalTime')}} />}
+          {showModalRepeat && <ModifyRepeatModal id={id} repeat={repeat} completeChange={() => {this.setModalVisible('showModalRepeat')}} />}
           {showModal && <AddActivityModal completeAdd={() => {this.setModalVisible('showModal')}}/>}
         </Content>
-        <Footer backgroundColor="#ffffff">
-          <FooterTab>
-              <Button onPress={() => {this.setModalVisible('showModal')}}>
-               <Text style={styles.buttonContainer}>
-                  New activity
-                 </Text>
-               </Button>
-           </FooterTab>
-         </Footer>
+        <Fab
+          active={true}
+          direction="up"
+          containerStyle={{ }}
+          style={{ backgroundColor: '#5067FF' }}
+          position="bottomRight"
+          onPress={() => {this.setModalVisible('showModal')}}>
+            <Icon type="Entypo" name="plus"/>
+        </Fab>
       </Container>
     );
   }

@@ -42,7 +42,7 @@ class Activity {
     {day : "Fri", value : false},
     {day : "Sat", value : false},
   ];
-  setComponent(name, hour, min, Sun, Mon, Tue, Wed, Thu, Fri, Sat) {
+  constructor(name, hour, min, Sun, Mon, Tue, Wed, Thu, Fri, Sat) {
     this.name = name;
     this.hour = hour;
     this.min = min;
@@ -90,6 +90,9 @@ class AddActivityModal extends Component {
       this.setModalVisible('showTime');
       this.setModalVisible('showNameForm');
     }
+    else {
+      this.props.completeAdd()
+    }
   };
 
   setModalVisible = (visible) => {
@@ -111,8 +114,7 @@ class AddActivityModal extends Component {
 
   createActivity = () => {
     const {Sun, Mon, Tue, Wed, Thu, Fri, Sat} = this.state;
-    let newActivity = new Activity();
-    newActivity.setComponent(
+    let newActivity = new Activity(
       this.activity.name,
       this.state.date.getHours(),
       this.state.date.getMinutes(),
@@ -140,37 +142,36 @@ class AddActivityModal extends Component {
     const { mode, date, showTime, showNameForm, showRepeat } = this.state;
     const {Sun, Mon, Tue, Wed, Thu, Fri, Sat} = this.state;
     return (
+      <View style={styles.centeredView}>
+        {
+        showTime && <DateTimePicker
+                      testID="dateTimePicker"
+                      value={date}
+                      mode={mode}
+                      is24Hour={true}
+                      display="default"
+                      onChange={this.onChangeTime}/>
+        }
+        <Modal
+          transparent={true} 
+          visible={showNameForm}
+          animationType="slide">
           <View style={styles.centeredView}>
-            {
-              showTime && <DateTimePicker
-                          testID="dateTimePicker"
-                          value={date}
-                          mode={mode}
-                          is24Hour={true}
-                          display="default"
-                          onChange={this.onChangeTime}/>
-            }
-            <Modal
-                transparent={true} 
-                visible={showNameForm}
-                animationType="slide">
-              <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                  <Text style={styles.modalText}>Activity Name: </Text>
-                  <TextInput 
-                    style={{height: 40, fontSize: 15}}
-                    placeholder="Please insert activity name!"
-                    onChangeText={this.onChangeName}
-                    defaultValue={this.activity.name}
-                    textAlign="center"
-                  />
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Activity Name: </Text>
+                <TextInput 
+                  style={{height: 40, fontSize: 15}}
+                  placeholder="Please insert activity name!"
+                  onChangeText={this.onChangeName}
+                  defaultValue={this.activity.name}
+                  textAlign="center"/>
                   <View style={styles.modalButton}>
                     <TouchableHighlight
                       style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
                       onPress={() => {
                         this.setModalVisible('showNameForm');
-                      }}
-                    >
+                        this.props.completeAdd();
+                      }}>
                       <Text style={styles.textStyle}>Cancel</Text>
                     </TouchableHighlight>
                     <TouchableHighlight
@@ -178,87 +179,81 @@ class AddActivityModal extends Component {
                       onPress={() => {
                         this.setModalVisible('showNameForm');
                         this.setModalVisible('showRepeat');
-                      }}
-                    >
+                      }}>
                       <Text style={styles.textStyle}>OK</Text>
                     </TouchableHighlight>
                   </View>
                 </View>
-              </View>
-            </Modal>
-            <Modal
-                transparent={true} 
-                visible={showRepeat}
-                animationType="slide">
-              <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                  <Text style={{fontSize: 18}}>Repeat Weekdates</Text>
-                  <ListItem onPress={() => {this.checkBox('Sun')}}>
-                    <CheckBox checked={Sun} onPress={() => {this.checkBox('Sun')}} color="blue"/>
-                    <Body>
-                      <Text style = {styles.dayText}>Sunday</Text>
-                    </Body>
-                  </ListItem>
-                  <ListItem onPress={() => {this.checkBox('Mon')}}>
-                    <CheckBox checked={Mon} onPress={() => {this.checkBox('Mon')}} color="blue"/>
-                    <Body>
-                      <Text style = {styles.dayText}>Monday</Text>
-                    </Body>
-                  </ListItem>
-                  <ListItem onPress={() => {this.checkBox('Tue')}}>
-                    <CheckBox checked={Tue} onPress={() => {this.checkBox('Tue')}} color="blue"/>
-                    <Body>
-                      <Text style = {styles.dayText}>Tuesday</Text>
-                    </Body>
-                  </ListItem>
-                  <ListItem onPress={() => {this.checkBox('Wed')}}>
-                    <CheckBox checked={Wed} onPress={() => {this.checkBox('Wed')}} color="blue"/>
-                    <Body>
-                      <Text style = {styles.dayText}>Wednesday</Text>
-                    </Body>
-                  </ListItem>
-                  <ListItem onPress={() => {this.checkBox('Thu')}}>
-                    <CheckBox checked={Thu} onPress={() => {this.checkBox('Thu')}} color="blue"/>
-                    <Body>
-                      <Text style = {styles.dayText}>Thursday</Text>
-                    </Body>
-                  </ListItem>
-                  <ListItem onPress={() => {this.checkBox('Fri')}}>
-                    <CheckBox checked={Fri} onPress={() => {this.checkBox('Fri')}} color="blue"/>
-                    <Body>
-                      <Text style = {styles.dayText}>Friday</Text>
-                    </Body>
-                  </ListItem>
-                  <ListItem onPress={() => {this.checkBox('Sat')}}>
-                    <CheckBox checked={Sat} onPress={() => {this.checkBox('Sat')}} color="blue"/>
-                    <Body>
-                      <Text style = {styles.dayText}>Saturday</Text>
-                    </Body>
-                  </ListItem>
-                  
-                  <View style={styles.modalButton}>
-                    <TouchableHighlight
-                      style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                      onPress={() => {
-                        this.setModalVisible('showRepeat');
-                      }}
-                    >
-                      <Text style={styles.textStyle}>Cancel</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight
-                      style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                      onPress={() => {
-                        this.setModalVisible('showRepeat');
-                        this.createActivity();
-                      }}
-                    >
-                      <Text style={styles.textStyle}>Add</Text>
-                    </TouchableHighlight>
-                  </View>
-                </View>
-              </View>
-            </Modal>
           </View>
+        </Modal>
+        <Modal transparent={true} visible={showRepeat} animationType="slide">
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={{fontSize : 20}}>Repeat</Text>
+                <ListItem onPress={() => {this.checkBox('Sun')}} style={{borderBottomWidth: 0}}>
+                  <CheckBox checked={Sun} onPress={() => {this.checkBox('Sun')}} color="blue"/>
+                  <Body>
+                    <Text>Sunday</Text>
+                  </Body>
+                </ListItem>
+                <ListItem onPress={() => {this.checkBox('Mon')}} style={{borderBottomWidth: 0}}>
+                  <CheckBox checked={Mon} onPress={() => {this.checkBox('Mon')}} color="blue"/>
+                  <Body>
+                    <Text>Monday</Text>
+                  </Body>
+                </ListItem>
+                <ListItem onPress={() => {this.checkBox('Tue')}} style={{borderBottomWidth: 0}}>
+                  <CheckBox checked={Tue} onPress={() => {this.checkBox('Tue')}} color="blue"/>
+                  <Body>
+                    <Text>Tuesday</Text>
+                  </Body>
+                </ListItem>
+                <ListItem onPress={() => {this.checkBox('Wed')}} style={{borderBottomWidth: 0}}>
+                  <CheckBox checked={Wed} onPress={() => {this.checkBox('Wed')}} color="blue"/>
+                  <Body>
+                    <Text>Wednesday</Text>
+                  </Body>
+                </ListItem>
+                <ListItem onPress={() => {this.checkBox('Thu')}} style={{borderBottomWidth: 0}}>
+                  <CheckBox checked={Thu} onPress={() => {this.checkBox('Thu')}} color="blue"/>
+                  <Body>
+                    <Text>Thursday</Text>
+                  </Body>
+                </ListItem>
+                <ListItem onPress={() => {this.checkBox('Fri')}} style={{borderBottomWidth: 0}}>
+                  <CheckBox checked={Fri} onPress={() => {this.checkBox('Fri')}} color="blue"/>
+                  <Body>
+                    <Text>Friday</Text>
+                  </Body>
+                </ListItem>
+                <ListItem onPress={() => {this.checkBox('Sat')}} style={{borderBottomWidth: 0}}>
+                  <CheckBox checked={Sat} onPress={() => {this.checkBox('Sat')}} color="blue"/>
+                  <Body>
+                    <Text>Saturday</Text>
+                  </Body>
+                </ListItem>  
+                <View style={styles.modalButton}>
+                  <TouchableHighlight
+                    style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                    onPress={() => {
+                      this.setModalVisible('showRepeat');
+                      this.props.completeAdd()
+                    }}>
+                    <Text style={styles.textStyle}>Cancel</Text>
+                  </TouchableHighlight>
+                  <TouchableHighlight
+                    style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                    onPress={() => {
+                      this.setModalVisible('showRepeat');
+                      this.createActivity();
+                    }}>
+                    <Text style={styles.textStyle}>Add</Text>
+                  </TouchableHighlight>
+                </View>
+                </View>
+          </View>
+        </Modal>
+      </View>
     );
   }
 }
