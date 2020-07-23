@@ -15,14 +15,21 @@ const waterGlass_inactive = require('../../../../../../assets/waterBottle.off.pn
 class ViewStatus extends Component {
   constructor(props) {
     super(props);
+    const { userInfo } = this.props;
+    const { waterConsumed } = userInfo.DailyRecord.Fitness
+    console.log(waterConsumed);
     this.state = {
       date: moment().format('DD-MM-YYYY'),
-      bottlePressID: 0,
+      bottlePressID: waterConsumed/0.25,
       weight:0,
       height:0
     };
   }
 
+  updateWater = (i) => {
+    this.setState({ bottlePressID: i });
+    this.props.submitWater(i * 0.25)
+  }
 
   render() {
     const { exerciseList, mealList , budgetList, userInfo} = this.props;
@@ -133,13 +140,13 @@ class ViewStatus extends Component {
               {key.map(i => {
                 if (i <= this.state.bottlePressID) {
                   return (
-                    <TouchableOpacity key={i} onPress={() => { this.setState({ bottlePressID: i })}} style={styles.bottle}>
+                    <TouchableOpacity key={i} onPress={() => this.updateWater(i)} style={styles.bottle}>
                       <Image source={waterGlass_active} style={{ height: 50, width: 50 }} />
                     </TouchableOpacity>
                   )
                 } else {
                   return (
-                    <TouchableOpacity key={i} onPress={() => { this.setState({ bottlePressID: i }) }} style={styles.bottle}>
+                    <TouchableOpacity key={i} onPress={() => this.updateWater(i)} style={styles.bottle}>
                       <Image source={waterGlass_inactive} style={{ height: 50, width: 50 }} />
                     </TouchableOpacity>
                   )
@@ -308,7 +315,7 @@ const mapDispatchToProps = dispatch => {
     deleteExercise: exercise => {
       dispatch(actions.actEditExercise(exercise));
     },
-    submitWater: water =>{
+    submitWater: water => {
       dispatch(actions.actSubmitWater(water));
     }
 

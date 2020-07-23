@@ -10,5 +10,8 @@ export const tips = [
   {
     text: "Rich people are more likely to lose money than poor ones",
     category: 'finance',
+  },
+  {
+    text: "This subject duo is worth 5 credits in our university and it is just harsh"
   }
 ]

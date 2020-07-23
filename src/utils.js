@@ -77,18 +77,40 @@ export function initializeReminders(){
   })
 }
 
+export function removeReminders(){
+  reminderList.map(reminder => {
+    CancelNotification(reminder.id)
+  })
+}
+
+/* Simple rating on user health and finance */
+export function rateHealth(userInfo){
+  coef = Math.abs(userInfo.measure - 22)
+  if (coef < 4) return 0.8 + (4 - coef)/20.0;
+  else if (coef < 8) return 0.3 + (8 - coef)/8.0;
+  else return 0.2;
+}
+
+export function rateFinance(Finance, money){
+  earned = Finance.earned.sum; spent = Finance.spent.sum;
+  diff = earned - spent;
+  rate = 0.5 + (diff/money)
+  if (rate < 0) return 0.0; else if (rate > 1) return 1.0;
+  else return rate;
+}
+
 /* Return simple advice based on user info */
 export function fitnessAnalyzer(Record, Today){
   const waterCount = (water) => {
-    if (water < 500) 
+    if (water < 0.5) 
       return <Text style = {styles.script}>Your water consumption is dangerously low today!
         remember to fill in at least 2 litre of water (including in food) for a decent hydration</Text>
-    if (water < 2000)
+    if (water < 2.0)
       return <Text style = {styles.script}>It seems you are not drinking enough water.
-        Try to fill in {2000 - water}ml more today to achieve better hydration!</Text>
-    if (water < 3500)
+        Try to fill in {2.0 - water}L more today to achieve better hydration!</Text>
+    if (water < 3.0)
       return <Text style = {styles.script}>Your water consumption is good today!</Text>
-    return <Text style = {styles.script}>You are drinking to much water! Try to lower your daily
+    return <Text style = {styles.script}>You are possibly drinking to much water! Try to lower your daily
       HydroDioxide consumption to avoid water intoxication.</Text>
   }
 
@@ -102,6 +124,17 @@ export function fitnessAnalyzer(Record, Today){
 
       return <Text style = {styles.script}>Your energy balance is generally good for metabolism!
         Try to consistently keep this progress to match your goal.</Text>  
+  }
+
+  const exercise = (time) => {
+    if (time < 30)
+      return <Text style = {styles.script}>Also, please consider exercising a little bit more each day
+        to maintain a fresh condition. Even 30 minutes of light jogging is enough.</Text>
+    if (time > 120)
+      return <Text style = {styles.script}>It looks like you are enjoying workouts really fondly. However,
+        note that overexercising can cause exhaustion and side effects, so do it at a maintainable rate.</Text>
+      return <Text style = {styles.script}>Good job with your exercise today! Let's hope you could improve
+        your workrate and duration tomorrow.</Text> 
   }
 
   const overall = (todays) => {
@@ -132,11 +165,11 @@ export function financeAnalyzer(money, Today){
   }
 
   const checkAccount = (money) => {
-    if (money < -100000)
+    if (money < -1000000)
       return <Text style = {styles.script}>Your financial situation is abysmal! Save some money
         for a better future.</Text>
-    if (money > 100000)
-      return <Text style = {styles.script}>Your finance overview? What can I say except S.T.O.N.K?</Text>
+    if (money > 1000000)
+      return <Text style = {styles.script}>About the account overview? What can I say except S.T.O.N.K?</Text>
     return <Text style = {styles.script}>You are overall in good term with your wallet.</Text>
   }
 
@@ -150,10 +183,17 @@ export function financeAnalyzer(money, Today){
 
 /* Present warning on outliers or unusual record */
 export function warningPresent(info, measure){
-  if (measure.BMI > 30)
-    return <Text style = {styles.script}>You are likely suffering from obesity. This disease
-      is crucial to note for your age, as it can lead to a lot of complications in later stages</Text>
 
+  var bmi = true;
+  var height = true;
+  var age = true;
+
+  if (measure.BMI > 30)
+  return <Text style = {styles.script}>You are likely suffering from obesity. This disease
+    is crucial to note for your age, as it can lead to a lot of complications in later stages</Text>
+  if (measure.BMI < 17)
+  return <Text style = {styles.script}>Your BMI is dangerously low. It could be the sign of 
+    malnutrition and decreasing health. Look out more for your health!</Text>
   return <Text style = {styles.script}>There is no warning today! Keep up the good work.</Text>
 
 }
