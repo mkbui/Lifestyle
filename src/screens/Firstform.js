@@ -201,7 +201,7 @@ class FitnessForm extends Component {
           <Item stackedLabel>
             <Label>Money</Label>
             <Input 
-              placeholder = "Your current account balance in your currency"
+              placeholder = "Your current account balance in VND"
               onChangeText = { (text) => this.setState({money: text})}
               maxLength = {20}
             />

@@ -1,12 +1,14 @@
 import {
   CREATE_USER, 
   CALCULATE_INFO, 
+  SAVE_CURRENCY,
   CREATE_NEW_DAILY,
   UPDATE_DAILY_RECORD,
   ADD_CONSUME_RECORD,
   ADD_EXERCISE_RECORD,
   ADD_EXPENSE_RECORD,
   ADD_INCOME_RECORD,
+  SUBMIT_W,
 } from "../actions";
 import {getDateString} from "../utils"
 
@@ -26,6 +28,8 @@ const User = {
     registered: false,
     money: 0,
   },
+
+  Currency: '₫',
 
   Measure: {
     BMI: 20,
@@ -104,13 +108,20 @@ export function userAccess(state = User, action){
         }
       })
 
+    case SAVE_CURRENCY:
+      return Object.assign({}, state, {
+        ...state,
+        Currency: action.cur
+      })
+
     case CREATE_NEW_DAILY:
+      console.log(state.Info.money);
+      console.log(state.DailyRecord.Finance.earned);
       const todays = getDateString();
       return Object.assign({}, state, {
         Info: {
           ...state.Info,
-          weight: state.DailyRecord.Fitness.weight,
-          money: state.Info.money + state.DailyRecord.Finance.earned - state.DailyRecord.Finance.spent.sum,
+          money: state.Info.money + state.DailyRecord.Finance.earned.sum - state.DailyRecord.Finance.spent.sum,
         },
         FitnessRecord: [
           ...state.FitnessRecord,
@@ -127,7 +138,7 @@ export function userAccess(state = User, action){
             waterConsumed: 0,
             energyConsumed: 0,
             energyBurned: 0,
-            weight: state.DailyRecord.Fitness.weight,
+            updated: false,
           },
           Finance: {
             date: todays,
@@ -155,6 +166,19 @@ export function userAccess(state = User, action){
         }
       })
 
+    case SUBMIT_W:
+      return Object.assign({}, state, {
+        ...state,
+        DailyRecord: {
+          ...state.DailyRecord,
+          Fitness: {
+            ...state.DailyRecord.Fitness,
+            updated: true,
+            waterConsumed: action.water,
+          }
+        }
+      })
+      
     case ADD_INCOME_RECORD:
       const iRecord = action.iRecord;
       if (iRecord.amount > 0) return Object.assign({}, state, {
