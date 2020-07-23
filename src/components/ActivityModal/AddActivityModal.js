@@ -152,7 +152,7 @@ class AddActivityModal extends Component {
           visible={showNameForm}
           animationType="slide">
           <View style={styles.centeredView}>
-            <View style={styles.modalView}>
+            <View style={styles.modalNameView}>
               <Text style={styles.modalText}>Activity Name: </Text>
                 <TextInput 
                   style={{height: 40, fontSize: 15}}
@@ -183,7 +183,7 @@ class AddActivityModal extends Component {
         </Modal>
         <Modal transparent={true} visible={showRepeat} animationType="slide">
           <View style={styles.centeredView}>
-            <View style={styles.modalView}>
+            <View style={styles.modalRepeatView}>
               <Text style={{fontSize : 20}}>Repeat</Text>
                 <ListItem onPress={() => {this.checkBox('Sun')}} style={{borderBottomWidth: 0}}>
                   <CheckBox checked={Sun} onPress={() => {this.checkBox('Sun')}} color="blue"/>
@@ -257,23 +257,14 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFF"
   },
-  headerText: {
-    fontWeight: 'bold',
-  },
-  buttonContainer: {
-    fontWeight : 'bold',
-    fontSize : 15,
-    color : 'white'
-  },
 
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22,
-    minWidth: 300,
   },
-  modalView: { //For text and repeat modal
+  modalRepeatView: { //For text and repeat modal
     margin: 30,
     backgroundColor: "white",
     borderRadius: 20,
@@ -286,6 +277,24 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5, 
+    width: 270,
+    height: 500
+  },
+  modalNameView: { //For text and repeat modal
+    margin: 30,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5, 
+    width: 270,
+    height: 300
   },
   openButton: {
     backgroundColor: "#F194FF",
@@ -308,28 +317,6 @@ const styles = StyleSheet.create({
     alignItems :"center",
     justifyContent : "space-evenly",
   },
-  activityView: {
-    marginLeft : 1,
-    backgroundColor: "white",
-    borderRadius: 5,
-    padding: 5,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5
-  },
-  timeText: {
-    fontSize : 25,
-  },
-  dateText: {
-    fontSize: 5,
-  },
-  dayText: {
-    fontSize: 13,
-  },
+
 });
 export default connect(null, mapDispatchToProps)(AddActivityModal);

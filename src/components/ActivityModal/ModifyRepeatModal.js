@@ -127,18 +127,6 @@ class ModifyRepeatModal extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#FFF"
-  },
-  headerText: {
-    fontWeight: 'bold',
-  },
-  buttonContainer: {
-    fontWeight : 'bold',
-    fontSize : 15,
-    color : 'white'
-  },
-
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -157,7 +145,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 5, 
+    width: 270,
+    height: 500
   },
   openButton: {
     backgroundColor: "#F194FF",
@@ -180,25 +170,5 @@ const styles = StyleSheet.create({
     alignItems :"center",
     justifyContent : "space-evenly",
   },
-  activityView: {
-    marginLeft : 1,
-    backgroundColor: "white",
-    borderRadius: 5,
-    padding: 5,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5
-  },
-  timeText: {
-    fontSize : 25,
-  },
-  dateText: {
-    fontSize: 5,
-  }
 });
 export default connect(null, mapDispatchToProps)(ModifyRepeatModal);

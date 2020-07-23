@@ -20,7 +20,7 @@ import {
 } from "native-base";
 import {connect} from "react-redux";
 import {removeActivity, activateActivity} from "../../actions";
-
+import {addAlarmNoti, removeAlarmNoti} from '../../utils';
 function mapStateToProps(state) {
   return {activityList: state.activityList}
 }
@@ -49,6 +49,14 @@ class ActivityList extends Component {
   }
   activateItem(activity){
     this.props.activateActivity(activity.id);
+    if (activity.activate === false)
+    {
+      addAlarmNoti(activity)
+    }
+    else
+    {
+      removeActivity(activity)
+    }
   }
 
   setModalVisible = (visible) => {

@@ -1,6 +1,6 @@
 
 
-import {View, StyleSheet, Platform, ToastAndroid} from 'react-native';
+import { StyleSheet, Platform, ToastAndroid} from 'react-native';
 import React, { Component, useState } from "react";
 
 import {

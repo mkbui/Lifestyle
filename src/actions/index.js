@@ -36,7 +36,6 @@ export const DELETE_M = "DELETE_M";
 export const EDIT_M = "EDIT_M";
 // //water
 // export const SUBMIT_W = "SUBMIT_W";
-<<<<<<< HEAD
 // Lock
 export const ACTIVATE_PASSWORD    ="ACTIVATE_PASSWORD";
 export const DEACTIVATE_PASSWORD  = "DEACTIVATE_PASSWORD";
@@ -48,14 +47,6 @@ export const INCREASE_ATTEMPT_NUMBER = "INCREASE_ATTEMPT_NUMBER";
 export const RESET_ATTEMPT_NUMBER = "RESET_ATTEMPT_NUMBER";
 export const ACTIVATE_BIOMETRIC   = "ACTIVATE_BIOMETRIC";
 export const DEACTIVATE_BIOMETRIC = "DEACTIVATE_BIOMETRIC";
-=======
-
-/*
-export const ADD_INCOME_RECORD = 'ADD_INCOME_RECORD'
-export const ADD_EXPENSE_RECORD = 'ADD_EXPENSE_RECORD'
-export const ADD_CONSUME_RECORD = 'ADD_FITNESS_RECORD'
-export const ADD_EXERCISE_RECORD = 'ADD_EXERCISE_RECORD'*/
->>>>>>> 01d6f49b748b730f527aa6a45aa061c6803b5012
 
 export function createUser(name, initInfo){
   
