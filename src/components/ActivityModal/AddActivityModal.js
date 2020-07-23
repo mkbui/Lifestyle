@@ -132,7 +132,7 @@ class AddActivityModal extends Component {
     addAlarmNoti(newActivity);
     this.props.completeAdd();
     ToastAndroid.show(
-      "Activity removed",
+      "Activity added",
       ToastAndroid.SHORT
     )
     this.activity.name = 'Activity';
@@ -189,7 +189,7 @@ class AddActivityModal extends Component {
         <Modal transparent={true} visible={showRepeat} animationType="slide">
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={{fontSize : 20}}>Repeat</Text>
+              <Text style={{fontSize : 20}}>           Repeat            </Text>
                 <ListItem onPress={() => {this.checkBox('Sun')}} style={{borderBottomWidth: 0}}>
                   <CheckBox checked={Sun} onPress={() => {this.checkBox('Sun')}} color="blue"/>
                   <Body>

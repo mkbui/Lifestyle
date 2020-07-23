@@ -5,7 +5,7 @@ export const reminderList = [
     message: 'A proper breakfast can provide crucial momentum for the rest of your day',
     time: {
       hour: 6,
-      min: 30,
+      min: 45,
     }
   },
   {

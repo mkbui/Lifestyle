@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useCallback } from "react";
 import {StyleSheet, Image, Modal} from 'react-native';
 import {
   Container,
@@ -19,6 +19,15 @@ import {
   Thumbnail,
 } from "native-base";
 import { Overlay} from 'react-native-elements'
+
+/*
+captureRef(viewRef, {
+  format: "jpg",
+  quality: 0.8
+}).then(
+  uri => console.log("Image saved to", uri),
+  error => console.error("Oops, snapshot failed", error)
+);*/
 
 import {connect} from "react-redux";
 import {createNewDaily} from "../actions";
@@ -79,6 +88,7 @@ class HomeScreen extends Component {
     this.setState({
       background: backgrounds[id]
     });
+
   }
 
   handleNotification = () => {
@@ -88,7 +98,7 @@ class HomeScreen extends Component {
 
   render() {
     const {userInfo, budgetList, mealList} = this.props;
-    const {DailyRecord, Info} = this.props.userInfo;
+    const {DailyRecord, Info, Currency} = this.props.userInfo;
     var incomeTotal = 0, expenseTotal = 0, totalConsumed = 0;
     var money = Info.money
     /* calculate total expense and income today */
@@ -133,7 +143,7 @@ class HomeScreen extends Component {
             <View style = {styles.formView}>
               <Text style = {styles.formTitleText}>About Our Project</Text>
               <Text style = {styles.aboutScript}>Lifestyle Monitoring Software</Text>
-              <Text style = {styles.aboutScript}>Release Date: 20/07/20</Text>
+              <Text style = {styles.aboutScript}>Release Date: 23/07/2020</Text>
               <Text style = {styles.aboutScript}>This portable mobile app aims to improve user lifestyle via daily tracking, 
                 advisory and recommendation</Text>
               <Button style = {styles.button} onPress = {() => this.setState({viewAbout: false,})}>
@@ -218,21 +228,21 @@ class HomeScreen extends Component {
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "cash-refund"/>
-                <Text style = {styles.cardText}>{expenseTotal/*DailyRecord.Finance.spent.sum*/} VND</Text>
+                <Text style = {styles.cardText}>{expenseTotal/*DailyRecord.Finance.spent.sum*/} {Currency}</Text>
               </Left>
             </CardItem>
 
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "credit-card-plus"/>
-                <Text style = {styles.cardText}>{incomeTotal/*DailyRecord.Finance.earned.sum*/} VND</Text>
+                <Text style = {styles.cardText}>{incomeTotal/*DailyRecord.Finance.earned.sum*/} {Currency}</Text>
               </Left>
             </CardItem>
 
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "account-cash"/>
-                <Text style = {styles.cardText}>{money} VND</Text>
+                <Text style = {styles.cardText}>{money + incomeTotal - expenseTotal} {Currency}</Text>
               </Left>
             </CardItem>
 
