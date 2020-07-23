@@ -5,6 +5,7 @@ import {
   TouchableHighlight,
   TextInput,
   Switch,
+  ToastAndroid,
 } from 'react-native';
 import {
   Container,
@@ -130,6 +131,10 @@ class AddActivityModal extends Component {
     // Call utility functions to add notification into list (out of redux store)
     addAlarmNoti(newActivity);
     this.props.completeAdd();
+    ToastAndroid.show(
+      "Activity added",
+      ToastAndroid.SHORT
+    )
     this.activity.name = 'Activity';
   };
 
