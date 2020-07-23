@@ -21,7 +21,7 @@ import {
 import * as Progress from 'react-native-progress';
 
 import {connect} from 'react-redux';
-import {fitnessAnalyzer, financialAnalyzer, financeAnalyzer} from "../../utils";
+import {fitnessAnalyzer, financialAnalyzer, financeAnalyzer, rateHealth, rateFinance} from "../../utils";
 import {tips} from './../../data/tips'
 
 const default_image = require('../../../assets/default_image.png')
@@ -41,12 +41,13 @@ class AdviceAnalysis extends Component {
     super(props);
     this.state = {
       indicating: true,
-      tip: ''
+      tip: 0,
     }
   }
 
   /* activity indicator for 0.5s */
   componentDidMount(){
+    this.assignTips();
     setTimeout(()=>{
       this.stopIndicating();
     }, 500);
@@ -60,14 +61,15 @@ class AdviceAnalysis extends Component {
   assignTips(){
     let chosenId = Math.floor(Math.random()*tips.length);
     this.setState({
-      tip: tips[chosenId].text,
-    }, console.log(this.state.tip));
+      tip: chosenId
+    });
   }
 
   render(){
     const {indicating} = this.state;
     const {userInfo} = this.props;
-    const {FinanceRecord, FitnessRecord, DailyRecord} = userInfo;
+    const {checkFitness, checkFinance, checkGeneral} = this.props.route.params;
+    const {FinanceRecord, FitnessRecord, DailyRecord, Info} = userInfo;
     
     /* There is a whole section for indicating action... */
     if (indicating == true) return (
@@ -121,11 +123,18 @@ class AdviceAnalysis extends Component {
 
         <Content padder>
           <Card style = {styles.reviewBox} >
+              <CardItem>
+                <Body><Text style = {styles.rateHeaderText}>Your overall rating</Text></Body>
+              </CardItem>
               <CardItem transparent >
                 <Left>
                   <Icon type = "FontAwesome5" name = "heartbeat" />
                   <Text>  </Text>
-                  <Progress.Bar  progress = {0.8} width = {deviceWidth - 100} height = {8} color = "#000"/>
+                  <Progress.Bar  
+                    progress = {rateHealth(userInfo)} 
+                    width = {deviceWidth - 100} 
+                    height = {8} color = "#000"
+                  />
                 </Left>
               </CardItem>
 
@@ -134,7 +143,7 @@ class AdviceAnalysis extends Component {
                   <Icon type = "MaterialCommunityIcons" name = "cup-water"/>
                   <Text>  </Text>
                   <Progress.Bar 
-                    progress = {DailyRecord.Fitness.waterConsumed/2000.0} 
+                    progress = {Math.min(DailyRecord.Fitness.waterConsumed/2.0, 1)} 
                     width = {deviceWidth - 100} height = {8} color = "#000" 
                   />
                 </Left>
@@ -144,13 +153,16 @@ class AdviceAnalysis extends Component {
                 <Left>
                   <Icon type = "MaterialCommunityIcons" name = "finance"/>
                   <Text>  </Text>
-                  <Progress.Bar progress = {0.1} width = {deviceWidth - 100} height = {8} color = "#000"/>
+                  <Progress.Bar 
+                    progress = {rateFinance(DailyRecord.Finance, userInfo.Info.money)} 
+                    width = {deviceWidth - 100} height = {8} color = "#000"
+                  />
                 </Left>
               </CardItem>
           </Card>
 
 
-          <Card transparent >
+          {checkFitness && <Card transparent >
               <CardItem style = {[styles.reviewBox, {backgroundColor: 'peachpuff'}]}>
                 <Left>
                   <Body>
@@ -158,9 +170,9 @@ class AdviceAnalysis extends Component {
                   </Body>
                 </Left>
               </CardItem>
-          </Card>
+          </Card>}
 
-          <Card transparent >
+          {checkFinance && <Card transparent >
               <CardItem style = {[styles.reviewBox, {backgroundColor: 'aquamarine'}]}>
                 <Left>
                   <Body>
@@ -168,13 +180,13 @@ class AdviceAnalysis extends Component {
                   </Body>
                 </Left>
               </CardItem>
-          </Card>
+          </Card>}
 
           <Card >
               <CardItem style = {styles.tipBox}>
                 <Left>
                   <Body>
-                    <Text style = {styles.tip}>{this.state.tips}</Text>
+                    <Text style = {styles.tip}>{tips[this.state.tip].text}</Text>
                   </Body>
                 </Left>
               </CardItem>
@@ -200,6 +212,11 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontWeight: 'bold',
+  },
+  rateHeaderText: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    alignSelf: 'center'
   },
   text: {
     alignSelf: "center",

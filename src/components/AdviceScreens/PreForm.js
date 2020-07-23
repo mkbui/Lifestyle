@@ -62,7 +62,7 @@ class PreForm extends Component {
   /* present warning via React Alert if not updated, prompt user to cancel or update */
   proceed(){
     const {DailyRecord} = this.props.userInfo;
-    const {checkFinance, checkFitness} = this.state;
+    const {checkFinance, checkFitness, checkGeneral} = this.state;
     if (checkFitness && !DailyRecord.Fitness.updated){
       Alert.alert(
         "Warning",
@@ -78,7 +78,7 @@ class PreForm extends Component {
         { cancelable: false }
       );   
     }
-    else {this.props.navigation.navigate("AdviceAnalysis");}
+    else {this.props.navigation.navigate("AdviceAnalysis", {checkFitness, checkFinance, checkGeneral});}
     //proceed("AdviceAnalysis");
   }
 
