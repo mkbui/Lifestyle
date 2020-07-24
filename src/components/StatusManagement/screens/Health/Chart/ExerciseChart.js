@@ -147,7 +147,6 @@ class ExerciseChart extends React.Component {
   
   }
   render() {
-    console.log("valueChart", this.state.valueChart)
     return (
       <Content padder>
         <View>

@@ -211,7 +211,7 @@ export default class Chart extends Component {
             }}>
             <Text style={styles.textStyle}> OK </Text>
           </TouchableOpacity>
-          {console.log("selectedMonth",this.state.selectedMonth)}
+          
         </View>
       </View>
     </Modal>

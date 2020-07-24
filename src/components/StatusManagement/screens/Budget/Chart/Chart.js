@@ -22,6 +22,7 @@ import {
 } from 'native-base';
 
 import {ButtonGroup} from 'react-native-elements';
+import { connect } from 'react-redux';
 import moment from 'moment';
 
 {
@@ -83,7 +84,7 @@ const DATA = [
 ];
 
 
-export default class Chart extends Component {
+ class Chart extends Component {
   constructor() {
     super();
     this.state = {
@@ -107,11 +108,30 @@ export default class Chart extends Component {
   updateIndex(selectedIndex) {
     this.setState({selectedIndex});
   }
+
+
   render() {
-    console.log('render');
     const {selectedMonth, modalVisible} = this.state;
+    const {budgetList} = this.props
     const buttons = ['Expense', 'Income'];
     const {selectedIndex} = this.state;
+
+    var incomeTotal = 0, expenseTotal = 0;
+    
+    budgetList.map(budget => {
+      if (
+        budget.date
+        .split('-')
+        .reverse()
+        .join('-')
+        .split('-', 2)
+        .join('-') === selectedMonth
+      ) {
+        if(budget.type == 'Income') incomeTotal += Number(budget.amount);
+        else expenseTotal += Number(budget.amount);
+      }
+    });
+
     return (
       <Container>
         {/* Header */}
@@ -235,10 +255,11 @@ export default class Chart extends Component {
                   }}>
                   <Text style={styles.textStyle}> OK </Text>
                 </TouchableOpacity>
-                {console.log('selectedMonth', this.state.selectedMonth)}
+            
               </View>
             </View>
           </Modal>
+          
 
           {/* Choose month button */}
           <TouchableOpacity
@@ -253,14 +274,26 @@ export default class Chart extends Component {
                 .join('-')}
             </Text>
           </TouchableOpacity>
-
+       <View style={{marginVertical:5, paddingVertical:5,  backgroundColor:"#ededed"}}>
+           <View style={styles.viewTotal}>
+                <Text style={styles.text}>Income </Text>
+                <Text style={styles.text}>Expense</Text>
+                <Text style={styles.text}>Total </Text>
+            </View>
+            <View style={styles.viewTotal}>
+              <Text style={styles.incomeText}> {incomeTotal}</Text>
+              <Text style={styles.expenseText}> {expenseTotal}</Text>
+              <Text style={styles.totalText}>{incomeTotal - expenseTotal}</Text>
+            </View>
+       </View>
+     
           <ButtonGroup
           onPress={this.updateIndex.bind(this)}
           selectedIndex={selectedIndex}
           buttons={buttons}
           containerStyle={{height: 35}}
         />
-
+    
         {this.state.selectedIndex === 0 ? 
         <>
          <PieChart
@@ -297,7 +330,12 @@ export default class Chart extends Component {
     );
   }
 }
-
+const mapStateToProps = state => {
+  return {
+    budgetList: state.budgetReducer.budgetList,
+  };
+};
+export default connect(mapStateToProps, null)(Chart);
 const styles = StyleSheet.create({
   headerText: {
     fontWeight: 'bold',
@@ -376,4 +414,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     marginHorizontal: 2,
   },
+  viewTotal:{
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  }
 });

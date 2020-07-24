@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
-import { View, Text, StyleSheet, Image, Input , TouchableHighlight} from 'react-native';
-import { TouchableOpacity, ScrollView, TextInput } from 'react-native-gesture-handler';
+import { View, Text, StyleSheet, Image, Input ,TouchableOpacity, TouchableHighlight} from 'react-native';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import moment from 'moment';
 import * as actions from "../../../../../actions"
 import { connect } from 'react-redux';
@@ -16,7 +16,7 @@ class ViewStatus extends Component {
   constructor(props) {
     super(props);
     const { userInfo } = this.props;
-    const { waterConsumed } = userInfo.DailyRecord.Fitness
+    const { waterConsumed } = userInfo.DailyRecord.Fitness;
     console.log(waterConsumed);
     this.state = {
       date: moment().format('DD-MM-YYYY'),
@@ -110,8 +110,7 @@ class ViewStatus extends Component {
 
        
         {/* //Weight - Height */}
-         {/* Chưa xong */}
-        <TouchableOpacity style={styles.viewWH} onPress={this.toggleOverlay}>
+        <View style={styles.viewWH} >
           <View style={{ flexDirection: 'row', marginTop:10 }}>
             <Text style={styles.WHtitle}>Weight:</Text>
             <Text style={styles.WHvalue}>{userInfo.Info.weight} kg</Text>
@@ -120,7 +119,7 @@ class ViewStatus extends Component {
             <Text style={styles.WHtitle}>Height:</Text>
             <Text style={styles.WHvalue}>{userInfo.Info.height} cm</Text>
           </View>
-        </TouchableOpacity>
+        </View>
      
 
         <ScrollView style={{ flex: 1 }}>
@@ -210,17 +209,16 @@ class ViewStatus extends Component {
               return (
                 <TouchableOpacity
                 key={meal.id}
-                  // onPress={() => this.props.deleteMeal(meal)}
                   onPress={() => {
                     this.props.editMeal(meal);
                     this.props.navigation.push('Meal');
                   }}>
                   <View style={styles.viewItemRow}>
-                    <View style={{ height: 40, width: 40 }}>
+                    <View style={{ height: 40, width: 40 , marginHorizontal:20}}>
                       <Image source={meal.filePath} style={styles.imageFood} />
                     </View>
-
-                    <View style={{ width: 120 }}>
+                   
+                    <View style={{ width: 120 , marginLeft:15}}>
                       <Text numberOfLines={1} style={{ fontSize: 20 }}>
                         {meal.name}
                       </Text>
@@ -242,6 +240,13 @@ class ViewStatus extends Component {
                     <Text style={styles.valueCalo}>
                       {calCalo(meal.carb, meal.protein, meal.fat)}
                     </Text>
+
+                  <TouchableOpacity  onPress={() => this.props.deleteMeal(meal)}>
+                      <View>
+                        <Image source={require("../../../../../../assets/close.png")} style={{height:20, width:20, marginRight:30, marginLeft:50}} />
+                      </View>
+                  </TouchableOpacity>
+
                   </View>
                 </TouchableOpacity>
               );
@@ -276,19 +281,25 @@ class ViewStatus extends Component {
               return (
                 <TouchableOpacity
                 key={exercise.id}
-                  // onPress={()=>this.props.deleteExercise(exercise)}
                   onPress={() => {
                     this.props.editExercise(exercise);
-                    this.props.navigation.push('Exercise');
+                     this.props.navigation.push('Exercise');
+                
+                   
                   }}>
                   <View style={styles.viewItemRow}>
                     <Text style={styles.exerciseText}>{exercise.category}</Text>
-                    <Right style={{ marginRight: 30 }}>
+                    <Right >
                       <Text style={styles.exerciseValue}>
                         {exercise.duration} m
                       </Text>
                     </Right>
-                  </View>
+                    <TouchableOpacity  onPress={()=>this.props.deleteExercise(exercise)}>
+                      <View>
+                        <Image source={require("../../../../../../assets/close.png")} style={{height:20, width:20, marginRight:15, marginLeft:20}} />
+                      </View>
+                  </TouchableOpacity>
+                  </View>        
                 </TouchableOpacity>
               );
             })}
@@ -313,7 +324,7 @@ const mapDispatchToProps = dispatch => {
     },
 
     deleteExercise: exercise => {
-      dispatch(actions.actEditExercise(exercise));
+      dispatch(actions.actDeleteExercise(exercise));
     },
     submitWater: water => {
       dispatch(actions.actSubmitWater(water));
@@ -469,11 +480,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#f4c348',
     margin: 3,
   },
-  viewCircle: { flexDirection: 'row', width: 40 },
+  viewCircle: { flexDirection: 'row', width: 40 , margin:20},
   valueCalo: {
     fontSize: 20,
     color: 'green',
     fontWeight: 'bold',
+    marginLeft:30
   },
   date: { fontSize: 30, fontWeight: 'bold', color: '#FE6623' },
   viewWH: {
@@ -495,5 +507,5 @@ const styles = StyleSheet.create({
   },
   WHvalue: { fontSize: 23, fontWeight: 'bold', color: 'black' },
   bottle: { margin: 5 },
-  
+
 });

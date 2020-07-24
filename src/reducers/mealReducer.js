@@ -4,6 +4,7 @@ import * as ActionType from "../actions/ActionType";
 let initialState = {
     mealList: [],
     mealEdit: null,
+    waterList:[],
   };
 
   const mealReducer = (state = initialState, action) => {
@@ -45,8 +46,25 @@ let initialState = {
       }
       
       return { ...state };
-    
 
+      case ActionType.SUBMIT_W:
+        let i = state.waterList.findIndex(water => {
+          return water.date === action.meal.date;
+        });
+        if (i !== -1) {
+          //UPDATE EDIT
+         
+          if (i !== -1) {
+            let waterListUpdate = [...state.waterList];
+            waterListUpdate[index] = action.water;
+            state.waterList = waterListUpdate;
+          }
+        }else{
+            //ADD
+          state.mealList = [...state.waterList, action.water];
+
+          }
+        return { ...state };
       default:
         return state;//{ ...state };
     }
