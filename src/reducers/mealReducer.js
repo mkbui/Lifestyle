@@ -46,29 +46,30 @@ let initialState = {
       }
       
       return { ...state };
-
+    
       case ActionType.SUBMIT_W:
-        let i = state.waterList.findIndex(water => {
-          return water.date === action.meal.date;
-        });
-        if (i !== -1) {
-          //UPDATE EDIT
-         
-          if (i !== -1) {
-            let waterListUpdate = [...state.waterList];
-            waterListUpdate[index] = action.water;
-            state.waterList = waterListUpdate;
-          }
-        }else{
-            //ADD
-          state.mealList = [...state.waterList, action.water];
+          // let i = - 1;
+          // if(state.waterList){
 
+    
+           let i = state.waterList.findIndex(water => {
+              return water.date === action.water.date;
+            });
+          // }
+          console.log("i",i)
+          if(i !==  -1){
+            //UPDATE
+          
+            state.waterList[i] = action.water;
+          }else{
+            //ADD
+            state.waterList = [...state.waterList, action.water];
           }
-        return { ...state };
+          return {...state};
+
       default:
         return state;//{ ...state };
     }
   };
 
   export default mealReducer;
-    

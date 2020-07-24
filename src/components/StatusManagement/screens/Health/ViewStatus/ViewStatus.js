@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
 import {  Overlay } from 'react-native-elements'
 import {Header, Title, Button, Icon, Left, Right, Body} from 'native-base';
-import {SwipeRow, SwipeListView} from 'react-native-swipe-list-view';
 const waterGlass_active = require('../../../../../../assets/waterBottle_on.png');
 const waterGlass_inactive = require('../../../../../../assets/waterBottle.off.png');
 
@@ -16,23 +15,30 @@ class ViewStatus extends Component {
   constructor(props) {
     super(props);
     const { userInfo } = this.props;
-    const { waterConsumed } = userInfo.DailyRecord.Fitness;
-    console.log(waterConsumed);
+    // const { waterConsumed } = userInfo.DailyRecord.Fitness;
+
     this.state = {
       date: moment().format('DD-MM-YYYY'),
-      bottlePressID: waterConsumed/0.25,
-      weight:0,
-      height:0
+      // bottlePressID: waterConsumed/0.25,
+      bottlePressID:0,
+      waterConsumed:0,
     };
   }
 
   updateWater = (i) => {
-    this.setState({ bottlePressID: i });
-    this.props.submitWater(i * 0.25)
+    this.setState({ bottlePressID: i , waterConsumed: i*0.25});
+   
+  }
+  onSubmit = () =>{
+    this.props.submitWater(this.state);  
+    if(this.state.date === moment().format('DD-MM-YYYY')){
+      this.props.submitWaterRecord(this.state.waterConsumed);
+    }
+   
   }
 
   render() {
-    const { exerciseList, mealList , budgetList, userInfo} = this.props;
+    const { exerciseList, mealList,waterList, userInfo} = this.props;
     var totalTime = 0;
     var totalCarb = 0;
     var totalProtein = 0;
@@ -95,7 +101,21 @@ class ViewStatus extends Component {
               },
             }}
             onDateChange={date => {
-              this.setState({ date: date });
+              var index = waterList.findIndex(water=>{return(water.date === date)})
+              console.log("index",index)
+             if(index !== -1){
+              this.setState({ 
+                date: date ,
+                bottlePressID: waterList[index].bottlePressID,
+                waterConsumed: waterList[index].waterConsumed
+              }) 
+             }else{
+              this.setState({ 
+                date: date,
+                bottlePressID:0,
+                waterConsumed:0,
+              })
+            } 
             }}
             androidMode="spinner"
           />
@@ -154,7 +174,12 @@ class ViewStatus extends Component {
 
             </View>
           </View>
-
+          <TouchableOpacity  onPress={this.onSubmit}>
+            <View style={{borderWidth:1,borderRadius:5, width:50, marginLeft:300,marginBottom:10, marginTop:5,backgroundColor:"orange", alignItems:"center", elevation:5}}>
+            <Text>OK</Text>
+              </View>
+              
+          </TouchableOpacity>
 
           {/* MEAL */}
 
@@ -315,7 +340,6 @@ const mapDispatchToProps = dispatch => {
     editMeal: meal => {
       dispatch(actions.actEditMeal(meal));
     },
-
     deleteMeal: meal => {
       dispatch(actions.actDeleteMeal(meal));
     },
@@ -328,6 +352,9 @@ const mapDispatchToProps = dispatch => {
     },
     submitWater: water => {
       dispatch(actions.actSubmitWater(water));
+    },
+    submitWaterRecord: water =>{
+      dispatch(actions.addWaterRecord(water));
     }
 
     
@@ -407,7 +434,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   viewBottle: {
-    marginVertical: 10,
+    marginTop: 10,
     marginLeft: 10,
     alignItems: 'center',
     flexDirection: 'row',
@@ -495,9 +522,7 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     borderWidth: 0.7,
     borderColor: 'grey',
-    borderRadius:15,
-
-
+    borderRadius:10,
   },
   WHtitle: {
     fontSize: 23,

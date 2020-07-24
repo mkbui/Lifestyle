@@ -363,7 +363,7 @@ const styles = StyleSheet.create({
   },
   datepicker:{width: 300, marginTop: 10},
   viewbtnUpload:{ flexDirection: "row", margin: 20, alignItems: "center" },
-  btnUpload:{ borderColor: "grey", borderWidth: 1, borderRadius: 5, height: 35, width: 100, alignItems: "center", justifyContent: "center", marginLeft: 20 },
+  btnUpload:{ borderColor: "grey", borderWidth: 1, borderRadius: 5, height: 35, width: 100, alignItems: "center", justifyContent: "center", marginLeft: 20},
   labelNutri:{ color: '#fa8100', fontWeight: "bold", fontSize: 20, marginLeft:30},
   viewSlider:{ flex: 1, alignItems: 'stretch', justifyContent: 'center' },
   slider:{ margin: 10 },

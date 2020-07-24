@@ -274,7 +274,19 @@ const DATA = [
                 .join('-')}
             </Text>
           </TouchableOpacity>
-       <View style={{marginVertical:5, paddingVertical:5,  backgroundColor:"#ededed"}}>
+     
+     
+         
+      <View style={{alignItems:"center"}}>
+        <ButtonGroup
+          onPress={this.updateIndex.bind(this)}
+          selectedIndex={selectedIndex}
+          buttons={buttons}
+          containerStyle={{height: 35,width:300, marginBottom:10 }}
+          selectedButtonStyle={{backgroundColor:"#6AC9EF"}}
+        />
+      </View>
+      <View style={{marginVertical:5, paddingVertical:5,  backgroundColor:"#f5f5f5"}}>
            <View style={styles.viewTotal}>
                 <Text style={styles.text}>Income </Text>
                 <Text style={styles.text}>Expense</Text>
@@ -286,14 +298,6 @@ const DATA = [
               <Text style={styles.totalText}>{incomeTotal - expenseTotal}</Text>
             </View>
        </View>
-     
-          <ButtonGroup
-          onPress={this.updateIndex.bind(this)}
-          selectedIndex={selectedIndex}
-          buttons={buttons}
-          containerStyle={{height: 35}}
-        />
-    
         {this.state.selectedIndex === 0 ? 
         <>
          <PieChart
@@ -364,11 +368,13 @@ const styles = StyleSheet.create({
   },
   openButton: {
     backgroundColor: 'orange',
-    borderWidth: 3,
-    borderColor: '#222224',
-    borderColor: 5,
+    borderWidth: 1,
+    borderColor: 'grey',
+    borderRadius: 5,
     padding: 10,
-    elevation: 2,
+    elevation: 5,
+    alignItems:"center",
+    marginBottom:10
   },
   textStyle: {
     fontSize: 18,

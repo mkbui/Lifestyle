@@ -114,7 +114,7 @@ class HomeScreen extends Component {
         totalConsumed += meal.carb*4 + meal.protein*4 + meal.fat*9;
       }
     });
-
+    console.log("DailyRecord.Fitness.waterConsumed",DailyRecord.Fitness.waterConsumed)
     return (
       <Container style={styles.container}>
         <Header>

@@ -8,7 +8,8 @@ import {
   ADD_EXERCISE_RECORD,
   ADD_EXPENSE_RECORD,
   ADD_INCOME_RECORD,
-  SUBMIT_W,
+  ADD_WATER_RECORD,
+ 
 } from "../actions";
 import {getDateString} from "../utils"
 
@@ -166,7 +167,7 @@ export function userAccess(state = User, action){
         }
       })
 
-    case SUBMIT_W:
+    case  ADD_WATER_RECORD:
       return Object.assign({}, state, {
         ...state,
         DailyRecord: {

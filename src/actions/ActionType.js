@@ -28,3 +28,4 @@ export const EDIT_E = "EDIT_E";
 export const SUBMIT_M = "SUBMIT_M";
 export const DELETE_M = "DELETE_M";
 export const EDIT_M = "EDIT_M";
+export const SUBMIT_W = "SUBMIT_W";

@@ -23,6 +23,7 @@ export const ADD_INCOME_RECORD = 'ADD_INCOME_RECORD'
 export const ADD_EXPENSE_RECORD = 'ADD_EXPENSE_RECORD'
 export const ADD_CONSUME_RECORD = 'ADD_FITNESS_RECORD'
 export const ADD_EXERCISE_RECORD = 'ADD_EXERCISE_RECORD'*/
+export const  ADD_WATER_RECORD = ' ADD_WATER_RECORD'
 // Budget
 export const SUBMIT = "SUBMIT";
 export const DELETE = "DELETE";
@@ -180,9 +181,15 @@ export const actEditMeal = (meal) => {
   }
 }
 
+// export const actSubmitWater = (water) => {
+//   return {
+//     type: SUBMIT_W,
+//     water,
+//   }
+// }
 export const actSubmitWater = (water) => {
   return {
-    type: SUBMIT_W,
+    type: ActionType.SUBMIT_W,
     water,
   }
 }
@@ -202,6 +209,10 @@ export function addConsumeRecord(record) {
 export function addExerciseRecord(record) {
   return { type: ADD_EXERCISE_RECORD, record}
 }
+export function addWaterRecord(water) {
+  return { type:  ADD_WATER_RECORD, water}
+}
+
 
 // Lock
 export function activatePassword() {

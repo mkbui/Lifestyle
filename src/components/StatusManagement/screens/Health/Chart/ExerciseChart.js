@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
     width: 300,
   },
   viewTitle:{alignItems: 'center', margin: 20},
-  textTitle:{fontSize: 20, color: 'red', fontWeight: 'bold'},
+  textTitle:{fontSize: 20, color: '#FE7B23', fontWeight: 'bold'},
   viewTotal:{flexDirection: 'row', margin: 20, justifyContent: 'center'},
   textTitleTotal:{fontSize: 20, fontWeight: 'bold', color: 'grey'},
   valueTotal:{fontSize: 20, marginLeft: 10},
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
   value:{
     fontSize: 15,
     fontWeight: 'bold',
-    color: 'green',
+    color: 'grey',
     marginRight: 40,
   },
   label:{fontSize: 17, marginLeft: 30}
