@@ -27,6 +27,9 @@ import MealChart from "../StatusManagement/screens/Health/Chart/MealChart"
 import MealLineChart from "../StatusManagement/screens/Health/Chart/MealLineChart"
 import RNFetchBlob from 'rn-fetch-blob';
 import moment from 'moment';
+
+
+
 const sleep = (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
