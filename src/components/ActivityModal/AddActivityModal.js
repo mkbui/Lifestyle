@@ -28,8 +28,6 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {connect} from "react-redux";
 import {addActivity} from "../../actions";
-
-import {ScheduledNotification} from '../PushController';
 import {addAlarmNoti} from '../../utils';
 
 class Activity {
@@ -54,7 +52,7 @@ class Activity {
     this.repeat[5].value = Fri;
     this.repeat[6].value = Sat;
     this.activate = true;
-    this.id = new Date()//Math.random().toString();
+    this.id = Math.floor(Math.random() * Math.floor(99999999999999)) //set id
   }
 }
 

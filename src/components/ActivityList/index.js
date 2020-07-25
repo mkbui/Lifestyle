@@ -32,12 +32,6 @@ const mapDispatchToProps = dispatch => ({
 class ActivityList extends Component {
   constructor(props){
     super(props)
-    this.activity = {
-      name: "",
-      id: "",
-      hour: 0,
-      min: 0,
-    }
   }
   removeItem(activity){
     this.props.removeActivity(activity.id);
@@ -49,12 +43,10 @@ class ActivityList extends Component {
   }
   activateItem(activity){
     this.props.activateActivity(activity.id);
-    if (activity.activate === false)
-    {
+    if (activity.activate === false) {
       addAlarmNoti(activity)
     }
-    else
-    {
+    else {
       removeActivity(activity)
     }
   }
@@ -64,29 +56,32 @@ class ActivityList extends Component {
       [visible] : !state[visible]
     }));
   };
-  onChangeName = (id, name) => {
-    this.props.changeName(id, name);
+  onChangeName = (activity) => {
+    removeAlarmNoti(activity)
+    this.props.changeName(activity);
     this.props.openNameModal();
   }
 
-  onChangeTime = (id, hour, min) => {
-    this.props.changeTime(id, hour, min);
+  onChangeTime = (activity) => {
+    removeAlarmNoti(activity)
+    this.props.changeTime(activity);
     this.props.openTimeModal();
   }
 
-  onChangeRepeat = (id, repeat) => {
-    this.props.changeRepeat(id, repeat);
+  onChangeRepeat = (activity) => {
+    removeAlarmNoti(activity)
+    this.props.changeRepeat(activity);
     this.props.openRepeatModal();
   }
 
   render() {
     const {activityList} = this.props;
     return (
-      activityList.map(activity => 
+      activityList.length > 0?  activityList.map(activity => 
         <Card key={activity.id}>
           <CardItem style={styles.activityView}>
               <Left style={{flex: 1}}>
-                <TouchableOpacity onPress={() => {this.onChangeName(activity.id, activity.name)}}>
+                <TouchableOpacity onPress={() => {this.onChangeName(activity)}}>
                   <Text style={{marginLeft : -5}}>
                     {activity.name.length > 0 ? activity.name : "(no name)"}
                   </Text>
@@ -95,13 +90,13 @@ class ActivityList extends Component {
               <Body style={{flex: 2, alignItems:"center"}}>
 
                   <View>
-                    <TouchableOpacity onPress={() => {this.onChangeTime(activity.id, activity.hour, activity.min)}}>
+                    <TouchableOpacity onPress={() => {this.onChangeTime(activity)}}>
                       <Text style={styles.timeText}>
                         {activity.hour}:{activity.min <= 9 ? '0' + activity.min : activity.min}
                       </Text>
                     </TouchableOpacity>
                   </View>
-                  <TouchableOpacity onPress={() => {this.onChangeRepeat(activity.id, activity.repeat)}}>
+                  <TouchableOpacity onPress={() => {this.onChangeRepeat(activity)}}>
                     <View style={{marginTop: 20, flexDirection:"column", alignItems:"center"}}>
                       <Text style={{fontSize: 15}}>Repeat</Text>
                       <View style={{flexDirection:"row", alignItems:"center", justifyContent:"space-evenly"}} button={true}>
@@ -141,7 +136,7 @@ class ActivityList extends Component {
               </Right>
           </CardItem>
         </Card>
-      )
+      ) : <View><Text>No activity</Text></View>
     )
   }
 }

@@ -27,7 +27,7 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {connect} from "react-redux";
 import {modifyActivityTime} from "../../actions";
-
+import {addAlarmNoti} from '../../utils';
 
 
 const mapDispatchToProps = dispatch => ({
@@ -38,23 +38,24 @@ class ModifyTimeModal extends Component {
     super(props);
     this.state = {
       mode : 'time',
+      date : new Date(2020, 7, 23, this.props.activity.hour, this.props.activity.min, 0, 0)
     };
-    this.activity = {
-      date : new Date(2020, 7, 4, this.props.hour, this.props.min, 1, 1),
-    };
+    this.activity = this.props.activity
   }
   onChangeTime = (event, selectedDate) => {
     if (event.type == "set") {
-      const currentDate = selectedDate || this.activity.date;
-      this.activity.date = currentDate;
-      this.props.modifyActivityTime(this.props.id, this.activity.date.getHours(), this.activity.date.getMinutes())    
+      const currentDate = selectedDate || this.state.date
+      this.state.date = currentDate;
+      this.activity.hour = this.state.date.getHours()
+      this.activity.min = this.state.date.getMinutes()
+      this.props.modifyActivityTime(this.activity.id, this.activity.hour, this.activity.min)
     }
+    addAlarmNoti(this.activity)
     this.props.completeChange()
   };
 
   render() {
-    const { mode } = this.state;
-    const { date } = this.activity;
+    const { mode, date } = this.state;
     return (
           <View style={styles.centeredView}>
             <DateTimePicker

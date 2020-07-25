@@ -11,7 +11,7 @@ import {
 } from "native-base";
 import {connect} from "react-redux";
 import {modifyActivityName} from "../../actions";
-
+import {addAlarmNoti} from '../../utils';
 
 const mapDispatchToProps = dispatch => ({
     modifyActivityName: (id, name) => dispatch(modifyActivityName(id, name))
@@ -19,10 +19,7 @@ const mapDispatchToProps = dispatch => ({
 class ModifyNameModal extends Component {
   constructor(props){
     super(props);
-    this.activity = {
-      id: this.props.id,  
-      name : this.props.name,
-    };
+    this.activity = this.props.activity
   }
 
   onChangeName = (textChange) => {
@@ -32,6 +29,7 @@ class ModifyNameModal extends Component {
   modifyName = () => {
     const {id, name} = this.activity
     this.props.modifyActivityName(id, name)
+    addAlarmNoti(this.activity)
     this.props.completeChange()
   };
 
@@ -55,14 +53,15 @@ class ModifyNameModal extends Component {
                   <View style={styles.modalButton}>
                     <TouchableHighlight
                       style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                      onPress={() => {this.props.completeChange()}}
-                    >
+                      onPress={() => {
+                        this.props.completeChange()
+                        addAlarmNoti(this.activity)
+                      }}>
                       <Text style={styles.textStyle}>Cancel</Text>
                     </TouchableHighlight>
                     <TouchableHighlight
                       style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                      onPress={() => {this.modifyName()}}
-                    >
+                      onPress={() => {this.modifyName()}}>
                       <Text style={styles.textStyle}>OK</Text>
                     </TouchableHighlight>
                   </View>

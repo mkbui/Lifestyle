@@ -47,15 +47,59 @@ export const ScheduledAlarmNotification = (activity, weekDay) => {
   var year, month, day; year = now.getFullYear(); month = now.getMonth(); day = now.getDate();
   
   if (activity){
-    id = new Date(activity.id.getTime() + weekDay) //activity.id + weekDay // concatenate id with weekday for unique id\
-    console.log(id)
+    id = activity.id * 10 + weekDay //activity.id + weekDay // concatenate id with weekday for unique id\
+    console.log("add "+id)
     title = activity.name;
     if (activity.hour) hour = activity.hour;
     if (activity.min) min = activity.min;
     overhead = weekDay - today;
     if (overhead < 0) overhead += 7;
     day = parseInt(day) + parseInt(overhead);
+    console.log("day "+day)
     date = new Date(parseInt(year), parseInt(month), day, hour, min, 3);
+    console.log(date.getHours())
+  }
+  //console.log((date - Date.now())/1000);
+  return PushNotification.localNotificationSchedule({
+    id: id,
+    autoCancel: true,
+    largeIcon: splashLogo,
+    bigText: 'LIFESTYLE NOTIFICATION',
+    subText: 'T.I.M.E.R',
+    title: title,
+    message: 'Expand to see more',
+    vibrate: true,
+    vibration: 500,
+    playSound: true,
+    soundName: 'default',
+    actions: '["OK"]',
+    allowWhileIdle: true,
+    date: date,
+    repeatType: 'week',
+  })
+}
+
+export const NoRepeatAlarmNotification = (activity) => {
+  
+  title = 'This is a notification';
+  date = new Date(Date.now() + 3 * 1000);  // default go off after 3 seconds
+  
+  var id;
+  var hour, min, overhead;
+  var now = new Date();
+  var year, month, day; year = now.getFullYear(); month = now.getMonth(); day = now.getDate();
+  
+  if (activity){
+    id = activity.id * 10 + 7 //activity.id + weekDay // concatenate id with weekday for unique id\
+    console.log(id)
+    title = activity.name
+    if (activity.hour) hour = activity.hour
+    if (activity.min) min = activity.min
+    day = parseInt(day)
+    if ((hour * 60 + min) >= (now.getHours() * 60 + now.getMinutes()))
+      day += 1
+    console.log("day "+ day)
+    date = new Date(parseInt(year), parseInt(month), day, hour, min, 3)
     console.log(date)
   }
 
@@ -78,7 +122,7 @@ export const ScheduledAlarmNotification = (activity, weekDay) => {
     actions: '["OK"]',
     allowWhileIdle: true,
     date: date,
-    repeatType: 'week',
+    onlyAlertOnce: true,
   })
 
 }

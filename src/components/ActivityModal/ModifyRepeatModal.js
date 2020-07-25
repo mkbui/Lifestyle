@@ -13,7 +13,7 @@ import {
 } from "native-base";
 import {connect} from "react-redux";
 import {modifyActivityRepeat} from "../../actions";
-
+import {addAlarmNoti} from '../../utils';
 
 const mapDispatchToProps = dispatch => ({
     modifyActivityRepeat: (id, repeat) => dispatch(modifyActivityRepeat(id, repeat))
@@ -22,14 +22,15 @@ class ModifyRepeatModal extends Component {
   constructor(props){
     super(props);
     this.state = {
-      Sun : this.props.repeat[0].value,
-      Mon : this.props.repeat[1].value,
-      Tue : this.props.repeat[2].value,
-      Wed : this.props.repeat[3].value,
-      Thu : this.props.repeat[4].value,
-      Fri : this.props.repeat[5].value,
-      Sat : this.props.repeat[6].value,
+      Sun : this.props.activity.repeat[0].value,
+      Mon : this.props.activity.repeat[1].value,
+      Tue : this.props.activity.repeat[2].value,
+      Wed : this.props.activity.repeat[3].value,
+      Thu : this.props.activity.repeat[4].value,
+      Fri : this.props.activity.repeat[5].value,
+      Sat : this.props.activity.repeat[6].value,
     };
+    this.activity = this.props.activity
   }
   checkBox = (checkDate) => {
     this.setState(state => ({
@@ -39,18 +40,18 @@ class ModifyRepeatModal extends Component {
 
   modify = () => {
     const {Sun, Mon, Tue, Wed, Thu, Fri, Sat} = this.state
-    this.props.modifyActivityRepeat(
-      this.props.id, 
-      [
-        {day : "Sun", value : Sun},
-        {day : "Mon", value : Mon},
-        {day : "Tue", value : Tue},
-        {day : "Wed", value : Wed},
-        {day : "Thu", value : Thu},
-        {day : "Fri", value : Fri},
-        {day : "Sat", value : Sat},
-      ]
-    )
+    repeat = [
+      {day : "Sun", value : Sun},
+      {day : "Mon", value : Mon},
+      {day : "Tue", value : Tue},
+      {day : "Wed", value : Wed},
+      {day : "Thu", value : Thu},
+      {day : "Fri", value : Fri},
+      {day : "Sat", value : Sat},
+    ]
+    this.activity.repeat = repeat
+    this.props.modifyActivityRepeat(this.props.activity.id, repeat)
+    addAlarmNoti(this.activity)
     this.props.completeChange()
   };
 
