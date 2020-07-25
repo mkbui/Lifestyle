@@ -4,8 +4,9 @@ import { Container, Button, Text, Header, Body, Title } from 'native-base';
 const splashBackground = require('../../assets/launchscreen-bg.png');
 const splashLogo = require('../../assets/bootLogo.jpg');
 import {connect} from "react-redux";
-import Password from "./LockScreen/index";
+import Password from "../components/LockScreen/index";
 import BiometricScreen from "./LockScreen/BiometricScreen"
+import {Overlay} from "react-native-elements"
 //const { Dimensions, Platform } = require('react-native');
 //const deviceHeight = Dimensions.get("window").height;
 

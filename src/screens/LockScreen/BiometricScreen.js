@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { View , Text, Button, Icon } from "native-base";
 import {Platform, Image} from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
-import { PasswordResultStatus } from "./types";
 import FingerprintScanner from 'react-native-fingerprint-scanner';
 
 const fingerPicture = require("../../../assets/fingerprint.png")

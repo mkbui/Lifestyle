@@ -14,7 +14,7 @@ import {
   View,
 } from "native-base";
 import { Col, Row, Grid } from 'react-native-easy-grid';
-import {PasswordStatus} from './types';
+import {PasswordStatus} from '../../components/LockScreen/types';
 const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms))
 }

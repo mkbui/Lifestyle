@@ -1,7 +1,7 @@
 import * as Keychain from 'react-native-keychain'
-import PinCode from './PinCode'
-import PatternCode from './PatternCode'
-import StringPassword from './StringPassword';
+import PinCode from '../../screens/LockScreen/PinCode'
+import PatternCode from '../../screens/LockScreen/PatternCode'
+import StringPassword from '../../screens/LockScreen/StringPassword';
 import {PasswordStatus, PasswordType, PasswordResultStatus} from './types';
 import React, { Component } from "react";
 import {StyleSheet, Animated} from 'react-native';
@@ -69,9 +69,8 @@ class PasswordEnter extends Component {
         this.endProcess = this.endProcess.bind(this)
    }
 
-    endProcess = async (inputValue) => {
+    endProcess = (inputValue) => {
         this.setState({ passwordResultStatus: PasswordResultStatus.initial }, async () =>{
-            console.log(this.state.passwordResultStatus + " initial has been set")
             this.props.changeInternalStatus(PasswordResultStatus.initial)
             const password = this.keyChainResult;
             if (password === inputValue)
@@ -110,7 +109,6 @@ class PasswordEnter extends Component {
         })
     }
     render() {
-        console.log(this.state.passwordResultStatus + " hey")
         const {passwordType} = this.props
         if(passwordType === PasswordType.none) return null
         else if (passwordType === PasswordType.pin){

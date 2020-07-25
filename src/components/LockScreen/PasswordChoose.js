@@ -1,7 +1,7 @@
 import * as Keychain from 'react-native-keychain'
-import PinCode from './PinCode'
-import StringPassword from './StringPassword'
-import PatternCode from './PatternCode'
+import PinCode from '../../screens/LockScreen/PinCode'
+import StringPassword from '../../screens/LockScreen/StringPassword'
+import PatternCode from '../../screens/LockScreen/PatternCode'
 import {PasswordStatus, PasswordType} from './types';
 import React, { Component } from "react";
 import {StyleSheet, Animated} from 'react-native';
@@ -22,7 +22,7 @@ import { connect } from 'react-redux';
 import { activatePassword, setPasswordType, resetAttemptNumber, resetPasswordType, deactivatePassword, updateTimelock } from "../../actions";
 import {securityQnAAsyncStorageName as key} from "./types"
 import AsyncStorage from "@react-native-community/async-storage";
-import SecurityQuestion from "./SecurityQuestion"
+import SecurityQuestion from "../../screens/LockScreen/SecurityQuestion"
 function mapStateToProps(state) {
     return {lockState: state.lockState}
 }
@@ -84,7 +84,6 @@ class PasswordChoose extends Component {
         }
     }
     handleSetSecurityQuestion = () => {
-        console.log("yess")
         if (!!this.props.onSuccess())
         {
             this.props.onSuccess()
@@ -92,7 +91,6 @@ class PasswordChoose extends Component {
     }
     render() {
         const {passwordType} = this.props
-        console.log(passwordType)
         if(this.state.secureQuestionOverlayIsOn){
             return (
                 <View>
@@ -101,6 +99,7 @@ class PasswordChoose extends Component {
                 </View>
             )
         }
+        else{
         if(passwordType === PasswordType.none) return null
         else if (passwordType === PasswordType.pin){
             return(
@@ -180,6 +179,7 @@ class PasswordChoose extends Component {
             )
         }
         else return null
+    }
     }
 }
 

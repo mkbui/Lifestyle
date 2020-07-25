@@ -13,7 +13,7 @@ import {
   Body,
   View,
 } from "native-base";
-import {PasswordStatus} from './types';
+import {PasswordStatus} from '../../components/LockScreen/types';
 
 const HEIGHT = Dimensions.get("window").height;
 const WIDTH = Dimensions.get("window").width;
@@ -52,13 +52,13 @@ class Point extends Component {
                 style = {
                     isActive? 
                     {
-                        backgroundColor: failAttempt? "#DCDCDC":"black",
+                        backgroundColor: failAttempt? "grey":"black",
                         width: Radius / 2,
                         height: Radius / 2,
                         borderRadius: Radius / 4
                     }:
                     {
-                        backgroundColor:"black",
+                        backgroundColor: failAttempt? "grey":"black",
                         width: Radius / 3,
                         height: Radius / 3,
                         borderRadius: Radius / 6
@@ -218,7 +218,7 @@ export default class PatternCode extends Component{
             let y = event.nativeEvent.pageY - ((HEIGHT - WIDTH) / 2.0);
 
             let startPoint = this.getTouchChar({x,y});
-            if(!!startPoint && (!this.state.failAttempt)) {
+            if(!!startPoint && (!this.state.failAttempt) && (!this.state.showError)) {
                 this.startAnimation = true;
                 this.lastIndex = parseInt(startPoint);
                 this.inputValue += startPoint
@@ -482,8 +482,10 @@ export default class PatternCode extends Component{
                             x = {c.x}
                             y = {c.y}
                             isActive = {c.isActive}
+                            failAttempt = {this.state.showError}
                             />
                         )
+
                     })
                 }
                 {

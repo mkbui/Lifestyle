@@ -13,7 +13,7 @@ import {
   Body,
   View,
 } from "native-base";
-import {PasswordStatus} from './types';
+import {PasswordStatus} from '../../components/LockScreen/types';
 const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms))
 }

@@ -1,6 +1,6 @@
 
 
-import {View, StyleSheet, Platform, ToastAndroid} from 'react-native';
+import {StyleSheet, Platform, ToastAndroid} from 'react-native';
 import React, { Component, useState } from "react";
 
 import {
@@ -29,7 +29,7 @@ import { Overlay } from "react-native-elements";
 import BiometricScreen from "./LockScreen/BiometricScreen";
 import AsyncStorage from "@react-native-community/async-storage";
 import {connect} from "react-redux"
-import Password from "./LockScreen/index"
+import Password from "../components/LockScreen/index"
 import {
   setPasswordType, 
   removeTimeLock,
@@ -196,7 +196,7 @@ class SettingsScreen extends Component {
     this.setState({biometricOverlayIsOn: false})
     
     ToastAndroid.show(
-      ("Biometric set unsuccessfully:" + text),
+      ("" + text),
       ToastAndroid.SHORT
     )
   }
@@ -306,7 +306,8 @@ class SettingsScreen extends Component {
             <Separator bordered style = {styles.separator}/>
 
 
-            <ListItem style = {styles.row} icon >
+            <ListItem style = {styles.row} icon 
+            onPress = {() => this.setState({showMenu: !this.state.showMenu})} >
               <Left>
                 <Button 
                 style={{ backgroundColor: "#FD3C2D" }}
