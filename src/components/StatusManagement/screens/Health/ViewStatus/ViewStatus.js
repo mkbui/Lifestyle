@@ -1,11 +1,10 @@
 import React, { Component, useState } from 'react';
-import { View, Text, StyleSheet, Image, Input ,TouchableOpacity, TouchableHighlight} from 'react-native';
+import { View, Text, StyleSheet, Image, Input ,TouchableOpacity,  ToastAndroid} from 'react-native';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import moment from 'moment';
 import * as actions from "../../../../../actions"
 import { connect } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
-import {  Overlay } from 'react-native-elements'
 import {Header, Title, Button, Icon, Left, Right, Body} from 'native-base';
 const waterGlass_active = require('../../../../../../assets/waterBottle_on.png');
 const waterGlass_inactive = require('../../../../../../assets/waterBottle.off.png');
@@ -34,6 +33,10 @@ class ViewStatus extends Component {
     if(this.state.date === moment().format('DD-MM-YYYY')){
       this.props.submitWaterRecord(this.state.waterConsumed);
     }
+    ToastAndroid.show(
+      "Water submitted!",
+      ToastAndroid.SHORT
+    )
    
   }
 
@@ -266,7 +269,7 @@ class ViewStatus extends Component {
                       {calCalo(meal.carb, meal.protein, meal.fat)}
                     </Text>
 
-                  <TouchableOpacity  onPress={() => this.props.deleteMeal(meal)}>
+                  <TouchableOpacity  onPress={() => {this.props.deleteMeal(meal), this.props.deleteConsumeRecord(meal.carb*4+ meal.protein*4 + meal.fat*9)}}>
                       <View>
                         <Image source={require("../../../../../../assets/close.png")} style={{height:20, width:20, marginRight:30, marginLeft:50}} />
                       </View>
@@ -319,7 +322,7 @@ class ViewStatus extends Component {
                         {exercise.duration} m
                       </Text>
                     </Right>
-                    <TouchableOpacity  onPress={()=>this.props.deleteExercise(exercise)}>
+                    <TouchableOpacity  onPress={()=>{this.props.deleteExercise(exercise), this.props.deleteExerciseRecord(exercise.duration * 5)}}>
                       <View>
                         <Image source={require("../../../../../../assets/close.png")} style={{height:20, width:20, marginRight:15, marginLeft:20}} />
                       </View>
@@ -343,6 +346,10 @@ const mapDispatchToProps = dispatch => {
     deleteMeal: meal => {
       dispatch(actions.actDeleteMeal(meal));
     },
+    deleteConsumeRecord: consume =>{
+      dispatch(actions.deleteConsumeRecord(consume));
+    },
+    
     editExercise: exercise => { 
       dispatch(actions.actEditExercise(exercise));
     },
@@ -350,13 +357,17 @@ const mapDispatchToProps = dispatch => {
     deleteExercise: exercise => {
       dispatch(actions.actDeleteExercise(exercise));
     },
+    deleteExerciseRecord: burn =>{
+      dispatch(actions.deleteExerciseRecord(burn));
+    },
+
     submitWater: water => {
       dispatch(actions.actSubmitWater(water));
     },
     submitWaterRecord: water =>{
       dispatch(actions.addWaterRecord(water));
     }
-
+    
     
   };
 };

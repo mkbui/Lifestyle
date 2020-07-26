@@ -11,11 +11,11 @@ export const UPDATE_DAILY_RECORD = 'UPDATE_DAILY_RECORD'
 // Schedule Management
 export const ADD_ACTIVITY = 'ADD_ACTIVITY'
 export const REMOVE_ACTIVITY = 'REMOVE_ACTIVITY'
-/*
+
 export const ADD_INCOME_RECORD = 'ADD_INCOME_RECORD'
 export const ADD_EXPENSE_RECORD = 'ADD_EXPENSE_RECORD'
 export const ADD_CONSUME_RECORD = 'ADD_FITNESS_RECORD'
-export const ADD_EXERCISE_RECORD = 'ADD_EXERCISE_RECORD'*/
+export const ADD_EXERCISE_RECORD = 'ADD_EXERCISE_RECORD'
 // Budget
 export const SUBMIT = "SUBMIT";
 export const DELETE = "DELETE";

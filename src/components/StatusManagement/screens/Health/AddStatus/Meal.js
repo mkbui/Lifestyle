@@ -121,6 +121,13 @@ class Meal extends Component {
 
       this.props.onSubmit(this.state);
       this.props.updateDailyRecord(this.state);
+      
+      if(this.state.date === currentDate){
+        var energyConsumed = this.state.carb * 4 + this.state.protein *4+ this.state.fat*9;
+        console.log(energyConsumed)
+        this.props.submitConsumeRecord(energyConsumed);
+      }
+
       this.props.deleteMealEdit();
       this.setState({
         id: '',
@@ -336,7 +343,12 @@ const mapDispatchToProps = dispatch => {
     },
     updateDailyRecord: meal => {
       dispatch(actions.updateDailyRecord())
-    }
+    },
+    submitConsumeRecord: consume =>{
+      dispatch(actions.addConsumeRecord(consume));
+    },
+
+  
   };
 };
 
