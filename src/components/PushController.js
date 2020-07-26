@@ -85,7 +85,7 @@ export const NoRepeatAlarmNotification = (activity) => {
   date = new Date(Date.now() + 3 * 1000);  // default go off after 3 seconds
   
   var id;
-  var hour, min, overhead;
+  var hour, min;
   var now = new Date();
   var year, month, day; year = now.getFullYear(); month = now.getMonth(); day = now.getDate();
   
@@ -96,15 +96,14 @@ export const NoRepeatAlarmNotification = (activity) => {
     if (activity.hour) hour = activity.hour
     if (activity.min) min = activity.min
     day = parseInt(day)
-    if ((hour * 60 + min) >= (now.getHours() * 60 + now.getMinutes()))
+    console.log(hour * 60 + min)
+    console.log(now.getHours() * 60 + now.getMinutes())
+    if ((hour * 60 + min) < (now.getHours() * 60 + now.getMinutes()))
       day += 1
     console.log("day "+ day)
     date = new Date(parseInt(year), parseInt(month), day, hour, min, 3)
     console.log(date)
   }
-
-  
-
   //console.log((date - Date.now())/1000);
 
   return PushNotification.localNotificationSchedule({

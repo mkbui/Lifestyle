@@ -47,7 +47,7 @@ class ActivityList extends Component {
       addAlarmNoti(activity)
     }
     else {
-      removeActivity(activity)
+      removeAlarmNoti(activity)
     }
   }
 
@@ -78,8 +78,8 @@ class ActivityList extends Component {
     const {activityList} = this.props;
     return (
       activityList.length > 0?  activityList.map(activity => 
-        <Card key={activity.id}>
-          <CardItem style={styles.activityView}>
+        <Card key={activity.id} style={styles.activityView}>
+          <CardItem>
               <Left style={{flex: 1}}>
                 <TouchableOpacity onPress={() => {this.onChangeName(activity)}}>
                   <Text style={{marginLeft : -5}}>
@@ -165,7 +165,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   activityView: {
-    backgroundColor: "white",
     borderRadius: 5,
     padding: 5,
     shadowColor: "#000",

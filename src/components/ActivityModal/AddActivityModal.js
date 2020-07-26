@@ -52,7 +52,7 @@ class Activity {
     this.repeat[5].value = Fri;
     this.repeat[6].value = Sat;
     this.activate = true;
-    this.id = Math.floor(Math.random() * Math.floor(99999999999999)) //set id
+    this.id = Math.floor(Math.random() * Math.floor(99999999)) //set id
   }
 }
 
