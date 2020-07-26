@@ -68,6 +68,7 @@ class SplashScreen extends Component {
   }
 
   render(){
+    const {hasSetPin} = this.state
     return(
       <Container>
          {this.state.biometricOverlayIsOn && 

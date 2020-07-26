@@ -39,14 +39,14 @@ const Drawer = createDrawerNavigator();
 function DrawerNavigator() {
   return(
     <Drawer.Navigator
-      initialRouteName='Home'
+      /*initialRouteName='Home'
       drawerStyle={{
         width: 250,
         backgroundColor: '#c6cbef'
       }}  
       drawerContentOptions = {{
         activeTintColor: "#e91e63"
-      }}
+      }}*/
     >
       <Drawer.Screen name = 'Home' component = { StackNavigator } />
       <Drawer.Screen name = 'Tracker' component = { TrackerNavigator } />
@@ -54,6 +54,7 @@ function DrawerNavigator() {
       <Drawer.Screen name = 'Suggestion List' component = { ListScreen } />
       <Drawer.Screen name = 'Today`s Advice' component = { AdviceScreen } />
       <Drawer.Screen name = 'Settings' component = { SettingsScreen } />
+      <Stack.Screen name = 'ExportPersonalDocument' component = { ExportPersonalDocumentScreen } />
     </Drawer.Navigator>
   )
 } 
@@ -74,7 +75,7 @@ function StackNavigator() {
   return(
     <Stack.Navigator
       initialRouteName = 'Splash'
-      headerMode = 'none'
+      
     >
       <Stack.Screen name = 'Splash' component = {SplashScreen}/>
       <Stack.Screen name = 'Home' component = {HomeScreen} />

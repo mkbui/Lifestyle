@@ -41,8 +41,11 @@ const splashLogo = require('../../assets/bootLogo.jpg');
 const heart = require("../../assets/heart.png");
 const finance = require("../../assets/finance.png");
 
+<<<<<<< HEAD
 import {backgrounds} from "../data/image";
 
+=======
+>>>>>>> af2540d4da29872c760069b900f3b1f919056ac0
 /* Other services */
 import {LocalNotification, ScheduledNotification} from "../components/PushController"
 import {getDateString} from "../utils";

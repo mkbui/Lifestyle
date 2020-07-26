@@ -320,6 +320,5 @@ const styles = StyleSheet.create({
     alignItems :"center",
     justifyContent : "space-evenly",
   },
-
 });
 export default connect(null, mapDispatchToProps)(AddActivityModal);
