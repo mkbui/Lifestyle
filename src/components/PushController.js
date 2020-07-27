@@ -61,7 +61,8 @@ export const ScheduledAlarmNotification = (activity, weekDay) => {
   }
   //console.log((date - Date.now())/1000);
   return PushNotification.localNotificationSchedule({
-    id: id,
+    id: `${id}`,
+    userInfo: {id: id},
     autoCancel: true,
     largeIcon: splashLogo,
     bigText: 'LIFESTYLE NOTIFICATION',
@@ -196,5 +197,5 @@ export const CancelAllNotification = () => {
 }
 
 export const CancelNotification = (id) => {
-  PushNotification.cancelLocalNotifications({id: id});
+  PushNotification.cancelLocalNotifications({id: `${id}`});
 }

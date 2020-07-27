@@ -54,7 +54,7 @@ function DrawerNavigator() {
       <Drawer.Screen name = 'Suggestion List' component = { ListScreen } />
       <Drawer.Screen name = 'Today`s Advice' component = { AdviceScreen } />
       <Drawer.Screen name = 'Settings' component = { SettingsScreen } />
-      <Stack.Screen name = 'ExportPersonalDocument' component = { ExportPersonalDocumentScreen } />
+      {/* <Stack.Screen name = 'ExportPersonalDocument' component = { ExportPersonalDocumentScreen } /> */}
     </Drawer.Navigator>
   )
 } 
