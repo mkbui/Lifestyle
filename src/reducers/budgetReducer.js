@@ -45,7 +45,7 @@ let initialState = {
           budgetListUpdate.splice(index,1);
           state.budgetList = budgetListUpdate;
         }
-      return state;//{ ...state };
+      return {...state} ;
       
       default:
         return state;

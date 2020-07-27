@@ -2,8 +2,6 @@
 > Github repository for project in Software Engineering
 
 > Development of a lifestyle monitoring and advisor mobile app
-> github repository for project in Software Engineering
-> develop a lifestyle monitoring and advisor mobile app
 
 ## Introduction & Specifications
 This readme serves as an outline and configuration specifications for the project.

@@ -146,7 +146,9 @@ class MealLineChart extends React.Component {
   render() { 
     return (
         <View >
-            <Text>Total calo in day</Text>
+            <View style={{alignItems:"center"}}>
+            <Text style={{fontWeight:"bold", fontSize:20, color:"#FE7B23"}}>Total calo in day</Text>
+            </View>
             <BarChart
             style={styles.chart}
             data={this.state.data}

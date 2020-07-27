@@ -72,29 +72,6 @@ const mapDispatchToProps = dispatch => ({
 })
 
 
-import PINCode, {hasSetPinCode, removePinCode, resetLockStatus} from "./PinCode/index";
-//const Item = Picker.Item;
-import {lightStyle, darkStyle} from "./Style"
-import { ToggleTheme, isDarkTheme as dt } from "./Theme";
-
-/* TO BE ADDED: a mapDispatchToProps and mapStateToProps to save settings to store */
-function Toggle() {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-
-  return (
-    <View style={styles.container}>
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitch}
-        value={isEnabled}
-      />
-    </View>
-  );
-}
-/* Presentational component for managing redirection to setting changes */
 class SettingsScreen extends Component {
   constructor(props) {
     super(props);
@@ -624,6 +601,7 @@ class PersonalForm extends Component {
   
   onGenderChoose(value){
     this.setState({gender: value})
+<<<<<<< HEAD
   }
 
   render(){
@@ -702,6 +680,86 @@ class PersonalForm extends Component {
     ) 
   }
 
+=======
+  }
+
+  render(){
+    const {Info} = this.props.userInfo;
+
+    return(
+      <View>
+        <Text style = {styles.formHeaderText}>Personal data edition</Text>
+        
+        <Form>
+          <Item stackedLabel>
+            <Label>Name</Label>
+            <Input 
+              defaultValue = {this.state.name}
+              onChangeText = { (text) => this.setState({name: text})}
+            />
+          </Item>
+          <Item stackedLabel>
+            <Label>Age</Label>
+            <Input 
+              defaultValue = {this.state.age}
+              onChangeText = { (text) => this.setState({age: text})}
+              maxLength = {3}
+            />
+          </Item>
+          <Item stackedLabel>
+            <Label>Height</Label>
+            <Input 
+              defaultValue = {this.state.height}
+              onChangeText = { (text) => this.setState({height: text})}
+              maxLength = {4}
+            />
+          </Item>
+          <Item stackedLabel>
+            <Label>Weight</Label>
+            <Input 
+              defaultValue = {this.state.weight}
+              onChangeText = { (text) => this.setState({weight: text})}
+              maxLength = {4}
+            />
+          </Item>
+          <Item stackedLabel>
+            <Label>Current account</Label>
+            <Input 
+              defaultValue = {this.state.money}
+              onChangeText = { (text) => this.setState({money: text})}
+              maxLength = {20}
+            />
+          </Item>
+
+          <Item picker >
+            <Picker
+              mode="dropdown" 
+              iosIcon={<Icon name="ios-arrow-down" />}
+              style={{ paddingTop: 70, height: 60, }}
+              placeholder={this.state.gender}
+              placeholderStyle={{ color: "#bfc6ea" }}
+              placeholderIconColor="#007aff"
+              selectedValue={this.state.gender}
+              onValueChange={this.onGenderChoose.bind(this)}
+            >
+              <Item label="Male" value="male" />
+              <Item label="Female" value="female" />
+            </Picker>
+            </Item>
+        </Form>
+        <Button 
+          block  
+          style={{ margin: 15, marginTop: 50 }}
+          onPress = {this.handlePress}  
+        >
+          <Text>COMPLETE</Text>
+        </Button>
+      </View>
+             
+    ) 
+  }
+
+>>>>>>> master
 }
 
 const styles = StyleSheet.create({

@@ -60,13 +60,15 @@ class AddStatus extends Component {
           </Right>
         </Header>
 
-
+      <View style={{alignItems:"center", marginTop:10}}>
         <ButtonGroup
           onPress={this.updateIndex}
           selectedIndex={selectedIndex}
           buttons={buttons}
-          containerStyle={{height: 35}}
+          containerStyle={{height: 35,width:300 }}
+          selectedButtonStyle={{backgroundColor:"#6AC9EF"}}
         />
+      </View>
 
         {this.state.selectedIndex === 0 ? <Expense/> : <Income/>}
       </View>

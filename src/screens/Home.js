@@ -114,7 +114,8 @@ class HomeScreen extends Component {
         totalConsumed += meal.carb*4 + meal.protein*4 + meal.fat*9;
       }
     });
-
+    console.log("DailyRecord.Fitness.waterConsumed",DailyRecord.Fitness.waterConsumed)
+    console.log("DailyRecord.Fitness.energyConsumed",DailyRecord.Fitness.energyConsumed)
     return (
       <Container style={styles.container}>
         <Header>
@@ -201,14 +202,14 @@ class HomeScreen extends Component {
             <CardItem bordered>
               <Left>
                 <Icon type = "FontAwesome5" name = "utensils"/>
-                <Text style = {styles.cardText}> {totalConsumed} Kcal</Text>
+                <Text style = {styles.cardText}> {DailyRecord.Fitness.energyConsumed} Kcal</Text>
               </Left>
             </CardItem>
 
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "fire"/>
-                <Text style = {styles.cardText}>0 Kcal</Text>
+                <Text style = {styles.cardText}>{DailyRecord.Fitness.energyBurned} Kcal</Text>
               </Left>
             </CardItem>
             <CardItem footer bordered button onPress = {() => {this.props.navigation.navigate('Tracker', { screen: 'Health' })}}>
