@@ -73,7 +73,7 @@ class PreForm extends Component {
             onPress: () => console.log("Cancel Pressed"),
             style: "cancel"
           },
-          { text: "Update Now", onPress: () => this.props.navigation.navigate("HealthTracker") }
+          { text: "Update Now", onPress: () => {this.props.navigation.navigate('Tracker', { screen: 'Health' })} }
         ],
         { cancelable: false }
       );   

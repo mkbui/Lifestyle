@@ -103,6 +103,10 @@ class Income extends Component {
     } else {
       var currentDate = moment().format('DD-MM-YYYY');
       this.props.onSubmit(this.state);
+      if(this.state.date === currentDate){
+        this.props.submitIncomeRecord(this.state);
+      }
+     
       this.setState({
         id: '',
         date: currentDate,
@@ -279,6 +283,10 @@ const mapDispatchToProps = dispatch => {
     deleteBudgetEdit: () => {
       dispatch(actions.actEditBudget(null));
     },
+    submitIncomeRecord: (iRecord) => {
+      dispatch(actions.addIncomeRecord(iRecord));
+    },
+    
   };
 };
 

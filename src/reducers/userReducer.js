@@ -8,7 +8,12 @@ import {
   ADD_EXERCISE_RECORD,
   ADD_EXPENSE_RECORD,
   ADD_INCOME_RECORD,
-  SUBMIT_W,
+  ADD_WATER_RECORD,
+  DELETE_INCOME_RECORD,
+  DELETE_EXPENSE_RECORD,
+  DELETE_EXERCISE_RECORD,
+  DELETE_CONSUME_RECORD
+ 
 } from "../actions";
 import {getDateString} from "../utils"
 
@@ -166,7 +171,7 @@ export function userAccess(state = User, action){
         }
       })
 
-    case SUBMIT_W:
+    case  ADD_WATER_RECORD:
       return Object.assign({}, state, {
         ...state,
         DailyRecord: {
@@ -178,6 +183,59 @@ export function userAccess(state = User, action){
           }
         }
       })
+    case  ADD_CONSUME_RECORD:   
+      return Object.assign({}, state, {
+        ...state,
+        DailyRecord: {
+          ...state.DailyRecord,
+          Fitness: {
+            ...state.DailyRecord.Fitness,
+            updated: true,
+            energyConsumed:  state.DailyRecord.Fitness.energyConsumed + Number(action.consume),
+          }
+          
+        }
+      })
+      case  DELETE_CONSUME_RECORD:   
+      return Object.assign({}, state, {
+        ...state,
+        DailyRecord: {
+          ...state.DailyRecord,
+          Fitness: {
+            ...state.DailyRecord.Fitness,
+            updated: true,
+            energyConsumed:  state.DailyRecord.Fitness.energyConsumed - Number(action.consume),
+          }
+          
+        }
+      })
+
+    case  ADD_EXERCISE_RECORD:   
+      return Object.assign({}, state, {
+        ...state,
+        DailyRecord: {
+          ...state.DailyRecord,
+          Fitness: {
+            ...state.DailyRecord.Fitness,
+            updated: true,
+            energyBurned:  state.DailyRecord.Fitness.energyBurned + Number(action.burn),
+          }
+          
+        }
+      })
+
+    case  DELETE_EXERCISE_RECORD:   
+    return Object.assign({}, state, {
+      ...state,
+      DailyRecord: {
+        ...state.DailyRecord,
+        Fitness: {
+          ...state.DailyRecord.Fitness,
+          energyBurned:  state.DailyRecord.Fitness.energyBurned - Number(action.burn),
+        }
+        
+      }
+    })
       
     case ADD_INCOME_RECORD:
       const iRecord = action.iRecord;
@@ -197,6 +255,26 @@ export function userAccess(state = User, action){
                   category: iRecord.category,
                 }
               ]
+            }
+          },
+        }
+      })
+
+      case DELETE_INCOME_RECORD:
+      return Object.assign({}, state, {
+        ...state,
+        DailyRecord: {
+          ...state.DailyRecord,
+          Finance: {
+            ...state.DailyRecord.Finance,
+            earned: {
+              sum: state.DailyRecord.Finance.earned.sum - parseInt(action.iRecord.amount, 10),
+              
+              detail:state.DailyRecord.Finance.earned.detail.filter(iRecord =>{
+                  iRecord.id !== action.iRecord.id
+                })
+                
+              
             }
           },
         }
@@ -225,6 +303,24 @@ export function userAccess(state = User, action){
             },
           }
         })
+
+        case DELETE_EXPENSE_RECORD:
+          return Object.assign({}, state, {
+            ...state,
+            DailyRecord: {
+              ...state.DailyRecord,
+              Finance: {
+                ...state.DailyRecord.Finance,
+                spent: {
+                  sum: state.DailyRecord.Finance.spent.sum - parseInt(action.iRecord.amount, 10),
+                  
+                  detail:state.DailyRecord.Finance.spent.detail.filter(iRecord =>{
+                      iRecord.id !== action.iRecord.id
+                    })
+                }
+              },
+            }
+          })
 
     default:
       return state;

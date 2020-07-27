@@ -60,6 +60,17 @@ class Exercise extends Component {
       this.props.onSubmit(this.state);
       this.props.deleteExerciseEdit();
       this.props.updateDailyRecord(this.state);
+
+      
+
+      if(this.state.date === currentDate){
+        // calculate energyBurned temporarily
+        var energyBurned= this.state.duration * 5; 
+        console.log("energyBurned",energyBurned)
+        this.props.submitBurnRecord(energyBurned);
+      }
+
+
       this.setState({
         id: '',
         date: currentDate,
@@ -239,6 +250,10 @@ const mapDispatchToProps = dispatch => {
     },
     updateDailyRecord: exercise => {
       dispatch(actions.updateDailyRecord())
+    },
+    
+    submitBurnRecord: burn =>{
+      dispatch(actions.addExerciseRecord(burn));
     }
   };
 };

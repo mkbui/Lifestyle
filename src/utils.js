@@ -158,7 +158,7 @@ export function financeAnalyzer(money, Today){
         Consider saving more the upcoming days.</Text>
     if (spent - earned < -50000) 
       return <Text style = {styles.script}>You have earned good bits of fortune today! Keep 
-       up the good work for about {1000000000/gap} days and you'll be a billionaire.</Text>  
+       up the good work for about {Math.floor(1000000000/(earned-spent)) /*gap*/} days and you'll be a billionaire.</Text>  
  
     return <Text style = {styles.script}>Your financial record today is in acceptable range.</Text>    
 

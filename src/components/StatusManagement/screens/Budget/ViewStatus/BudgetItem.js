@@ -98,6 +98,11 @@ class BudgetItem extends Component {
                 style={[styles.backRightBtn, styles.backRightBtnRight]}
                 onPress={() => {
                   this.props.delete(item);
+                  {
+                    item.type === "Income"
+                    ? this.props.deleteIncomeRecord(item)
+                    : this.props.deleteExpenseRecord(item)
+                  }
                 }}>
                 <Text style={styles.backTextWhite}>Delete</Text>
               </TouchableOpacity>
@@ -176,6 +181,16 @@ const mapDisaptchToProps = dispatch => {
     delete: budget => {
       dispatch(actions.actDeleteBudget(budget));
     },
+
+    deleteIncomeRecord: (iRecord) => {
+      dispatch(actions.deleteIncomeRecord(iRecord));
+    },
+    deleteExpenseRecord: (iRecord) => {
+      dispatch(actions.deleteExpenseRecord(iRecord));
+    },
+    
+
+    
   };
 };
 

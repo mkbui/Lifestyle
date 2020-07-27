@@ -165,7 +165,7 @@ class LineChart extends React.Component {
     return (
       <Content padder>
         <View style={styles.viewtitle}>
-          <Text style={styles.title}>
+          <Text style={{fontSize: 20, color:this.props.typePieChart == 'Income' ?'green': 'red', fontWeight: 'bold'}}>
             {this.props.typePieChart == 'Income'
               ? 'Income a day in month'
               : 'Expense a day in month'}
@@ -241,8 +241,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     justifyContent: 'center',
   },
-
-  title:{ fontSize: 20, color: 'red', fontWeight: 'bold' },
   viewtitle:{
      alignItems: 'center', margin: 20 
   }

@@ -33,7 +33,7 @@ import ExerciseChart from './ExerciseChart'
 
 import ExerciseLineChart from './ExerciseLineChart';
 import MealLineChart from './MealLineChart';
-
+import WaterChart from "./WaterChart"
 const DATA = [
   {
     id: '01',
@@ -211,7 +211,7 @@ export default class Chart extends Component {
             }}>
             <Text style={styles.textStyle}> OK </Text>
           </TouchableOpacity>
-          {console.log("selectedMonth",this.state.selectedMonth)}
+          
         </View>
       </View>
     </Modal>
@@ -229,13 +229,17 @@ export default class Chart extends Component {
           .join('-')}
       </Text>
     </TouchableOpacity>
-    <ButtonGroup
+
+
+      <View style={{alignItems:"center"}}>
+        <ButtonGroup
           onPress={this.updateIndex.bind(this)}
           selectedIndex={selectedIndex}
           buttons={buttons}
-          containerStyle={{height: 35}}
+          containerStyle={{height: 35,width:300 }}
+          selectedButtonStyle={{backgroundColor:"#6AC9EF"}}
         />
-
+      </View>
         {this.state.selectedIndex === 0 ? 
         <>
          <ExerciseChart selectedMonth={selectedMonth} modalVisible={modalVisible}/>
@@ -245,6 +249,7 @@ export default class Chart extends Component {
         <>
          <MealChart selectedMonth={selectedMonth} modalVisible={modalVisible}/>
       <MealLineChart  selectedMonth={selectedMonth} modalVisible={modalVisible}/>
+      <WaterChart selectedMonth={selectedMonth} modalVisible={modalVisible}/>
         </>
       
       }
@@ -288,12 +293,14 @@ const styles = StyleSheet.create({
   },
   openButton: {
     backgroundColor: 'orange',
-    borderWidth: 3,
-    borderColor: '#222224',
-    borderColor: 5,
+    borderWidth: 1,
+    borderColor: 'grey',
+    borderRadius: 5,
     padding: 10,
-    elevation: 2,
-    alignItems:"center"
+    elevation: 5,
+    alignItems:"center",
+    marginBottom:10
+
   },
   textStyle: {
     fontSize: 18,
