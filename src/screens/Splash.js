@@ -48,7 +48,6 @@ class SplashScreen extends Component {
     this.setState({biometricOverlayIsOn: false})
     this.setState({passwordOverlayIsOn: false})
     this.props.navigation.navigate('Home');
-    console.log("dafuhauidhf")
   }
   proceed(){
     const {userInfo} = this.props;
@@ -77,13 +76,15 @@ class SplashScreen extends Component {
         <Overlay
         isVisible = {this.state.passwordOverlayIsOn}
         fullScreen
-        animationType = "slide">
+        animationType = "slide"
+        >
         {
           <Password 
             status = "enter" 
             onSuccess = {this.onEnterPasswordSuccess}
             onFailure = {this.onEnterPasswordFail}
             removePassword = {false}
+            cancelButton = {false}
           />
         }
       </Overlay> 

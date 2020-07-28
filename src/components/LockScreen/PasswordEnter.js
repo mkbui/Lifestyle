@@ -108,6 +108,9 @@ class PasswordEnter extends Component {
             }
         })
     }
+    onCancelButtonPress = () => {
+        this.props.onFailure && this.props.onFailure()
+    }
     render() {
         const {passwordType} = this.props
         if(passwordType === PasswordType.none) return null
@@ -122,6 +125,8 @@ class PasswordEnter extends Component {
                     errorSubtitle = 'Your entries did not match'
                     previousPassword = {this.keyChainResult}
                     passwordResultStatus = {this.state.passwordResultStatus}
+                    cancelButton = {this.props.cancelButton}
+                    onCancelButtonPress = {this.onCancelButtonPress}
                 />
             )
         }
@@ -138,6 +143,8 @@ class PasswordEnter extends Component {
                     errorSubtitle = 'Your entries did not match'
                     previousPassword = {this.keyChainResult}
                     passwordResultStatus = {this.state.passwordResultStatus}
+                    cancelButton = {this.props.cancelButton}
+                    onCancelButtonPress = {this.onCancelButtonPress}
                 />
                 </View>
             )
@@ -154,6 +161,8 @@ class PasswordEnter extends Component {
                     errorSubtitle = 'Your entries did not match'
                     previousPassword = {this.keyChainResult}
                     passwordResultStatus = {this.state.passwordResultStatus}
+                    cancelButton = {this.props.cancelButton}
+                    onCancelButtonPress = {this.onCancelButtonPress}
                 />
             )
         }

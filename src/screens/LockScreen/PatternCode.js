@@ -14,6 +14,7 @@ import {
   View,
 } from "native-base";
 import {PasswordStatus} from '../../components/LockScreen/types';
+import PinCode from "./PinCode";
 
 const HEIGHT = Dimensions.get("window").height;
 const WIDTH = Dimensions.get("window").width;
@@ -391,7 +392,7 @@ export default class PatternCode extends Component{
           failAttempt: true,
         });
         
-        await sleep(2000);
+        await sleep(1000);
         this.newAttempt();
     };
     
@@ -500,7 +501,29 @@ export default class PatternCode extends Component{
                 })
                 }
                 <Line ref="line"/>
-            </View>
+                </View>
+                <View style = {{
+                    position: "absolute",
+                    top: 550, 
+                    left: 160
+                }}>
+                {
+                this.props.cancelButton &&
+                <Button
+                style = {{
+                    width: 90,
+                    height: 30,
+                    justifyContent:"center"
+                }}
+                transparent
+                onPress = {this.props.onCancelButtonPress}
+                disabled = {this.state.failAttempt || this.state.showError}
+                >
+                    <Text style = {{textDecorationLine:"underline"}}>{(this.props.status === PasswordStatus.choose ||
+                    this.props.status === PasswordStatus.enter)? "cancel":"back"}</Text>
+                </Button>
+                }
+                </View>
         </View>
        )
     }

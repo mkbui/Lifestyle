@@ -141,12 +141,14 @@ class LockPetitionScreen extends Component
                             Please try again later</Text>
                     </View>
 
-                    <Button 
-                    transparent 
-                    bordered={false} 
-                    onPress = {this.renderSecurityQuestion}>
-                        <Text style ={{textDecorationLine: "underline"}}>Forgot Password</Text>
-                    </Button>
+                    <View style = {{marginTop: 30}}>
+                        <Button 
+                        transparent 
+                        onPress = {this.renderSecurityQuestion}>
+                            <Text style ={{textDecorationLine: "underline", color: "blue"}}>Forgot Password</Text>
+                        </Button>
+                    </View>
+                    
                 </View>
             )
         }

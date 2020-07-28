@@ -143,6 +143,14 @@ class SettingsScreen extends Component {
     )
     this.passwordType = this.props.lockState.passwordType
   }
+  onPinCancelPress = () => {
+    this.setState({passwordOverlayIsOn: false})
+    ToastAndroid.show(
+      "Password set unsuccessfully",
+      ToastAndroid.SHORT
+    )
+    this.passwordType = this.props.lockState.passwordType
+  }
   onHandleSetPassword = () => {
     const ans = this.hasSetPassword()
     this.passwordIsSet= ans
@@ -452,6 +460,7 @@ class SettingsScreen extends Component {
                 onSuccess = {this.onEnterPasswordSuccess}
                 onFailure = {this.onEnterPasswordFail}
                 removePassword = {true}
+                cancelButton = {true}
                 />}
 
                 {!this.passwordIsSet && this.passwordType !== "none" &&
@@ -459,6 +468,8 @@ class SettingsScreen extends Component {
                 passwordType = {this.passwordType}
                 status = {"choose"}
                 onSuccess = {this.onSetPasswordSuccess}
+                onFailure = {this.onPinCancelPress}
+                cancelButton = {true}
                 />
                 }
                
