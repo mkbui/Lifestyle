@@ -360,10 +360,6 @@ const mapDispatchToProps = dispatch => {
     deleteExerciseRecord: burn =>{
       dispatch(actions.deleteExerciseRecord(burn));
     },
-<<<<<<< HEAD
-=======
-
->>>>>>> master
     submitWater: water => {
       dispatch(actions.actSubmitWater(water));
     },

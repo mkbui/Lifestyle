@@ -34,6 +34,7 @@ export const LocalNotification = () => {
   })
 }
 
+
 /* Scheduled notification as weekly alarm */
 export const ScheduledAlarmNotification = (activity, weekDay) => {
   
@@ -108,7 +109,8 @@ export const NoRepeatAlarmNotification = (activity) => {
   //console.log((date - Date.now())/1000);
 
   return PushNotification.localNotificationSchedule({
-    id: id,
+    id: `${id}`,
+    userInfo: {id: id},
     autoCancel: true,
     largeIcon: splashLogo,
     bigText: 'LIFESTYLE NOTIFICATION',
