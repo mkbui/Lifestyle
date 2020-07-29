@@ -13,7 +13,7 @@ import {
   Body,
   View,
 } from "native-base";
-import {PasswordStatus} from './types';
+import {PasswordStatus} from '../../components/LockScreen/types';
 const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms))
 }
@@ -26,6 +26,7 @@ export default class StringPassword extends Component{
         this.endProcess = this.endProcess.bind();
         this.passwordcolorErr = "#FF0000" 
         this.passwordColor = "#000000"
+        this.errorSubtitle = ""
         this.state = {
             inputValue: '',
             inputLength: 0,
@@ -46,6 +47,9 @@ export default class StringPassword extends Component{
           this.props.passwordResultStatus === "locked"
         ) {
           this.setState({ inputValue: "" });
+        }
+        if (!this.ref.isFocused()){
+            this.ref.focus()
         }
     }
 
@@ -90,14 +94,13 @@ export default class StringPassword extends Component{
                         let promptNormal = "Password must contain at least one normal letter"
                         let promptNoSpace = "Password must not contain space"
                         let promptSymbolNumber = "Password must contain one special symbol or number"
-                        ToastAndroid.show(
-                            (!ans[0] ? promptCapital: 
-                                (!ans[1]? promptNormal: 
-                                    (!ans[2] ? promptSymbolNumber:promptNoSpace
-                                        ))),
-                            ToastAndroid.LONG
-                        )
-                        this.failedAttempt()
+
+                        this.errorSubtitle = (!ans[0] ? promptCapital: 
+                            (!ans[1]? promptNormal: 
+                                (!ans[2] ? promptSymbolNumber:promptNoSpace
+                                    )))
+                        await this.failedAttempt()
+                        this.errorSubtitle = ""
                     }
                 }
               break;
@@ -131,7 +134,7 @@ export default class StringPassword extends Component{
     };
     
     newAttempt = async () => {
-    await sleep(1000)
+    await sleep(800)
         this.setState({
             showError: false,
             failAttempt: false,
@@ -159,6 +162,7 @@ export default class StringPassword extends Component{
                     fontSize: 15,
                     letterSpacing: 5
                 }}
+                ref={ref => (this.ref = ref)} 
                 autoFocus
                 secureTextEntry = {true}
                 contextMenuHidden
@@ -184,7 +188,6 @@ export default class StringPassword extends Component{
         
     };
 
-    checkRequirement
     render() {
         const {failAttempt, showError} = this.state;
         const {mainTitle, mainTitleConfirmFailed,mainTitleValidationFailed, mainTitleFailed,
@@ -217,9 +220,35 @@ export default class StringPassword extends Component{
                         color: (showError)?  this.passwordcolorErr: this.passwordColor
                     }}>
                     {(failAttempt || showError)?
-                errorSubtitle : subtitle}
+                this.errorSubtitle : subtitle}
                 </Text>
                 {this.renderPassword()}
+
+                <View style = {{
+                    position: "absolute",
+                    top: 310, 
+                    left: 150
+                }}>
+                {
+                this.props.cancelButton &&
+                <Button
+                style = {{
+                    width: 90,
+                    height: 30,
+                    justifyContent:"center"
+                }}
+                transparent
+                onPress = {this.props.onCancelButtonPress}
+                disabled = {this.state.failAttempt || this.state.showError}
+                >
+                    <Text 
+                    style = {{textDecorationLine:"underline", color:"black"}}>
+                        {(this.props.status === PasswordStatus.choose ||
+                    this.props.status === PasswordStatus.enter)? "cancel":"back"}
+                    </Text>
+                </Button>
+                }
+                </View>
             </View>                
         );
     }

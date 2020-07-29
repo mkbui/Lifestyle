@@ -16,11 +16,11 @@ export const question = [
         id: 4
     },
     {
-        q: "The number of pets you have?",
+        q: "What is your birth-month?",
         id: 5
     },
     {
-        q: "How old is your parent?",
+        q: "How old is your sibling?",
         id: 6
     },
     {

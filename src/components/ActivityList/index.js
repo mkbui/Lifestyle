@@ -6,13 +6,11 @@ import {
   ToastAndroid
 } from 'react-native';
 import {
-  Button,
   Icon,
   Left,
   Right,
   Body,
   Text,
-  CheckBox,
   View,
   ListItem,
   Card,
@@ -27,18 +25,12 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = dispatch => ({
   removeActivity: (id) => dispatch(removeActivity(id)),
-  activateActivity: (id) => dispatch(activateActivity(id)),
+  activateActivity: (id, bool) => dispatch(activateActivity(id, bool)),
 })
 
 class ActivityList extends Component {
   constructor(props){
     super(props)
-    this.activity = {
-      name: "",
-      id: "",
-      hour: 0,
-      min: 0,
-    }
   }
   removeItem(activity){
     this.props.removeActivity(activity.id);
@@ -49,7 +41,13 @@ class ActivityList extends Component {
     )
   }
   activateItem(activity){
-    this.props.activateActivity(activity.id);
+    this.props.activateActivity(activity.id, !activity.activate)
+    if (activity.activate === false) {
+      addAlarmNoti(activity)
+    }
+    else {
+      removeAlarmNoti(activity)
+    }
   }
 
   setModalVisible = (visible) => {
@@ -57,29 +55,32 @@ class ActivityList extends Component {
       [visible] : !state[visible]
     }));
   };
-  onChangeName = (id, name) => {
-    this.props.changeName(id, name);
+  onChangeName = (activity) => {
+    removeAlarmNoti(activity)
+    this.props.changeName(activity);
     this.props.openNameModal();
   }
 
-  onChangeTime = (id, hour, min) => {
-    this.props.changeTime(id, hour, min);
+  onChangeTime = (activity) => {
+    removeAlarmNoti(activity)
+    this.props.changeTime(activity);
     this.props.openTimeModal();
   }
 
-  onChangeRepeat = (id, repeat) => {
-    this.props.changeRepeat(id, repeat);
+  onChangeRepeat = (activity) => {
+    removeAlarmNoti(activity)
+    this.props.changeRepeat(activity);
     this.props.openRepeatModal();
   }
 
   render() {
     const {activityList} = this.props;
     return (
-      activityList.map(activity => 
-        <Card key={activity.id}>
-          <CardItem style={styles.activityView}>
+      activityList.length > 0?  activityList.map(activity => 
+        <Card key={activity.id} style={styles.activityView}>
+          <CardItem>
               <Left style={{flex: 1}}>
-                <TouchableOpacity onPress={() => {this.onChangeName(activity.id, activity.name)}}>
+                <TouchableOpacity onPress={() => {this.onChangeName(activity)}}>
                   <Text style={{marginLeft : -5}}>
                     {activity.name.length > 0 ? activity.name : "(no name)"}
                   </Text>
@@ -88,19 +89,18 @@ class ActivityList extends Component {
               <Body style={{flex: 2, alignItems:"center"}}>
 
                   <View>
-                    <TouchableOpacity onPress={() => {this.onChangeTime(activity.id, activity.hour, activity.min)}}>
+                    <TouchableOpacity onPress={() => {this.onChangeTime(activity)}}>
                       <Text style={styles.timeText}>
                         {activity.hour}:{activity.min <= 9 ? '0' + activity.min : activity.min}
                       </Text>
                     </TouchableOpacity>
                   </View>
-                  <TouchableOpacity onPress={() => {this.onChangeRepeat(activity.id, activity.repeat)}}>
+                  <TouchableOpacity onPress={() => {this.onChangeRepeat(activity)}}>
                     <View style={{marginTop: 20, flexDirection:"column", alignItems:"center"}}>
                       <Text style={{fontSize: 15}}>Repeat</Text>
                       <View style={{flexDirection:"row", alignItems:"center", justifyContent:"space-evenly"}} button={true}>
                       { 
-                        activity.repeat.filter(item => {return item.value === true}).length > 0 ? 
-                          activity.repeat.map(item => {
+                        activity.repeat.map(item => {
                           return(
                             (item.value === true) &&
                             <ListItem key={item.day} style={{borderBottomWidth: 0}}>
@@ -109,7 +109,7 @@ class ActivityList extends Component {
                               </Text>
                             </ListItem>
                           )
-                        }) : <Text style={{fontSize: 10}}> No </Text>
+                        })
                       }
                       </View>  
                     </View>
@@ -134,7 +134,7 @@ class ActivityList extends Component {
               </Right>
           </CardItem>
         </Card>
-      )
+      ) : <View><Text>No activity</Text></View>
     )
   }
 }
@@ -163,7 +163,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   activityView: {
-    backgroundColor: "white",
     borderRadius: 5,
     padding: 5,
     shadowColor: "#000",

@@ -5,10 +5,9 @@ import {
 } from 'native-base';
 import {reminderList} from './data/reminder'
 import {
-  ScheduledAlarmNotification, 
-  ScheduledNotification, 
+  ScheduledAlarmNotification,
   CancelNotification, 
-  DailyReminder
+  DailyReminder,
 } from './components/PushController'
 
 /* transform React Date() format to dd-mm-yyyy */
@@ -22,24 +21,25 @@ export function getDateString(){
 
 
 export function addAlarmNoti(activity){
-  //ScheduledNotification();
-  var i;
-  let rep = activity.repeat;
+  var i
+  let rep = activity.repeat
   for (i = 0; i < 7; i++) {
     if (rep[i].value === true){
-      ScheduledAlarmNotification(activity, i);
+      ScheduledAlarmNotification(activity, i)
     }
   }
 }
 
 export function removeAlarmNoti(activity){
   var i;
-  let rep = activity.repeat;
+  let rep = activity.repeat
   for (i = 0; i < 7; i++) {
     if (rep[i].value === true){
       index = activity.id*10 + i//new Date(activity.id.getTime() + i)
       //console.log(index)
       CancelNotification(index);
+      index = activity.id * 10 + i
+      CancelNotification(index)
     }
   }
 }

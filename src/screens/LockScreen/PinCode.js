@@ -14,7 +14,7 @@ import {
   View,
 } from "native-base";
 import { Col, Row, Grid } from 'react-native-easy-grid';
-import {PasswordStatus} from './types';
+import {PasswordStatus} from '../../components/LockScreen/types';
 const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms))
 }
@@ -160,7 +160,7 @@ export default class PinCode extends Component{
     };
     
     newAttempt = async () => {
-    await sleep(1000)
+    await sleep(800)
         this.setState({
             showError: false,
             failAttempt: false,
@@ -434,7 +434,30 @@ export default class PinCode extends Component{
                         </Row>
                     </Grid>
                 </View>
-                
+                <View style = {{
+                    position: "absolute",
+                    top: 610, 
+                    left: 150
+                }}>
+                {
+                this.props.cancelButton &&
+                <Button
+                style = {{
+                    width: 90,
+                    height: 30,
+                    justifyContent:"center",
+                    
+                }}
+                onPress = {this.props.onCancelButtonPress}
+                transparent
+                underlined
+                disabled = {this.state.failAttempt || this.state.showError}
+                >
+                    <Text style = {{textDecorationLine:"underline", color:"black"}}>{(this.props.status === PasswordStatus.choose ||
+                    this.props.status === PasswordStatus.enter)? "cancel":"back"}</Text>
+                </Button>
+                }
+                </View>
             </View>                
         );
     }

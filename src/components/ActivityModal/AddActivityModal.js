@@ -4,34 +4,19 @@ import {
   Modal,
   TouchableHighlight,
   TextInput,
-  Switch,
   ToastAndroid,
 } from 'react-native';
 import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Button,
-  Icon,
-  Left,
-  Right,
   Body,
   Text,
   CheckBox,
   View,
-  Footer,
-  FooterTab,
   ListItem,
-  List,
 } from "native-base";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {connect} from "react-redux";
 import {addActivity} from "../../actions";
-
-import {ScheduledNotification} from '../PushController';
 import {addAlarmNoti} from '../../utils';
-
 class Activity {
   repeat = [
     {day : "Sun", value : false},
@@ -54,12 +39,13 @@ class Activity {
     this.repeat[5].value = Fri;
     this.repeat[6].value = Sat;
     this.activate = true;
-    this.id = Math.floor(Math.random() * Math.floor(99999999))//Math.random().toString();
+    this.id = Math.floor(Math.random() * Math.floor(99999999)) //set id
   }
 }
 
 const mapDispatchToProps = dispatch => ({
     addActivity: (activity) => dispatch(addActivity(activity)),
+    activateActivity: (id, bool) => dispatch(activateActivity(id, bool)),
 })
 
 class AddActivityModal extends Component {
@@ -115,28 +101,36 @@ class AddActivityModal extends Component {
 
   createActivity = () => {
     const {Sun, Mon, Tue, Wed, Thu, Fri, Sat} = this.state;
-    let newActivity = new Activity(
-      this.activity.name,
-      this.state.date.getHours(),
-      this.state.date.getMinutes(),
-      Sun,
-      Mon,
-      Tue,
-      Wed,
-      Thu,
-      Fri,
-      Sat,
-    );
-
-    this.props.addActivity(newActivity);
-    // Call utility functions to add notification into list (out of redux store)
-    addAlarmNoti(newActivity);
-    this.props.completeAdd();
-    ToastAndroid.show(
-      "Activity added",
-      ToastAndroid.SHORT
-    )
-    this.activity.name = 'Activity';
+    if (Sun + Mon + Tue + Wed + Thu + Fri + Sat === 0) {
+      ToastAndroid.show(
+        "Please pick a day!",
+        ToastAndroid.SHORT
+      )
+    }
+    else {
+      let newActivity = new Activity(
+        this.activity.name,
+        this.state.date.getHours(),
+        this.state.date.getMinutes(),
+        Sun,
+        Mon,
+        Tue,
+        Wed,
+        Thu,
+        Fri,
+        Sat,
+      );
+      this.props.addActivity(newActivity);
+      // Call utility functions to add notification into list (out of redux store)
+      addAlarmNoti(newActivity)
+      this.setModalVisible('showRepeat');
+      this.props.completeAdd();
+      ToastAndroid.show(
+        "Activity added",
+        ToastAndroid.SHORT
+      )
+      this.activity.name = 'Activity';
+    }
   };
 
   render() {
@@ -158,7 +152,7 @@ class AddActivityModal extends Component {
           visible={showNameForm}
           animationType="slide">
           <View style={styles.centeredView}>
-            <View style={styles.modalView}>
+            <View style={styles.modalNameView}>
               <Text style={styles.modalText}>Activity Name: </Text>
                 <TextInput 
                   style={{height: 40, fontSize: 15}}
@@ -189,8 +183,8 @@ class AddActivityModal extends Component {
         </Modal>
         <Modal transparent={true} visible={showRepeat} animationType="slide">
           <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={{fontSize : 20}}>           Repeat            </Text>
+            <View style={styles.modalRepeatView}>
+              <Text style={{fontSize : 20}}>Repeat</Text>
                 <ListItem onPress={() => {this.checkBox('Sun')}} style={{borderBottomWidth: 0}}>
                   <CheckBox checked={Sun} onPress={() => {this.checkBox('Sun')}} color="blue"/>
                   <Body>
@@ -245,7 +239,6 @@ class AddActivityModal extends Component {
                   <TouchableHighlight
                     style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
                     onPress={() => {
-                      this.setModalVisible('showRepeat');
                       this.createActivity();
                     }}>
                     <Text style={styles.textStyle}>Add</Text>
@@ -263,23 +256,14 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFF"
   },
-  headerText: {
-    fontWeight: 'bold',
-  },
-  buttonContainer: {
-    fontWeight : 'bold',
-    fontSize : 15,
-    color : 'white'
-  },
 
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22,
-    minWidth: 300,
   },
-  modalView: { //For text and repeat modal
+  modalRepeatView: { //For text and repeat modal
     margin: 30,
     backgroundColor: "white",
     borderRadius: 20,
@@ -292,6 +276,24 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5, 
+    width: 270,
+    height: 500
+  },
+  modalNameView: { //For text and repeat modal
+    margin: 30,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5, 
+    width: 270,
+    height: 300
   },
   openButton: {
     backgroundColor: "#F194FF",
@@ -313,29 +315,6 @@ const styles = StyleSheet.create({
     flexDirection : "row",
     alignItems :"center",
     justifyContent : "space-evenly",
-  },
-  activityView: {
-    marginLeft : 1,
-    backgroundColor: "white",
-    borderRadius: 5,
-    padding: 5,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5
-  },
-  timeText: {
-    fontSize : 25,
-  },
-  dateText: {
-    fontSize: 5,
-  },
-  dayText: {
-    fontSize: 13,
   },
 });
 export default connect(null, mapDispatchToProps)(AddActivityModal);

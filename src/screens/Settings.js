@@ -30,7 +30,7 @@ import { Overlay } from "react-native-elements";
 import BiometricScreen from "./LockScreen/BiometricScreen";
 import AsyncStorage from "@react-native-community/async-storage";
 import {connect} from "react-redux"
-import Password from "./LockScreen/index"
+import Password from "../components/LockScreen/index"
 import {
   createUser,
   calculateInfo,
@@ -175,6 +175,14 @@ class SettingsScreen extends Component {
     )
     this.passwordType = this.props.lockState.passwordType
   }
+  onPinCancelPress = () => {
+    this.setState({passwordOverlayIsOn: false})
+    ToastAndroid.show(
+      "Password set unsuccessfully",
+      ToastAndroid.SHORT
+    )
+    this.passwordType = this.props.lockState.passwordType
+  }
   onHandleSetPassword = () => {
     const ans = this.hasSetPassword()
     this.passwordIsSet= ans
@@ -226,7 +234,7 @@ class SettingsScreen extends Component {
     this.setState({biometricOverlayIsOn: false})
     
     ToastAndroid.show(
-      ("Biometric set unsuccessfully:" + text),
+      ("" + text),
       ToastAndroid.SHORT
     )
   }
@@ -326,32 +334,32 @@ class SettingsScreen extends Component {
 
           <Separator bordered style = {styles.separator}/>
 
-
-          <ListItem style = {styles.row} icon >
-            <Left>
-              <Button 
-              style={{ backgroundColor: "#FD3C2D" }}
-              onPress = {() => {
-                ToastAndroid.show(
-                  ("Password Type: Pin, Pattern, Traditional Password"),
-                  ToastAndroid.SHORT
-                )
-              }}
-              >
-                <Icon type = "FontAwesome5" active name="lock" />
-              </Button>
-            </Left>
-            <Body>
-              <Text>Set Password</Text>
-            </Body>
-            <Right>
-              <Radio
-                selected = {this.state.showMenu}
-                onPress = {() => this.setState({showMenu: !this.state.showMenu})}
-              />
-              
-            </Right>
-          </ListItem>
+            <ListItem style = {styles.row} icon 
+            onPress = {() => this.setState({showMenu: !this.state.showMenu})} >
+              <Left>
+                <Button 
+                style={{ backgroundColor: "#FD3C2D" }}
+                onPress = {() => {
+                  ToastAndroid.show(
+                    ("Password Type: Pin, Pattern, Traditional Password"),
+                    ToastAndroid.SHORT
+                  )
+                }}
+                >
+                  <Icon type = "FontAwesome5" active name="lock" />
+                </Button>
+              </Left>
+              <Body>
+                <Text>Set Password</Text>
+              </Body>
+              <Right>
+                <Radio
+                  selected = {this.state.showMenu}
+                  onPress = {() => this.setState({showMenu: !this.state.showMenu})}
+                />
+                
+              </Right>
+            </ListItem>
             {this.state.showMenu && 
             <ListItem 
             style = {styles.row} 
@@ -447,65 +455,57 @@ class SettingsScreen extends Component {
             </Body>
           </ListItem>
 
-          <ListItem style = {styles.row} icon onPress = {() => this.cancelNotification()}>
-            <Left>
-              <Button style={{ backgroundColor: "brown" }} onPress = {() => this.cancelNotification()}>
-                <Icon active name="notifications-off" />
-              </Button>
-            </Left>
-            <Body>
-              <Text>Remove all notifications</Text>
-            </Body>
-          </ListItem>
-          <Separator bordered style = {styles.separator}/>
-          
-        </Content>
 
-        <Overlay
-            isVisible = {this.state.stage === 'editUser'}
-            fullScreen
-            animationType = "slide"
-        >
-            <PersonalForm 
-              userInfo = {this.props.userInfo} 
-              completeForm = {this.completeForm}
-            />
-        </Overlay>
+            <ListItem style = {styles.row} icon onPress = {() => this.cancelNotification()}>
+              <Left>
+                <Button style={{ backgroundColor: "brown" }} onPress = {() => this.cancelNotification()}>
+                  <Icon active name="notifications-off" />
+                </Button>
+              </Left>
+              <Body>
+                <Text>Remove all notifications</Text>
+              </Body>
+            </ListItem>
+            <Separator bordered style = {styles.separator}/>
+            
+          </Content>
+          <Overlay
+              isVisible = {passwordOverlayIsOn}
+              fullScreen
+              animationType = "slide"
+          >
+                <View>
+                {this.passwordIsSet && this.passwordType === "none" && 
+                <Password
+                status = {"enter"} 
+                onSuccess = {this.onEnterPasswordSuccess}
+                onFailure = {this.onEnterPasswordFail}
+                removePassword = {true}
+                cancelButton = {true}
+                />}
 
-        <Overlay
-            isVisible = {passwordOverlayIsOn}
-            fullScreen
-            animationType = "slide"
-        >
-              <View>
-              {this.passwordIsSet && this.passwordType === "none" && 
-              <Password
-              status = {"enter"} 
-              onSuccess = {this.onEnterPasswordSuccess}
-              onFailure = {this.onEnterPasswordFail}
-              removePassword = {true}
-              />}
-
-              {!this.passwordIsSet && this.passwordType !== "none" &&
-              <Password
-              passwordType = {this.passwordType}
-              status = {"choose"}
-              onSuccess = {this.onSetPasswordSuccess}
-              />
-              }
-              
-            </View>
-        </Overlay>
-        {this.state.biometricOverlayIsOn && 
-        <BiometricScreen 
-        onSuccess = {this.state.isBiometricSet? 
-          this.onAuthenticateBiometricSuccess: this.onSetBiometricSuccess}
-        onFailure = {this.state.isBiometricSet? 
-          this.onAuthenticateBiometricFail: this.onSetBiometricFail}
-        />}
-
-      </Container>
-    );
+                {!this.passwordIsSet && this.passwordType !== "none" &&
+                <Password
+                passwordType = {this.passwordType}
+                status = {"choose"}
+                onSuccess = {this.onSetPasswordSuccess}
+                onFailure = {this.onPinCancelPress}
+                cancelButton = {true}
+                />
+                }
+               
+              </View>
+          </Overlay>
+          {this.state.biometricOverlayIsOn && 
+          <BiometricScreen 
+          onSuccess = {this.state.isBiometricSet? 
+            this.onAuthenticateBiometricSuccess: this.onSetBiometricSuccess}
+          onFailure = {this.state.isBiometricSet? 
+            this.onAuthenticateBiometricFail: this.onSetBiometricFail}
+          />}
+        </Container>
+    
+      );
     
   }
 }
