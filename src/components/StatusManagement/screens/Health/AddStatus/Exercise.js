@@ -6,6 +6,7 @@ import {
   Image,
   Picker,
   ToastAndroid,
+  BackHandler
 } from 'react-native';
 import {Content, Button, Text, Form, Item, Label} from 'native-base';
 
@@ -33,6 +34,9 @@ class Exercise extends Component {
   }
 
   componentWillMount() {
+      // disable back button when navigate edit
+    BackHandler.addEventListener('hardwareBackPress', () => {return true});
+    
     const {exerciseEdit} = this.props;
     if (exerciseEdit) {
       this.setState({
@@ -58,16 +62,13 @@ class Exercise extends Component {
       var currentDate = moment().format('DD-MM-YYYY');
 
       this.props.onSubmit(this.state);
-      this.props.deleteExerciseEdit();
+      // this.props.deleteExerciseEdit();
       this.props.updateDailyRecord(this.state);
 
       
 
       if(this.state.date === currentDate){
-        // calculate energyBurned temporarily
-        var energyBurned= this.state.duration * 5; 
-        console.log("energyBurned",energyBurned)
-        this.props.submitBurnRecord(energyBurned);
+        this.props.submitBurnRecord(this.state);
       }
 
 
@@ -87,22 +88,13 @@ class Exercise extends Component {
   };
 
   render() {
+    console.log("edit E" , this.props.userInfo.edit)
     return (
       <Content padder>
         {/* SHOW TITLE EDIT */}
         {this.props.exerciseEdit ? (
           <View>
-            <TouchableOpacity
-              style={styles.viewIcon}
-              onPress={() => {
-                this.props.navigation.goBack(), this.props.deleteExerciseEdit();
-              }}>
-              <Image
-                source={require(icon_close)}
-                style={{height: 30, width: 30}}
-              />
-            </TouchableOpacity>
-            <View style={{alignItems: 'center'}}>
+            <View style={{alignItems: 'center',marginTop:30}}>
               <Text
                 style={styles.titleEdit}>
                 EDIT EXERCISE
@@ -121,8 +113,7 @@ class Exercise extends Component {
               mode="date"
               placeholder="select date"
               format="DD-MM-YYYY"
-              minDate="01-1-1000"
-              maxDate="01-1-3000"
+              maxDate={moment().format('DD-MM-YYYY')}
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
               customStyles={{
@@ -208,6 +199,14 @@ class Exercise extends Component {
           {/* BUTTON FOR EDIT FORM */}
         {this.props.exerciseEdit ? (
           <View style={styles.viewbtnEdit}>
+             <Button
+              block
+              style={styles.btnEdit}
+              onPress={() => {
+                this.props.navigation.goBack(), this.props.deleteExerciseEdit();
+              }}>
+              <Text>CLOSE</Text>
+            </Button>
             <Button
               block
               style={styles.btnEdit}
@@ -218,14 +217,7 @@ class Exercise extends Component {
               }}>
               <Text>SUBMIT</Text>
             </Button>
-            <Button
-              block
-              style={styles.btnEdit}
-              onPress={() => {
-                this.props.navigation.goBack(), this.props.deleteExerciseEdit();
-              }}>
-              <Text>CLOSE</Text>
-            </Button>
+           
           </View>
         ) : (
           <Button
@@ -247,13 +239,13 @@ const mapDispatchToProps = dispatch => {
     },
     deleteExerciseEdit: () => {
       dispatch(actions.actEditExercise(null));
+      dispatch(actions.editRecord(null));
     },
     updateDailyRecord: exercise => {
       dispatch(actions.updateDailyRecord())
-    },
-    
-    submitBurnRecord: burn =>{
-      dispatch(actions.addExerciseRecord(burn));
+    },  
+    submitBurnRecord: exercise =>{
+      dispatch(actions.addExerciseRecord(exercise));
     }
   };
 };
@@ -261,6 +253,7 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
   return {
     exerciseEdit: state.exerciseReducer.exerciseEdit,
+    userInfo: state.user
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Exercise);
@@ -270,7 +263,7 @@ const styles = StyleSheet.create({
   titleEdit:{
     fontWeight: 'bold',
     fontSize: 25,
-    color: '#ffbf00',
+    color: '#FE873C',
     margin: 20,
     marginTop: 20,
   },

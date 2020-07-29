@@ -12,7 +12,7 @@ import {Button, Text} from 'native-base';
 import {SwipeRow} from 'react-native-swipe-list-view';
 import * as actions from '../../../../../actions';
 import {connect} from 'react-redux';
-
+import moment from 'moment';
 
 class BudgetItem extends Component {
   constructor(props) {
@@ -64,6 +64,7 @@ class BudgetItem extends Component {
     return total;
   }
 
+  
   render() {
     const {item, firstItemInDay} = this.props;
 
@@ -84,6 +85,12 @@ class BudgetItem extends Component {
                 style={[styles.backRightBtn, styles.backRightBtnLeft]}
                 onPress={() => {
                   this.props.edit(item);
+                 {
+                    item.date === moment().format('YYYY-MM-DD')
+                    ?  this.props.editRecord(item)
+                    : null
+                 }
+                 
                   {
                     item.type === 'Income'
                       ? this.props.navigation.push('Income')
@@ -99,9 +106,13 @@ class BudgetItem extends Component {
                 onPress={() => {
                   this.props.delete(item);
                   {
-                    item.type === "Income"
-                    ? this.props.deleteIncomeRecord(item)
-                    : this.props.deleteExpenseRecord(item)
+                    item.date === moment().format('YYYY-MM-DD')
+                    ?
+                      item.type === "Income"
+                      ? this.props.deleteIncomeRecord(item)
+                      : this.props.deleteExpenseRecord(item)
+                    
+                    :null
                   }
                 }}>
                 <Text style={styles.backTextWhite}>Delete</Text>
@@ -187,6 +198,9 @@ const mapDisaptchToProps = dispatch => {
     },
     deleteExpenseRecord: (iRecord) => {
       dispatch(actions.deleteExpenseRecord(iRecord));
+    },
+    editRecord: (edit) => {
+      dispatch(actions.editRecord(edit));
     },
     
 
@@ -290,4 +304,3 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   }
 });
-

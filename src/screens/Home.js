@@ -213,14 +213,14 @@ class HomeScreen extends Component {
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "cash-refund"/>
-                <Text style = {styles.cardText}>{expenseTotal} {Currency}</Text>
+                <Text style = {styles.cardText}>{DailyRecord.Finance.spent.sum} {Currency}</Text>
               </Left>
             </CardItem>
 
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "credit-card-plus"/>
-                <Text style = {styles.cardText}>{incomeTotal} {Currency}</Text>
+                <Text style = {styles.cardText}>{DailyRecord.Finance.earned.sum} {Currency}</Text>
               </Left>
             </CardItem>
 

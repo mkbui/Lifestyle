@@ -31,6 +31,8 @@ export const DELETE_INCOME_RECORD = 'DELETE_INCOME_RECORD'
 export const DELETE_EXPENSE_RECORD = 'DELETE_EXPENSE_RECORD'
 export const DELETE_EXERCISE_RECORD = 'DELETE_EXERCISE_RECORD'
 export const DELETE_CONSUME_RECORD = 'DELETE_CONSUME_RECORD'
+export const EDIT_RECORD = 'EDIT_RECORD'
+
 // Budget
 export const SUBMIT = "SUBMIT";
 export const DELETE = "DELETE";
@@ -198,12 +200,12 @@ export function addExpenseRecord(eRecord) {
   return { type: ADD_EXPENSE_RECORD, eRecord}
 }
 
-export function addConsumeRecord(consume) {
-  return { type: ADD_CONSUME_RECORD, consume}
+export function addConsumeRecord(meal) {
+  return { type: ADD_CONSUME_RECORD, meal}
 }
 
-export function addExerciseRecord(burn) {
-  return { type: ADD_EXERCISE_RECORD, burn}
+export function addExerciseRecord(exercise) {
+  return { type: ADD_EXERCISE_RECORD, exercise}
 }
 export function addWaterRecord(water) {
   return { type:  ADD_WATER_RECORD, water}
@@ -215,11 +217,14 @@ export function deleteIncomeRecord(iRecord) {
 export function deleteExpenseRecord(iRecord) {
   return { type: DELETE_EXPENSE_RECORD, iRecord}
 }
-export function deleteExerciseRecord(burn) {
-  return { type: DELETE_EXERCISE_RECORD, burn}
+export function deleteExerciseRecord(exercise) {
+  return { type: DELETE_EXERCISE_RECORD, exercise}
 }
-export function deleteConsumeRecord(consume) {
-  return { type: DELETE_CONSUME_RECORD, consume}
+export function deleteConsumeRecord(meal) {
+  return { type: DELETE_CONSUME_RECORD, meal}
+}
+export function editRecord(edit) {
+  return { type: EDIT_RECORD, edit}
 }
 
 
