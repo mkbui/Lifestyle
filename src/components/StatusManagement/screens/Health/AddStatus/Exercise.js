@@ -88,7 +88,7 @@ class Exercise extends Component {
   };
 
   render() {
-    console.log("edit E" , this.props.userInfo.edit)
+   //console.log("edit E" , this.props.userInfo.edit)
     return (
       <Content padder>
         {/* SHOW TITLE EDIT */}
