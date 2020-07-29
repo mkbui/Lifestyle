@@ -37,8 +37,8 @@ export function removeAlarmNoti(activity){
   let rep = activity.repeat;
   for (i = 0; i < 7; i++) {
     if (rep[i].value === true){
-      index = new Date(activity.id.getTime() + i)
-      console.log(index)
+      index = activity.id*10 + i//new Date(activity.id.getTime() + i)
+      //console.log(index)
       CancelNotification(index);
     }
   }

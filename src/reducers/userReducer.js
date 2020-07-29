@@ -37,8 +37,8 @@ const User = {
   Currency: '₫',
 
   Measure: {
-    BMI: 20,
-    BMR: 1600,
+    BMI: 20.0,
+    BMR: 1600.0,
   },
 
   // Records: currently not used, migrating to exerciseReducer, mealReducer and budgetReducer

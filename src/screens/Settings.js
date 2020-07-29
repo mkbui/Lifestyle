@@ -133,7 +133,7 @@ class SettingsScreen extends Component {
   }
 
   cancelNotification(){
-    console.log("Removsing notifications")
+    console.log("Removing notifications")
     CancelAllNotification()
     ToastAndroid.show(
       "All notifications removed",

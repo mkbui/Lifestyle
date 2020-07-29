@@ -54,7 +54,7 @@ class Activity {
     this.repeat[5].value = Fri;
     this.repeat[6].value = Sat;
     this.activate = true;
-    this.id = new Date()//Math.random().toString();
+    this.id = Math.floor(Math.random() * Math.floor(99999999))//Math.random().toString();
   }
 }
 
@@ -83,6 +83,7 @@ class AddActivityModal extends Component {
       name : 'Activity',
     };
   }
+  
   onChangeTime = (event, selectedDate) => {
     if (event.type == "set") {
       const currentDate = selectedDate || this.state.date;

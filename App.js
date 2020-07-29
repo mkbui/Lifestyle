@@ -4,7 +4,7 @@ import {View, Text} from "react-native";
 //import { StyleProvider } from "native-base";
 
 import {createStore} from 'redux';
-import appReducer from './src/reducers';
+import AppReducer from './src/reducers';
 import {Provider} from 'react-redux';
 import {persistStore, persistReducer} from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -17,8 +17,8 @@ const persistConfig = {
   storage: AsyncStorage,
 }
 
-/* Declare store and persistor (saving data) for main dispatch appReducer */
-const persistedReducer = persistReducer(persistConfig, appReducer)
+/* Declare store and persistor (saving data) for main dispatch AppReducer */
+const persistedReducer = persistReducer(persistConfig, AppReducer)
 const store = createStore(persistedReducer);
 const persistor = persistStore(store);
 

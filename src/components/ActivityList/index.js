@@ -20,6 +20,7 @@ import {
 } from "native-base";
 import {connect} from "react-redux";
 import {removeActivity, activateActivity} from "../../actions";
+import {addAlarmNoti, removeAlarmNoti} from "../../utils";
 
 function mapStateToProps(state) {
   return {activityList: state.activityList}

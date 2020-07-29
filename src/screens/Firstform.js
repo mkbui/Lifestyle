@@ -249,6 +249,7 @@ class FirstformScreen extends Component {
         weight: 100,
         age: 10,
         gender: '',
+        money: 0.0,
       },
     };
   

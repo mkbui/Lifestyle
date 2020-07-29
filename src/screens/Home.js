@@ -90,10 +90,6 @@ class HomeScreen extends Component {
     });
 
   }
-
-  handleNotification = () => {
-    console.log('New notification triggered')
-  }
   
 
   render() {
@@ -114,8 +110,8 @@ class HomeScreen extends Component {
         totalConsumed += meal.carb*4 + meal.protein*4 + meal.fat*9;
       }
     });
-    console.log("DailyRecord.Fitness.waterConsumed",DailyRecord.Fitness.waterConsumed)
-    console.log("DailyRecord.Fitness.energyConsumed",DailyRecord.Fitness.energyConsumed)
+    //console.log("DailyRecord.Fitness.waterConsumed",DailyRecord.Fitness.waterConsumed)
+    //console.log("DailyRecord.Fitness.energyConsumed",DailyRecord.Fitness.energyConsumed)
     return (
       <Container style={styles.container}>
         <Header>
@@ -129,7 +125,7 @@ class HomeScreen extends Component {
           </Body>
           <Right style = {{flex: 0.5}}>
             <Button 
-              onPress={() => this.setState({viewAbout: true}) }>
+              onPress={() => this.props.createNewDaily()/*this.setState({viewAbout: true})*/ }>
               <Icon name = "paper-plane" />
             </Button>
           </Right>

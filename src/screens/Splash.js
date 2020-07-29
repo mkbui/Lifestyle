@@ -27,6 +27,7 @@ class SplashScreen extends Component {
       hasSetBiometric: false
     }
   }
+  
   componentDidMount(){
     // Only show the splash screen for maximum 5s
     setTimeout(()=>{
@@ -38,6 +39,7 @@ class SplashScreen extends Component {
     this.setState({passwordOverlayIsOn: false})
     this.props.navigation.navigate('Home');
   }
+
   onEnterPasswordFail = () => console.log("login fail")
 
   onBiometricFail = () => {
@@ -50,6 +52,7 @@ class SplashScreen extends Component {
     this.props.navigation.navigate('Home');
     console.log("dafuhauidhf")
   }
+
   proceed(){
     const {userInfo} = this.props;
     let registered = userInfo.Info.registered; 

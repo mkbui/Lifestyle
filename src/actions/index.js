@@ -101,10 +101,6 @@ export function removeExercise(id){
   return { type: REMOVE_EXERCISE, id };
 }
 
-export function setViewFilters(filter) {
-  return { type: SET_VIEW_FILTER, filter}
-}
-
 export function addActivity(activity){
   return { type: ADD_ACTIVITY, activity };
 }
