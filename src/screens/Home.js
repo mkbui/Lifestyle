@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import {StyleSheet, Image} from 'react-native';
+import React, { Component, useCallback } from "react";
+import {StyleSheet, Image, Modal} from 'react-native';
 import {
   Container,
   Header,
@@ -18,6 +18,16 @@ import {
   CardItem,
   Thumbnail,
 } from "native-base";
+import { Overlay} from 'react-native-elements'
+
+/*
+captureRef(viewRef, {
+  format: "jpg",
+  quality: 0.8
+}).then(
+  uri => console.log("Image saved to", uri),
+  error => console.error("Oops, snapshot failed", error)
+);*/
 
 import {connect} from "react-redux";
 import {createNewDaily} from "../actions";
@@ -59,10 +69,11 @@ class HomeScreen extends Component {
 
   constructor(props){
     super(props);
-    id = Math.floor(Math.random()*7);
+    id = Math.floor(Math.random()*10);
     this.state = {
       fActive: false,
-      background: backgrounds[id]
+      background: backgrounds[id],
+      viewAbout: false,
     }
     //console.log(this.props.userInfo);
     let lastRecordDate = this.props.userInfo.DailyRecord.date;
@@ -73,21 +84,23 @@ class HomeScreen extends Component {
   }
 
   componentDidMount = () => {
-    id = Math.floor(Math.random()*7);
+    id = Math.floor(Math.random()*10);
     this.setState({
       background: backgrounds[id]
     });
+
   }
 
   handleNotification = () => {
     console.log('New notification triggered')
   }
   
+
   render() {
     const {userInfo, budgetList, mealList} = this.props;
-    const {DailyRecord, Info} = this.props.userInfo;
+    const {DailyRecord, Info, Currency} = this.props.userInfo;
     var incomeTotal = 0, expenseTotal = 0, totalConsumed = 0;
-
+    var money = Info.money
     /* calculate total expense and income today */
     budgetList.map(budget => {
       if (budget.date === today) {
@@ -101,7 +114,8 @@ class HomeScreen extends Component {
         totalConsumed += meal.carb*4 + meal.protein*4 + meal.fat*9;
       }
     });
-
+    console.log("DailyRecord.Fitness.waterConsumed",DailyRecord.Fitness.waterConsumed)
+    console.log("DailyRecord.Fitness.energyConsumed",DailyRecord.Fitness.energyConsumed)
     return (
       <Container style={styles.container}>
         <Header>
@@ -115,13 +129,29 @@ class HomeScreen extends Component {
           </Body>
           <Right style = {{flex: 0.5}}>
             <Button 
-              onPress={() => ScheduledNotification() }>
+              onPress={() => this.setState({viewAbout: true}) }>
               <Icon name = "paper-plane" />
             </Button>
           </Right>
         </Header>
 
         <Content padder>
+          <Modal
+            visible={this.state.viewAbout}
+            transparent={true}
+            //onBackdropPress = {() => this.setState({viewAbout: false,})}
+          >
+            <View style = {styles.formView}>
+              <Text style = {styles.formTitleText}>About Our Project</Text>
+              <Text style = {styles.aboutScript}>Lifestyle Monitoring Software</Text>
+              <Text style = {styles.aboutScript}>Release Date: 23/07/2020</Text>
+              <Text style = {styles.aboutScript}>This portable mobile app aims to improve user lifestyle via daily tracking, 
+                advisory and recommendation</Text>
+              <Button style = {styles.button} onPress = {() => this.setState({viewAbout: false,})}>
+                <Text>OK</Text>
+              </Button>
+            </View>
+          </Modal>
 
           <Card style = {styles.mb}>
             <CardItem>
@@ -172,14 +202,14 @@ class HomeScreen extends Component {
             <CardItem bordered>
               <Left>
                 <Icon type = "FontAwesome5" name = "utensils"/>
-                <Text style = {styles.cardText}>{totalConsumed} Kcal</Text>
+                <Text style = {styles.cardText}> {DailyRecord.Fitness.energyConsumed} Kcal</Text>
               </Left>
             </CardItem>
 
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "fire"/>
-                <Text style = {styles.cardText}>0 Kcal</Text>
+                <Text style = {styles.cardText}>{DailyRecord.Fitness.energyBurned} Kcal</Text>
               </Left>
             </CardItem>
             <CardItem footer bordered button onPress = {() => {this.props.navigation.navigate('Tracker', { screen: 'Health' })}}>
@@ -199,14 +229,21 @@ class HomeScreen extends Component {
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "cash-refund"/>
-                <Text style = {styles.cardText}>{expenseTotal/*DailyRecord.Finance.spent.sum*/} VND</Text>
+                <Text style = {styles.cardText}>{expenseTotal/*DailyRecord.Finance.spent.sum*/} {Currency}</Text>
               </Left>
             </CardItem>
 
             <CardItem bordered>
               <Left>
                 <Icon type = "MaterialCommunityIcons" name = "credit-card-plus"/>
-                <Text style = {styles.cardText}>{incomeTotal/*DailyRecord.Finance.earned.sum*/} VND</Text>
+                <Text style = {styles.cardText}>{incomeTotal/*DailyRecord.Finance.earned.sum*/} {Currency}</Text>
+              </Left>
+            </CardItem>
+
+            <CardItem bordered>
+              <Left>
+                <Icon type = "MaterialCommunityIcons" name = "account-cash"/>
+                <Text style = {styles.cardText}>{money + incomeTotal - expenseTotal} {Currency}</Text>
               </Left>
             </CardItem>
 
@@ -240,6 +277,43 @@ const styles = StyleSheet.create({
   cardText: {
     fontWeight: '800',
     fontSize: 16,
+  },
+  formTitleText:{
+    fontSize: 23,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 18,
+    marginBottom: 20,
+  },
+  formView: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 90,
+
+    margin: 30,
+    backgroundColor: "#00fa9a",
+    borderRadius: 20,
+    borderWidth: 2,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  aboutScript: {
+    marginTop: 10,
+    marginBottom: 10,
+    alignContent: 'flex-start',
+    textAlign: 'center',
+  },
+  button: {
+    marginTop: 20,
+    borderWidth: 1,
   }
 });
 

@@ -164,7 +164,7 @@ class Chart extends React.Component {
     return (
       <Content padder>
         <View style={{alignItems: 'center', margin: 20}}>
-          <Text style={{fontSize: 20, color: 'red', fontWeight: 'bold'}}>
+          <Text style={{fontSize: 20, color: this.props.typePieChart == 'Income' ?'green':'red', fontWeight: 'bold'}}>
             {this.props.typePieChart == 'Income' ? 'INCOME' : 'EXPENSE'}
           </Text>
         </View>
@@ -187,7 +187,7 @@ class Chart extends React.Component {
           rotationEnabled={true}
           usePercentValues={true}
           styledCenterText={{
-            text: 'Pie center text!',
+            text: '',
             color: processColor('pink'),
             size: 15,
           }}
@@ -207,7 +207,7 @@ class Chart extends React.Component {
             <View style={styles.itemRow}>
               <Image source={item.categoryImage} style={styles.icon} />
               <Text style={styles.label}>{item.label}</Text>
-              <Text style={styles.priceText}>{item.value}</Text>
+              <Text style={{fontSize: 15,fontWeight: 'bold', color:"grey", fontWeight: 'bold'}}>{item.value}</Text>
             </View>
           );
         })}
@@ -255,6 +255,6 @@ const styles = StyleSheet.create({
     
   },
   icon: {height: 40, width: 40},
-  priceText: {fontSize: 15, fontWeight: 'bold', color: 'green'},
+  
   label: {fontSize: 15},
 });

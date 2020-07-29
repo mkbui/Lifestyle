@@ -114,6 +114,9 @@ class Expense extends Component {
       var currentDate = moment().format('DD-MM-YYYY');
       
       this.props.onSubmit(this.state);
+      if(this.state.date === currentDate){
+        this.props.submitExpenseRecord(this.state);
+      }
       //Reset form when submit
       this.setState({
         id: '',
@@ -291,6 +294,9 @@ const mapDispatchToProps = dispatch => {
     },
     deleteBudgetEdit: () => {
       dispatch(actions.actEditBudget(null));
+    },
+    submitExpenseRecord: (iRecord) => {
+      dispatch(actions.addExpenseRecord(iRecord));
     },
   };
 };

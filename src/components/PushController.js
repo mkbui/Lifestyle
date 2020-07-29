@@ -67,9 +67,9 @@ export const ScheduledAlarmNotification = (activity, weekDay) => {
     id: id,
     autoCancel: true,
     largeIcon: splashLogo,
-    bigText: title,
+    bigText: 'LIFESTYLE NOTIFICATION',
     subText: 'T.I.M.E.R',
-    title: 'LIFESTYLE NOTIFICATION',
+    title: title,
     message: 'Expand to see more',
     vibrate: true,
     vibration: 500,
@@ -90,10 +90,9 @@ export const DailyReminder = (reminder) => {
     title = reminder.title;
     if (reminder.message) message = reminder.message;
     time = reminder.time; hour = time.hour; min = time.min;
-    date = new Date(year, month, day+1, hour, min, 0);
+    date = new Date(year, month, day + 1, hour, min, 0);
   }
   console.log(date);
-
   var id = reminder.id;
   return PushNotification.localNotificationSchedule({
     id: id,
@@ -118,8 +117,6 @@ export const DailyReminder = (reminder) => {
 export const ScheduledNotification = (time) => {
   var now = new Date();
   
-  
-  console.log("Default Noti")
   title = 'This is a scheduled notification';
   date = new Date(Date.now() + 3 * 1000);  // default go off after 3 seconds
   
@@ -153,7 +150,6 @@ export const CancelAllNotification = () => {
     "All notifications removed",
     ToastAndroid.SHORT
   )
-  initializeReminders()
 }
 
 export const CancelNotification = (id) => {

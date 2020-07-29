@@ -13,7 +13,7 @@ Basic specifications (so far):
 
 Note: As of July release, the mobile app only supports offline storage and services (like notifications, suggestion lists, etc). Thus, internet connection is not required to run the software overall.
 
-Note: As of 20/07/2020, Native Base is installed as version 2.13.13 in latest updates while React Navigation is installed in its newest version v5. These libraries, as well as other open-source RN Packages, can become deprecated quickly if it becomes abandoned or neglected in the future, due to the rapid changes happening in React Native themes overall. Many problems have actually occured during development process due to this. Please take this into consideration when installing and maintaining project packages.
+Note: As of 20/07/2020, Native Base is installed as version 2.13.13 in latest updates while React Navigation is installed in its newest version v5. These libraries, as well as other open-source RN Packages, can become deprecated quickly if it becomes abandoned or neglected in the future, due to the rapid changes happening in React Native themes overall. Many problems have actually occured during development process due to this. Please take this into consideration when installing and maintaining project packages. Moreover, running *yarn* and *yarn upgrade --latest* everytime you pull changes into your local branch is recommended to keep the features running fine.
 
 ---
 
@@ -145,3 +145,34 @@ yarn upgrade --latest
 ```
 
 first to install new packages and dependencies added. 
+
+### Note: As of 23/07/2020 build
+This build attempts to assemble a release .apk file for testing and executing. This requires some changes in the android specification folder, namely in *android/app/build.gradle*:
+```
+android {
+  ...
+    dexOptions {
+            javaMaxHeapSize "4g"
+    }
+    aaptOptions {
+        cruncherEnabled = false
+    }
+  ...
+}
+```
+
+If you want to build the latest apk, run these in the terminal:
+```
+cd android
+./gradlew assembleRelease
+```
+
+The .apk file (installable on Android device) can be found at *android/app/build/outputs/apk/release*.
+However, the aforementioned can cause the debug run on android corrupted (the reason might be difference in specification). In that case, try running
+```
+cd android
+./gradlew clean
+```
+
+To reset the gradle properties cache and run with the default settings.
+

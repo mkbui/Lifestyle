@@ -156,7 +156,7 @@ class MealChart extends React.Component {
           rotationEnabled={true}
           usePercentValues={true}
           styledCenterText={{
-            text: 'Pie center text!',
+            text: '',
             color: processColor('pink'),
             size: 20,
           }}
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     width: 300,
   },
   viewTitle:{alignItems: 'center', margin: 20},
-  textTitle:{fontSize: 20, color: 'red', fontWeight: 'bold'},
+  textTitle:{fontSize: 20, color: '#FE7B23', fontWeight: 'bold'},
   
 });
 
