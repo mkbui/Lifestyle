@@ -8,6 +8,7 @@ import {
   Image,
   TextInput,
   ToastAndroid,
+  BackHandler,
 } from 'react-native';
 import {Content, Button, Text, Form, Item, Label, Input} from 'native-base';
 
@@ -69,9 +70,13 @@ class Income extends Component {
       checkedIndex: '',
     };
   }
+    // disable back button when navigate edit
+  componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', () => {return true});
+ } 
   componentDidMount() {
     const {budgetEdit} = this.props;
-
+    
     if (budgetEdit) {
       this.setState({
         id: budgetEdit.id,
@@ -100,11 +105,14 @@ class Income extends Component {
       alert('Amount must not be empty !!!');
     } else if (this.state.checkedIndex === '') {
       alert('Please choose category !!!');
+    }else if (isNaN(Number(this.state.amount))) {
+      alert('Amount must be a number !!!');
     } else {
       var currentDate = moment().format('DD-MM-YYYY');
       this.props.onSubmit(this.state);
       if(this.state.date === currentDate){
         this.props.submitIncomeRecord(this.state);
+        
       }
      
       this.setState({
@@ -148,21 +156,12 @@ class Income extends Component {
     )
   }
   render() {
-   
-   
     return (
       <Content padder>
         {/* SHOW TITLE EDIT */}
         {this.props.budgetEdit ? (
           <View>
-            <TouchableOpacity
-              style={styles.btnClose}
-              onPress={() => {
-                this.props.navigation.goBack(), this.props.deleteBudgetEdit();
-              }}>
-              <Image source={require(icon_close)} style={styles.iconClose} />
-            </TouchableOpacity>
-            <View style={{alignItems: 'center'}}>
+            <View style={{alignItems: 'center',  marginTop:30}}>
               <Text style={styles.editTitle}>EDIT INCOME</Text>
             </View>
           </View>
@@ -174,11 +173,11 @@ class Income extends Component {
             <DatePicker
               style={styles.datepicker}
               date={this.state.date}
+              maxDate={moment().format('DD-MM-YYYY')}
               mode="date"
               placeholder="select date"
               format="DD-MM-YYYY"
-              minDate="01-1-1000"
-              maxDate="01-1-3000"
+             
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
               customStyles={{
@@ -221,8 +220,8 @@ class Income extends Component {
           <Item stackedLabel>
             <Label>Amount:</Label>
             <Item regular style={{marginTop: 10}}>
-              <TextInput
-                keyboardType="numeric"
+              <Input
+              
                 style={styles.textInput}
                 placeholder="Enter the income here..."
                 onChangeText={text => this.handleOnChange(text, 'amount')}
@@ -247,6 +246,14 @@ class Income extends Component {
         {/* BUTTON FOR EDIT FORM */}
         {this.props.budgetEdit ? (
           <View style={styles.viewbtnEdit}>
+             <Button
+              block
+              style={styles.btnEdit}
+              onPress={() => {
+                this.props.navigation.goBack(), this.props.deleteBudgetEdit()
+              }}>
+              <Text>CLOSE</Text>
+            </Button>
             <Button
               block
               style={styles.btnEdit}
@@ -257,14 +264,7 @@ class Income extends Component {
               }}>
               <Text>SUBMIT</Text>
             </Button>
-            <Button
-              block
-              style={styles.btnEdit}
-              onPress={() => {
-                this.props.navigation.goBack(), this.props.deleteBudgetEdit();
-              }}>
-              <Text>CLOSE</Text>
-            </Button>
+           
           </View>
         ) : (
           <Button block style={styles.btnSubmit} onPress={this.handleOnSubmit}>
@@ -282,11 +282,11 @@ const mapDispatchToProps = dispatch => {
     },
     deleteBudgetEdit: () => {
       dispatch(actions.actEditBudget(null));
+      dispatch(actions.editRecord(null));
     },
     submitIncomeRecord: (iRecord) => {
       dispatch(actions.addIncomeRecord(iRecord));
     },
-    
   };
 };
 
@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
   editTitle: {
     fontWeight: 'bold',
     fontSize: 25,
-    color: '#ffbf00',
+    color: '#3C4FBB',
     marginBottom: 20,
   },
   datepicker: {

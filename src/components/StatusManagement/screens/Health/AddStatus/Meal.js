@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   ToastAndroid,
+  BackHandler
 } from 'react-native';
 import {
   Content,
@@ -43,7 +44,11 @@ class Meal extends Component {
     };
 
   }
+
   componentWillMount() {
+      // disable back button when navigate edit
+    BackHandler.addEventListener('hardwareBackPress', () => {return true});
+    
     const {mealEdit} = this.props;
     if (mealEdit) {
       this.setState({
@@ -123,9 +128,7 @@ class Meal extends Component {
       this.props.updateDailyRecord(this.state);
       
       if(this.state.date === currentDate){
-        var energyConsumed = this.state.carb * 4 + this.state.protein *4+ this.state.fat*9;
-        console.log(energyConsumed)
-        this.props.submitConsumeRecord(energyConsumed);
+        this.props.submitConsumeRecord(this.state);
       }
 
       this.props.deleteMealEdit();
@@ -149,19 +152,14 @@ class Meal extends Component {
 
 
   render() {
-
     return (
       <Content padder style={{ backgroundColor: "white" }}>
 
          {/* SHOW TITLE EDIT */}
         {this.props.mealEdit ? (
           <View>
-            <TouchableOpacity style={styles.viewIcon} onPress={() => {
-              this.props.navigation.goBack(), this.props.deleteMealEdit()
-            }}>
-              <Image source={require(icon_close)} style={{ height: 30, width: 30 }} />
-            </TouchableOpacity>
-            <View style={{ alignItems: 'center' }}>
+        
+            <View style={{ alignItems: 'center', marginTop:10 }}>
               <Text
                 style={styles.titleEdit}>
                 EDIT MEAL
@@ -179,8 +177,7 @@ class Meal extends Component {
               mode="date"
               placeholder="select date"
               format="DD-MM-YYYY"
-              minDate="01-1-1000"
-              maxDate="01-1-3000"
+              maxDate={moment().format('DD-MM-YYYY')}
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
               customStyles={{
@@ -308,18 +305,19 @@ class Meal extends Component {
             <Button
               block
               style={styles.btnEdit}
-              onPress={() => { this.handleOnSubmit(); this.props.deleteMealEdit(); this.props.navigation.goBack() }}
-            >
-              <Text>SUBMIT</Text>
-            </Button>
-            <Button
-              block
-              style={styles.btnEdit}
               onPress={() => {
                 this.props.navigation.goBack(), this.props.deleteMealEdit();
               }}>
               <Text>CLOSE</Text>
             </Button>
+            <Button
+              block
+              style={styles.btnEdit}
+              onPress={() => { this.handleOnSubmit(); this.props.deleteMealEdit(); this.props.navigation.goBack() }}
+            >
+              <Text>SUBMIT</Text>
+            </Button>
+  
           </View>
         ) : (
             <Button
@@ -340,12 +338,13 @@ const mapDispatchToProps = dispatch => {
     },
     deleteMealEdit: () => {
       dispatch(actions.actEditMeal(null));
+      dispatch(actions.editRecord(null));
     },
     updateDailyRecord: meal => {
       dispatch(actions.updateDailyRecord())
     },
-    submitConsumeRecord: consume =>{
-      dispatch(actions.addConsumeRecord(consume));
+    submitConsumeRecord: meal =>{
+      dispatch(actions.addConsumeRecord(meal));
     },
 
   
@@ -354,7 +353,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   return {
-    mealEdit: state.mealReducer.mealEdit
+    mealEdit: state.mealReducer.mealEdit,
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Meal);
@@ -369,7 +368,7 @@ const styles = StyleSheet.create({
   titleEdit:{
     fontWeight: 'bold',
     fontSize: 25,
-    color: '#ffbf00',
+    color: '#FE873C',
     margin: 20,
     marginTop: 20,
   },
