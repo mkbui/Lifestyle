@@ -31,7 +31,13 @@ export default class BiometricScreen extends Component
             cancelButton: "Cancel" })
            .then(() => {    this.props.onSuccess()    }, 
            reject => this.handleAttempt(reject))
-            .catch(error => console.log(error))
+            .catch(error => {
+                console.log(error)
+                if (error === "UserCancel" || 
+                error === "UserFallback" ||  error === "SystemCancel"){
+                    this.props.onCancel && this.props.onCancel()
+                }
+            })
         }
 
 

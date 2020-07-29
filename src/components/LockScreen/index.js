@@ -41,7 +41,8 @@ class Password extends Component{
         this.state = { 
             internalPasswordStatus: PasswordResultStatus.initial,
             isLocked: false,
-            type: PasswordType.none
+            type: PasswordType.none,
+            resetPassword: false
         };
     }
 
@@ -64,22 +65,25 @@ class Password extends Component{
         this.setState({internalPasswordStatus: status})
     }
 
+    onSecurityPasswordSuccess = () => {
+        this.setState({resetPassword: true})
+    }
     render(){
         const {status, passwordType} = this.props;
-        const {internalPasswordStatus, isLocked, type} = this.state
+        const {internalPasswordStatus, isLocked, type, resetPassword} = this.state
         if (type === "none") return null
         return (
             <View>
-                {(status === PasswordStatus.choose) &&
+                {((status === PasswordStatus.choose) || resetPassword) &&
                     <PasswordChoose
                         passwordType = {type}
                         passwordKeychainName = {passwordKeychainName}
                         onSuccess = {this.props.onSuccess}
-                        cancelButton = {this.props.cancelButton}
+                        cancelButton = {this.props.cancelButton && !resetPassword}
                         onFailure = {this.props.onFailure}
                     />
                 }
-                {status === PasswordStatus.enter &&
+                {status === PasswordStatus.enter && !resetPassword &&
                 (internalPasswordStatus !== PasswordResultStatus.locked) &&
                 !isLocked &&
                     <PasswordEnter
@@ -101,7 +105,7 @@ class Password extends Component{
                     timeLock = {300000}
                     changeInternalStatus={this.changeInternalStatus}
                     passwordKeychainName = {passwordKeychainName}
-                    onSecurityPasswordSuccess = {this.props.onSuccess}
+                    onSecurityPasswordSuccess = {this.onSecurityPasswordSuccess}
                     onSecurityPasswordFailure = {this.props.onFailure}
                     
                 />

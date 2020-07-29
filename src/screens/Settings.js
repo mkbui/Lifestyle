@@ -76,7 +76,6 @@ class SettingsScreen extends Component {
       isBiometricSet: false
     };
     this.passwordType = this.props.lockState.passwordType
-    this.passwordType = this.props.lockState.passwordType
 
   }
   
@@ -225,7 +224,7 @@ class SettingsScreen extends Component {
     )
   }
   render() {
-    const {passwordOverlayIsOn, passwordIsSet} = this.state
+    const {passwordOverlayIsOn, passwordIsSet, showMenu} = this.state
       return (
           <Container style={styles.container}>
           
@@ -333,10 +332,9 @@ class SettingsScreen extends Component {
                 <Text>Set Password</Text>
               </Body>
               <Right>
-                <Radio
-                  selected = {this.state.showMenu}
-                  onPress = {() => this.setState({showMenu: !this.state.showMenu})}
-                />
+                <Icon 
+                type = "Entypo" name = {this.state.showMenu? "chevron-up":"chevron-down"}
+                color = "black"/>
                 
               </Right>
             </ListItem>
@@ -347,6 +345,7 @@ class SettingsScreen extends Component {
               this.passwordType= "none"
               this.onHandleSetPassword()
             }}
+            disabled = {this.passwordType === "none"}
             selected = {this.passwordType === "none"}>
               <Body>
                 <Text>None</Text>
