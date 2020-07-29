@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {StyleSheet, ToastAndroid} from "react-native";
+import {StyleSheet, ToastAndroid, Alert} from "react-native";
 import {
   Container,
   View,
@@ -47,17 +47,26 @@ class AddFoodForm extends Component {
   /* Dispatch call and state reset, along with a toast */
   handlePress(){
     const {name, category} = this.state;
-    this.props.addFood(name, category);
-    this.props.completeForm();
-    this.setState({name: '', category: 'null'})
-    /*Toast.show({
-      text: "Food added successfully!",
-      type: "success",
-    })*/
-    ToastAndroid.show(
-      "Food added successfully!",
-      ToastAndroid.SHORT
-    )
+    if (name === '' || category === 'null') {
+      Alert.alert(
+        "Warning",
+        "Please enter sufficient name and category",
+        [
+          { text: "OK"}
+        ],
+        { cancelable: false }
+      );
+    }
+    else {
+      this.props.addFood(name, category);
+      this.props.completeForm();
+      this.setState({name: '', category: 'null'})
+      ToastAndroid.show(
+        "Food added successfully!",
+        ToastAndroid.SHORT
+      )
+    }
+
   }
 
   render(){

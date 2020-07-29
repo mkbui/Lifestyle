@@ -97,7 +97,7 @@ class Meal extends Component {
 
   };
   showImage = () => {
-    console.log("isUpload", this.state.isUpload)
+    //console.log("isUpload", this.state.isUpload)
     if (this.state.isUpload === true) {
       return (
         <View>
