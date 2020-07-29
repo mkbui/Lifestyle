@@ -10,11 +10,12 @@ import {
   View,
 } from "native-base";
 import {connect} from "react-redux";
-import {modifyActivityName} from "../../actions";
+import {modifyActivityName, activateActivity} from "../../actions";
 import {addAlarmNoti} from '../../utils';
 
 const mapDispatchToProps = dispatch => ({
-    modifyActivityName: (id, name) => dispatch(modifyActivityName(id, name))
+    modifyActivityName: (id, name) => dispatch(modifyActivityName(id, name)),
+    activateActivity: (id, bool) => dispatch(activateActivity(id, bool)),
 })
 class ModifyNameModal extends Component {
   constructor(props){
@@ -30,6 +31,7 @@ class ModifyNameModal extends Component {
     const {id, name} = this.activity
     this.props.modifyActivityName(id, name)
     addAlarmNoti(this.activity)
+    this.props.activateActivity(this.activity.id, true)
     this.props.completeChange()
   };
 

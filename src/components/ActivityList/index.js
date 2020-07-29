@@ -26,7 +26,7 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = dispatch => ({
   removeActivity: (id) => dispatch(removeActivity(id)),
-  activateActivity: (id) => dispatch(activateActivity(id)),
+  activateActivity: (id, bool) => dispatch(activateActivity(id, bool)),
 })
 
 class ActivityList extends Component {
@@ -42,7 +42,7 @@ class ActivityList extends Component {
     )
   }
   activateItem(activity){
-    this.props.activateActivity(activity.id);
+    this.props.activateActivity(activity.id, !activity.activate)
     if (activity.activate === false) {
       addAlarmNoti(activity)
     }
@@ -101,8 +101,7 @@ class ActivityList extends Component {
                       <Text style={{fontSize: 15}}>Repeat</Text>
                       <View style={{flexDirection:"row", alignItems:"center", justifyContent:"space-evenly"}} button={true}>
                       { 
-                        activity.repeat.filter(item => {return item.value === true}).length > 0 ? 
-                          activity.repeat.map(item => {
+                        activity.repeat.map(item => {
                           return(
                             (item.value === true) &&
                             <ListItem key={item.day} style={{borderBottomWidth: 0}}>
@@ -111,7 +110,7 @@ class ActivityList extends Component {
                               </Text>
                             </ListItem>
                           )
-                        }) : <Text style={{fontSize: 10}}> No </Text>
+                        })
                       }
                       </View>  
                     </View>

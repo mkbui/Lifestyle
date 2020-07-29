@@ -42,7 +42,6 @@ class ScheduleScreen extends Component {
 
   onNameChange = (activity) => {
     this.activity = activity
-    console.log(this.activity)
   }
 
   onTimeChange = (activity) => {

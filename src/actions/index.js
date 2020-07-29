@@ -107,8 +107,8 @@ export function removeActivity(id){
   return { type: REMOVE_ACTIVITY, id };
 }
 
-export function activateActivity(id){
-  return { type: ACTIVATE_ACTIVITY, id };
+export function activateActivity(id, bool){
+  return { type: ACTIVATE_ACTIVITY, id, bool };
 }
 
 export function modifyActivityName(id, name){

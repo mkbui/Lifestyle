@@ -4,32 +4,19 @@ import {
   Modal,
   TouchableHighlight,
   TextInput,
-  Switch,
   ToastAndroid,
 } from 'react-native';
 import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Button,
-  Icon,
-  Left,
-  Right,
   Body,
   Text,
   CheckBox,
   View,
-  Footer,
-  FooterTab,
   ListItem,
-  List,
 } from "native-base";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {connect} from "react-redux";
 import {addActivity} from "../../actions";
 import {addAlarmNoti} from '../../utils';
-
 class Activity {
   repeat = [
     {day : "Sun", value : false},
@@ -58,6 +45,7 @@ class Activity {
 
 const mapDispatchToProps = dispatch => ({
     addActivity: (activity) => dispatch(addActivity(activity)),
+    activateActivity: (id, bool) => dispatch(activateActivity(id, bool)),
 })
 
 class AddActivityModal extends Component {
@@ -112,28 +100,36 @@ class AddActivityModal extends Component {
 
   createActivity = () => {
     const {Sun, Mon, Tue, Wed, Thu, Fri, Sat} = this.state;
-    let newActivity = new Activity(
-      this.activity.name,
-      this.state.date.getHours(),
-      this.state.date.getMinutes(),
-      Sun,
-      Mon,
-      Tue,
-      Wed,
-      Thu,
-      Fri,
-      Sat,
-    );
-
-    this.props.addActivity(newActivity);
-    // Call utility functions to add notification into list (out of redux store)
-    addAlarmNoti(newActivity);
-    this.props.completeAdd();
-    ToastAndroid.show(
-      "Activity added",
-      ToastAndroid.SHORT
-    )
-    this.activity.name = 'Activity';
+    if (Sun + Mon + Tue + Wed + Thu + Fri + Sat === 0) {
+      ToastAndroid.show(
+        "Please pick a day!",
+        ToastAndroid.SHORT
+      )
+    }
+    else {
+      let newActivity = new Activity(
+        this.activity.name,
+        this.state.date.getHours(),
+        this.state.date.getMinutes(),
+        Sun,
+        Mon,
+        Tue,
+        Wed,
+        Thu,
+        Fri,
+        Sat,
+      );
+      this.props.addActivity(newActivity);
+      // Call utility functions to add notification into list (out of redux store)
+      addAlarmNoti(newActivity)
+      this.setModalVisible('showRepeat');
+      this.props.completeAdd();
+      ToastAndroid.show(
+        "Activity added",
+        ToastAndroid.SHORT
+      )
+      this.activity.name = 'Activity';
+    }
   };
 
   render() {
@@ -242,7 +238,6 @@ class AddActivityModal extends Component {
                   <TouchableHighlight
                     style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
                     onPress={() => {
-                      this.setModalVisible('showRepeat');
                       this.createActivity();
                     }}>
                     <Text style={styles.textStyle}>Add</Text>

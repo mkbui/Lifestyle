@@ -8,7 +8,6 @@ import {
   ScheduledAlarmNotification,
   CancelNotification, 
   DailyReminder,
-  NoRepeatAlarmNotification
 } from './components/PushController'
 
 /* transform React Date() format to dd-mm-yyyy */
@@ -24,34 +23,21 @@ export function getDateString(){
 export function addAlarmNoti(activity){
   var i
   let rep = activity.repeat
-  let repeat = false
   for (i = 0; i < 7; i++) {
     if (rep[i].value === true){
       ScheduledAlarmNotification(activity, i)
-      repeat = true
     }
-  }
-  if (repeat === false) {
-    NoRepeatAlarmNotification(activity)
   }
 }
 
 export function removeAlarmNoti(activity){
   var i;
   let rep = activity.repeat
-  let repeat = false
   for (i = 0; i < 7; i++) {
     if (rep[i].value === true){
       index = activity.id * 10 + i
-      console.log("remove "  + index)
       CancelNotification(index)
-      repeat = true
     }
-  }
-  if (repeat === false) {
-    index = activity.id * 10 + 7
-    console.log("remove "  + index)
-    CancelNotification(index)
   }
 }
 

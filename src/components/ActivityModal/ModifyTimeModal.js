@@ -1,37 +1,18 @@
 import React, { Component } from "react";
 import {
   StyleSheet,
-  Modal,
-  TouchableHighlight,
-  TextInput,
-  Switch,
 } from 'react-native';
 import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Button,
-  Icon,
-  Left,
-  Right,
-  Body,
-  Text,
-  CheckBox,
   View,
-  Footer,
-  FooterTab,
-  ListItem,
-  List,
 } from "native-base";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {connect} from "react-redux";
-import {modifyActivityTime} from "../../actions";
+import {modifyActivityTime, activateActivity} from "../../actions";
 import {addAlarmNoti} from '../../utils';
 
-
 const mapDispatchToProps = dispatch => ({
-  modifyActivityTime: (id, hour, min) => dispatch(modifyActivityTime(id, hour, min))
+  modifyActivityTime: (id, hour, min) => dispatch(modifyActivityTime(id, hour, min)),
+  activateActivity: (id, bool) => dispatch(activateActivity(id, bool)),
 })
 class ModifyTimeModal extends Component {
   constructor(props){
@@ -49,6 +30,7 @@ class ModifyTimeModal extends Component {
       this.activity.hour = this.state.date.getHours()
       this.activity.min = this.state.date.getMinutes()
       this.props.modifyActivityTime(this.activity.id, this.activity.hour, this.activity.min)
+      this.props.activateActivity(this.activity.id, true)
     }
     addAlarmNoti(this.activity)
     this.props.completeChange()

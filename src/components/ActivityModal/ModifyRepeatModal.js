@@ -3,6 +3,7 @@ import {
   StyleSheet,
   Modal,
   TouchableHighlight,
+  ToastAndroid,
 } from 'react-native';
 import {
   Text,
@@ -12,11 +13,11 @@ import {
   Body,
 } from "native-base";
 import {connect} from "react-redux";
-import {modifyActivityRepeat} from "../../actions";
+import {modifyActivityRepeat, activateActivity} from "../../actions";
 import {addAlarmNoti} from '../../utils';
-
 const mapDispatchToProps = dispatch => ({
-    modifyActivityRepeat: (id, repeat) => dispatch(modifyActivityRepeat(id, repeat))
+    modifyActivityRepeat: (id, repeat) => dispatch(modifyActivityRepeat(id, repeat)),
+    activateActivity: (id, bool) => dispatch(activateActivity(id, bool)),
 })
 class ModifyRepeatModal extends Component {
   constructor(props){
@@ -40,19 +41,28 @@ class ModifyRepeatModal extends Component {
 
   modify = () => {
     const {Sun, Mon, Tue, Wed, Thu, Fri, Sat} = this.state
-    repeat = [
-      {day : "Sun", value : Sun},
-      {day : "Mon", value : Mon},
-      {day : "Tue", value : Tue},
-      {day : "Wed", value : Wed},
-      {day : "Thu", value : Thu},
-      {day : "Fri", value : Fri},
-      {day : "Sat", value : Sat},
-    ]
-    this.activity.repeat = repeat
-    this.props.modifyActivityRepeat(this.props.activity.id, repeat)
-    addAlarmNoti(this.activity)
-    this.props.completeChange()
+    if (Sun + Mon + Tue + Wed + Thu + Fri + Sat === 0) {
+      ToastAndroid.show(
+        "Please pick a day!",
+        ToastAndroid.SHORT
+      )
+    }
+    else {
+      repeat = [
+        {day : "Sun", value : Sun},
+        {day : "Mon", value : Mon},
+        {day : "Tue", value : Tue},
+        {day : "Wed", value : Wed},
+        {day : "Thu", value : Thu},
+        {day : "Fri", value : Fri},
+        {day : "Sat", value : Sat},
+      ]
+      this.activity.repeat = repeat
+      this.props.modifyActivityRepeat(this.props.activity.id, repeat)
+      addAlarmNoti(this.activity)
+      this.props.activateActivity(this.activity.id, true)
+      this.props.completeChange()
+    }
   };
 
   render() {
