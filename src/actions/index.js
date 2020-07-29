@@ -58,12 +58,6 @@ export const RESET_ATTEMPT_NUMBER = "RESET_ATTEMPT_NUMBER";
 export const ACTIVATE_BIOMETRIC   = "ACTIVATE_BIOMETRIC";
 export const DEACTIVATE_BIOMETRIC = "DEACTIVATE_BIOMETRIC";
 
-/*
-export const ADD_INCOME_RECORD = 'ADD_INCOME_RECORD'
-export const ADD_EXPENSE_RECORD = 'ADD_EXPENSE_RECORD'
-export const ADD_CONSUME_RECORD = 'ADD_FITNESS_RECORD'
-export const ADD_EXERCISE_RECORD = 'ADD_EXERCISE_RECORD'*/
-
 export function createUser(name, initInfo){
   
   return { type: CREATE_USER, name, initInfo }
@@ -113,8 +107,8 @@ export function removeActivity(id){
   return { type: REMOVE_ACTIVITY, id };
 }
 
-export function activateActivity(id){
-  return { type: ACTIVATE_ACTIVITY, id };
+export function activateActivity(id, bool){
+  return { type: ACTIVATE_ACTIVITY, id, bool };
 }
 
 export function modifyActivityName(id, name){
