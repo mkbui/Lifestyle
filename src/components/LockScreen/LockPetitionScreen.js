@@ -3,8 +3,8 @@ import { View , Text, Button, Icon } from "native-base";
 import {StyleSheet} from "react-native";
 import { PasswordResultStatus } from "./types";
 import { connect } from 'react-redux';
-import  SecurityQuestion  from "./SecurityQuestion";
-import {setPasswordType,resetPasswordType, removeTimeLock, resetAttemptNumber, deactivatePassword, deactivateBiometric} from "../../actions/index"
+import  SecurityQuestion  from "../../screens/LockScreen/SecurityQuestion";
+import {setPasswordType,resetPasswordType, removeTimeLock, resetAttemptNumber, deactivatePassword, deactivateBiometric} from "../../actions"
 import * as Keychain from 'react-native-keychain'
 const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms))
@@ -72,7 +72,6 @@ class LockPetitionScreen extends Component
             this.props.deactivateBiometric()
         }
         this.props.changeInternalStatus(PasswordResultStatus.success)
-        console.log("sfndsuifniausefhndnsranrf")
         if (!!this.props.onSecurityPasswordSuccess()){
             this.props.onSecurityPasswordSuccess()
         }
@@ -114,6 +113,7 @@ class LockPetitionScreen extends Component
                             fontSize: 80
                         }} 
                         name = 'lock'
+                        type = {"Entypo"}
                     />
                     <View style = {
                         styles.timerBox
@@ -141,12 +141,14 @@ class LockPetitionScreen extends Component
                             Please try again later</Text>
                     </View>
 
-                    <Button 
-                    transparent 
-                    bordered={false} 
-                    onPress = {this.renderSecurityQuestion}>
-                        <Text style ={{textDecorationLine: "underline"}}>Forgot Password</Text>
-                    </Button>
+                    <View style = {{marginTop: 30}}>
+                        <Button 
+                        transparent 
+                        onPress = {this.renderSecurityQuestion}>
+                            <Text style ={{textDecorationLine: "underline", color: "blue"}}>Forgot Password</Text>
+                        </Button>
+                    </View>
+                    
                 </View>
             )
         }
