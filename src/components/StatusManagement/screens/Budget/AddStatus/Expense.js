@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   ToastAndroid,
+  BackHandler
 } from 'react-native';
 import {Content, Button, Text, Form, Item, Label, Input} from 'native-base';
 
@@ -78,7 +79,10 @@ class Expense extends Component {
       checkedIndex: '',
     };
   }
-
+  // disable back button when navigate edit
+  componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', () => {return true});
+ } 
   componentDidMount() {
     const {budgetEdit} = this.props;
     if (budgetEdit) {
@@ -110,7 +114,9 @@ class Expense extends Component {
       alert('Amount must not be empty !!!');
     } else if (this.state.checkedIndex === '') {
       alert('Please choose category !!!');
-    } else {
+    } else if (isNaN(Number(this.state.amount))) {
+      alert('Amount must be a number !!!');
+    }else {
       var currentDate = moment().format('DD-MM-YYYY');
       
       this.props.onSubmit(this.state);
@@ -158,19 +164,13 @@ class Expense extends Component {
     )
   }
   render() {
+    console.log("edit", this.props.userInfo.edit)
     return (
       <Content padder>
         {/* SHOW TITLE EDIT */}
         {this.props.budgetEdit ? (
           <View>
-            <TouchableOpacity
-              style={styles.btnClose}
-              onPress={() => {
-                this.props.navigation.goBack(), this.props.deleteBudgetEdit();
-              }}>
-              <Image source={require(icon_close)} style={styles.iconClose} />
-            </TouchableOpacity>
-            <View style={{alignItems: 'center'}}>
+            <View style={{alignItems: 'center', marginTop:30}}>
               <Text style={styles.editTitle}>EDIT EXPENSE</Text>
             </View>
           </View>
@@ -231,7 +231,7 @@ class Expense extends Component {
             <Label>Amount:</Label>
             <Item regular style={{marginTop: 10}}>
               <Input
-                keyboardType="numeric"
+              
                 style={{height: 45}}
                 placeholder="Enter the expense here..."
                 onChangeText={text => this.handleOnChange(text, 'amount')}
@@ -259,6 +259,14 @@ class Expense extends Component {
         {/* BUTTON FOR EDIT FORM */}
         {this.props.budgetEdit ? (
           <View style={styles.viewbtnEdit}>
+             <Button
+              block
+              style={styles.btnEdit}
+              onPress={() => {
+                this.props.navigation.goBack(), this.props.deleteBudgetEdit();
+              }}>
+              <Text>CLOSE</Text>
+            </Button>
             <Button
               block
               style={styles.btnEdit}
@@ -269,14 +277,7 @@ class Expense extends Component {
               }}>
               <Text>SUBMIT</Text>
             </Button>
-            <Button
-              block
-              style={styles.btnEdit}
-              onPress={() => {
-                this.props.navigation.goBack(), this.props.deleteBudgetEdit();
-              }}>
-              <Text>CLOSE</Text>
-            </Button>
+           
           </View>
         ) : (
           <Button block style={styles.btnSubmit} onPress={this.handleOnSubmit}>
@@ -294,10 +295,12 @@ const mapDispatchToProps = dispatch => {
     },
     deleteBudgetEdit: () => {
       dispatch(actions.actEditBudget(null));
+      dispatch(actions.editRecord(null));
     },
     submitExpenseRecord: (iRecord) => {
       dispatch(actions.addExpenseRecord(iRecord));
     },
+    
   };
 };
 
@@ -305,6 +308,7 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
   return {
     budgetEdit: state.budgetReducer.budgetEdit,
+    userInfo: state.user
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Expense);
@@ -365,7 +369,7 @@ const styles = StyleSheet.create({
   editTitle: {
     fontWeight: 'bold',
     fontSize: 25,
-    color: '#ffbf00',
+    color: '#3C4FBB',
     marginBottom: 20,
   },
   datepicker: {

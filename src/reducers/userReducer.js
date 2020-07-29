@@ -12,7 +12,8 @@ import {
   DELETE_INCOME_RECORD,
   DELETE_EXPENSE_RECORD,
   DELETE_EXERCISE_RECORD,
-  DELETE_CONSUME_RECORD
+  DELETE_CONSUME_RECORD,
+  EDIT_RECORD
  
 } from "../actions";
 import {getDateString} from "../utils"
@@ -74,7 +75,8 @@ const User = {
       },
       updated: true,
     }
-  }
+  },
+  edit:null
 }
 
 export function userAccess(state = User, action){
@@ -183,7 +185,9 @@ export function userAccess(state = User, action){
           }
         }
       })
-    case  ADD_CONSUME_RECORD:   
+    case  ADD_CONSUME_RECORD:  
+    //UPDATE
+    if(action.meal.id){
       return Object.assign({}, state, {
         ...state,
         DailyRecord: {
@@ -191,11 +195,27 @@ export function userAccess(state = User, action){
           Fitness: {
             ...state.DailyRecord.Fitness,
             updated: true,
-            energyConsumed:  state.DailyRecord.Fitness.energyConsumed + Number(action.consume),
+            energyConsumed:  state.DailyRecord.Fitness.energyConsumed - Number(state.edit.carb*4 + state.edit.protein*4 +state.edit.fat*9 )+ Number(action.meal.carb*4 +action.meal.protein*4 + action.meal.fat*9),
           }
           
         }
       })
+    }else{
+      //ADD
+      return Object.assign({}, state, {
+        ...state,
+        DailyRecord: {
+          ...state.DailyRecord,
+          Fitness: {
+            ...state.DailyRecord.Fitness,
+            updated: true,
+            energyConsumed:  state.DailyRecord.Fitness.energyConsumed + Number(action.meal.carb*4 +action.meal.protein*4 + action.meal.fat*9),
+          }
+          
+        }
+      })
+    }
+      
       case  DELETE_CONSUME_RECORD:   
       return Object.assign({}, state, {
         ...state,
@@ -204,25 +224,42 @@ export function userAccess(state = User, action){
           Fitness: {
             ...state.DailyRecord.Fitness,
             updated: true,
-            energyConsumed:  state.DailyRecord.Fitness.energyConsumed - Number(action.consume),
+            energyConsumed:  state.DailyRecord.Fitness.energyConsumed - Number(action.meal.carb*4 +action.meal.protein*4 + action.meal.fat*9),
           }
           
         }
       })
 
-    case  ADD_EXERCISE_RECORD:   
-      return Object.assign({}, state, {
-        ...state,
-        DailyRecord: {
-          ...state.DailyRecord,
-          Fitness: {
-            ...state.DailyRecord.Fitness,
-            updated: true,
-            energyBurned:  state.DailyRecord.Fitness.energyBurned + Number(action.burn),
+    case  ADD_EXERCISE_RECORD: 
+    //UPDATE  
+      if(action.exercise.id){
+        return Object.assign({}, state, {
+          ...state,
+          DailyRecord: {
+            ...state.DailyRecord,
+            Fitness: {
+              ...state.DailyRecord.Fitness,
+              updated: true,
+              energyBurned:  state.DailyRecord.Fitness.energyBurned - Number(state.edit.duration*5) + Number(action.exercise.duration * 5),  
+            }
+            
           }
-          
-        }
-      })
+        })
+      }else{
+         //ADD
+        return Object.assign({}, state, {
+          ...state,
+          DailyRecord: {
+            ...state.DailyRecord,
+            Fitness: {
+              ...state.DailyRecord.Fitness,
+              updated: true,
+              energyBurned:  state.DailyRecord.Fitness.energyBurned + Number(action.exercise.duration * 5),  // calculate energyBurned temporarily
+            }
+            
+          }
+        })
+      }
 
     case  DELETE_EXERCISE_RECORD:   
     return Object.assign({}, state, {
@@ -231,7 +268,7 @@ export function userAccess(state = User, action){
         ...state.DailyRecord,
         Fitness: {
           ...state.DailyRecord.Fitness,
-          energyBurned:  state.DailyRecord.Fitness.energyBurned - Number(action.burn),
+          energyBurned:  state.DailyRecord.Fitness.energyBurned - Number(action.exercise.duration * 5),
         }
         
       }
@@ -239,26 +276,44 @@ export function userAccess(state = User, action){
       
     case ADD_INCOME_RECORD:
       const iRecord = action.iRecord;
-      if (iRecord.amount > 0) return Object.assign({}, state, {
-        ...state,
-        DailyRecord: {
-          ...state.DailyRecord,
-          Finance: {
-            ...state.DailyRecord.Finance,
-            earned: {
-              sum: state.DailyRecord.Finance.earned.sum + parseInt(iRecord.amount, 10),
-              detail: [
-                ...state.DailyRecord.Finance.earned.detail,
-                {
-                  amount: iRecord.amount,
-                  note: iRecord.note,
-                  category: iRecord.category,
-                }
-              ]
-            }
-          },
-        }
-      })
+      //UPDATE 
+      if(iRecord.id){
+        if (iRecord.amount > 0) return Object.assign({}, state, {
+          ...state,
+          DailyRecord: {
+            ...state.DailyRecord,
+            Finance: {
+              ...state.DailyRecord.Finance,
+              earned: {
+                ...state.DailyRecord.Finance.earned, // temporarily not fix the detail when update
+                sum: state.DailyRecord.Finance.earned.sum - parseInt(state.edit.amount, 10)+ parseInt(iRecord.amount, 10),  
+              }
+            },
+          }
+        })
+      }else{
+         //ADD
+        if (iRecord.amount > 0) return Object.assign({}, state, {
+          ...state,
+          DailyRecord: {
+            ...state.DailyRecord,
+            Finance: {
+              ...state.DailyRecord.Finance,
+              earned: {
+                sum: state.DailyRecord.Finance.earned.sum + parseInt(iRecord.amount, 10),
+                detail: [
+                  ...state.DailyRecord.Finance.earned.detail,
+                  {
+                    amount: iRecord.amount,
+                    note: iRecord.note,
+                    category: iRecord.category,
+                  }
+                ]
+              }
+            },
+          }
+        })
+      }
 
       case DELETE_INCOME_RECORD:
       return Object.assign({}, state, {
@@ -283,26 +338,45 @@ export function userAccess(state = User, action){
       
       case ADD_EXPENSE_RECORD:
         const eRecord = action.eRecord;
-        if (eRecord.amount > 0) return Object.assign({}, state, {
-          ...state,
-          DailyRecord: {
-            ...state.DailyRecord,
-            Finance: {
-              ...state.DailyRecord.Finance,
-              spent: {
-                sum: state.DailyRecord.Finance.spent.sum + parseInt(eRecord.amount, 10),
-                detail: [
-                  ...state.DailyRecord.Finance.spent.detail,
-                  {
-                    amount: eRecord.amount,
-                    note: eRecord.note,
-                    category: eRecord.category,
-                  }
-                ]
-              }
-            },
-          }
-        })
+        //UPDATE 
+        if(eRecord.id){
+          if (eRecord.amount > 0) return Object.assign({}, state, {
+            ...state,
+            DailyRecord: {
+              ...state.DailyRecord,
+              Finance: {
+                ...state.DailyRecord.Finance,
+                spent: {
+                  ...state.DailyRecord.Finance.earned, // temporarily not fix the detail when update
+                  sum: state.DailyRecord.Finance.spent.sum - parseInt(state.edit.amount, 10) + parseInt(eRecord.amount, 10),
+                 
+                }
+              },
+            }
+          })
+        }else{
+          //ADD
+          if (eRecord.amount > 0) return Object.assign({}, state, {
+            ...state,
+            DailyRecord: {
+              ...state.DailyRecord,
+              Finance: {
+                ...state.DailyRecord.Finance,
+                spent: {
+                  sum: state.DailyRecord.Finance.spent.sum + parseInt(eRecord.amount, 10),
+                  detail: [
+                    ...state.DailyRecord.Finance.spent.detail,
+                    {
+                      amount: eRecord.amount,
+                      note: eRecord.note,
+                      category: eRecord.category,
+                    }
+                  ]
+                }
+              },
+            }
+          })
+        }
 
         case DELETE_EXPENSE_RECORD:
           return Object.assign({}, state, {
@@ -321,6 +395,9 @@ export function userAccess(state = User, action){
               },
             }
           })
+        case EDIT_RECORD:
+          state.edit = action.edit;
+          return {...state}
 
     default:
       return state;
