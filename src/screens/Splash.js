@@ -9,11 +9,12 @@ import BiometricScreen from "./LockScreen/BiometricScreen"
 import {Overlay} from "react-native-elements"
 //const { Dimensions, Platform } = require('react-native');
 //const deviceHeight = Dimensions.get("window").height;
+import { Overlay} from 'react-native-elements'
 
 function mapStateToProps(state) {
-  return{
-  userInfo: state.user,
-  lockState: state.lockState
+  return {
+    userInfo: state.user,
+    lockState: state.lockState
   }
 }
 

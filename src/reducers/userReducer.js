@@ -1,12 +1,19 @@
 import {
   CREATE_USER, 
   CALCULATE_INFO, 
+  SAVE_CURRENCY,
   CREATE_NEW_DAILY,
   UPDATE_DAILY_RECORD,
   ADD_CONSUME_RECORD,
   ADD_EXERCISE_RECORD,
   ADD_EXPENSE_RECORD,
   ADD_INCOME_RECORD,
+  ADD_WATER_RECORD,
+  DELETE_INCOME_RECORD,
+  DELETE_EXPENSE_RECORD,
+  DELETE_EXERCISE_RECORD,
+  DELETE_CONSUME_RECORD
+ 
 } from "../actions";
 import {getDateString} from "../utils"
 
@@ -26,6 +33,8 @@ const User = {
     registered: false,
     money: 0,
   },
+
+  Currency: '₫',
 
   Measure: {
     BMI: 20,
@@ -88,6 +97,7 @@ export function userAccess(state = User, action){
           height: action.initInfo.height,
           weight: action.initInfo.weight,
           gender: action.initInfo.gender,
+          money: action.initInfo.money,
           registered: true,
         }
       })
@@ -103,13 +113,20 @@ export function userAccess(state = User, action){
         }
       })
 
+    case SAVE_CURRENCY:
+      return Object.assign({}, state, {
+        ...state,
+        Currency: action.cur
+      })
+
     case CREATE_NEW_DAILY:
+      console.log(state.Info.money);
+      console.log(state.DailyRecord.Finance.earned);
       const todays = getDateString();
       return Object.assign({}, state, {
         Info: {
           ...state.Info,
-          weight: state.DailyRecord.Fitness.weight,
-          money: state.Info.money + state.DailyRecord.Finance.earned - state.DailyRecord.Finance.spent.sum,
+          money: state.Info.money + state.DailyRecord.Finance.earned.sum - state.DailyRecord.Finance.spent.sum,
         },
         FitnessRecord: [
           ...state.FitnessRecord,
@@ -126,7 +143,7 @@ export function userAccess(state = User, action){
             waterConsumed: 0,
             energyConsumed: 0,
             energyBurned: 0,
-            weight: state.Info.weight,
+            updated: false,
           },
           Finance: {
             date: todays,
@@ -154,6 +171,72 @@ export function userAccess(state = User, action){
         }
       })
 
+    case  ADD_WATER_RECORD:
+      return Object.assign({}, state, {
+        ...state,
+        DailyRecord: {
+          ...state.DailyRecord,
+          Fitness: {
+            ...state.DailyRecord.Fitness,
+            updated: true,
+            waterConsumed: action.water,
+          }
+        }
+      })
+    case  ADD_CONSUME_RECORD:   
+      return Object.assign({}, state, {
+        ...state,
+        DailyRecord: {
+          ...state.DailyRecord,
+          Fitness: {
+            ...state.DailyRecord.Fitness,
+            updated: true,
+            energyConsumed:  state.DailyRecord.Fitness.energyConsumed + Number(action.consume),
+          }
+          
+        }
+      })
+      case  DELETE_CONSUME_RECORD:   
+      return Object.assign({}, state, {
+        ...state,
+        DailyRecord: {
+          ...state.DailyRecord,
+          Fitness: {
+            ...state.DailyRecord.Fitness,
+            updated: true,
+            energyConsumed:  state.DailyRecord.Fitness.energyConsumed - Number(action.consume),
+          }
+          
+        }
+      })
+
+    case  ADD_EXERCISE_RECORD:   
+      return Object.assign({}, state, {
+        ...state,
+        DailyRecord: {
+          ...state.DailyRecord,
+          Fitness: {
+            ...state.DailyRecord.Fitness,
+            updated: true,
+            energyBurned:  state.DailyRecord.Fitness.energyBurned + Number(action.burn),
+          }
+          
+        }
+      })
+
+    case  DELETE_EXERCISE_RECORD:   
+    return Object.assign({}, state, {
+      ...state,
+      DailyRecord: {
+        ...state.DailyRecord,
+        Fitness: {
+          ...state.DailyRecord.Fitness,
+          energyBurned:  state.DailyRecord.Fitness.energyBurned - Number(action.burn),
+        }
+        
+      }
+    })
+      
     case ADD_INCOME_RECORD:
       const iRecord = action.iRecord;
       if (iRecord.amount > 0) return Object.assign({}, state, {
@@ -172,6 +255,26 @@ export function userAccess(state = User, action){
                   category: iRecord.category,
                 }
               ]
+            }
+          },
+        }
+      })
+
+      case DELETE_INCOME_RECORD:
+      return Object.assign({}, state, {
+        ...state,
+        DailyRecord: {
+          ...state.DailyRecord,
+          Finance: {
+            ...state.DailyRecord.Finance,
+            earned: {
+              sum: state.DailyRecord.Finance.earned.sum - parseInt(action.iRecord.amount, 10),
+              
+              detail:state.DailyRecord.Finance.earned.detail.filter(iRecord =>{
+                  iRecord.id !== action.iRecord.id
+                })
+                
+              
             }
           },
         }
@@ -200,6 +303,24 @@ export function userAccess(state = User, action){
             },
           }
         })
+
+        case DELETE_EXPENSE_RECORD:
+          return Object.assign({}, state, {
+            ...state,
+            DailyRecord: {
+              ...state.DailyRecord,
+              Finance: {
+                ...state.DailyRecord.Finance,
+                spent: {
+                  sum: state.DailyRecord.Finance.spent.sum - parseInt(action.iRecord.amount, 10),
+                  
+                  detail:state.DailyRecord.Finance.spent.detail.filter(iRecord =>{
+                      iRecord.id !== action.iRecord.id
+                    })
+                }
+              },
+            }
+          })
 
     default:
       return state;

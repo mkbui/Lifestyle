@@ -8,7 +8,7 @@ import {
 
 import {BarChart} from 'react-native-charts-wrapper';
 import {connect} from 'react-redux';
-class ExerxiseLineChart extends React.Component {
+class WaterChart extends React.Component {
 
   constructor(props) {
     super(props);
@@ -55,35 +55,29 @@ class ExerxiseLineChart extends React.Component {
   }
   
   loadData = () => {
-    const {exerciseList} = this.props;
+    const {waterList} = this.props;
     const {selectedMonth} = this.state;
  
     let index = {};
     let valueChart = [];
 
-    exerciseList
-    .filter(exercise => selectedMonth === exercise.date.split('-') .reverse() .join('-').split('-', 2).join('-'))
+    waterList
+    .filter(water => selectedMonth === water.date.split('-') .reverse() .join('-').split('-', 2).join('-'))
     .map(
-        exercise => {
-        if (!index[exercise.date]) {
-            index[exercise.date] = {
-              y: Number(exercise.duration),
-              x: Number(exercise.date.split("-",1)) - 1       
-            };
-          } else {
-            index[exercise.date].y =
-            index[exercise.date].y + Number(exercise.duration);
-          }
+        water => {
+            index[water.date] = {
+                y: Number(water.waterConsumed),
+                x: Number(water.date.split("-",1)) - 1       
+              };
    });
 
-   var totalTime = 0;
-    Object.keys(index).forEach(key => {
-      valueChart.push({
-        y: index[key].y,
-        x: index[key].x,
-      });
-      totalTime = totalTime + index[key].y
-    });
+   Object.keys(index).forEach(key => {
+     valueChart.push({
+       y: index[key].y,
+       x: index[key].x,
+     });
+   });
+
 
     this.setState({
       data: {
@@ -124,7 +118,6 @@ class ExerxiseLineChart extends React.Component {
       },
      
       valueChart,
-      totalTime
     
     });
   };
@@ -144,7 +137,7 @@ class ExerxiseLineChart extends React.Component {
      
         <View >
             <View style={{alignItems:"center"}}>
-            <Text style={{fontWeight:"bold", fontSize:20, color:"#FE7B23", marginTop:20}}>Total time in day</Text>
+            <Text style={{fontWeight:"bold", fontSize:20, color:"#FE7B23", marginTop:20}}>Total water intake in day</Text>
             </View>
           <BarChart
             style={styles.chart}
@@ -173,11 +166,11 @@ class ExerxiseLineChart extends React.Component {
 }
 const mapStateToProps = state => {
     return {
-      exerciseList: state.exerciseReducer.exerciseList,
+      waterList: state.mealReducer.waterList,
     
     };
   };
-export default connect(mapStateToProps, null)(ExerxiseLineChart);
+export default connect(mapStateToProps, null)(WaterChart);
   
   const styles = StyleSheet.create({
    
