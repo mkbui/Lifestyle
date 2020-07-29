@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import {
   StyleSheet,
-  Modal,
-  TouchableHighlight,
-  TextInput,
-  Switch,
 } from 'react-native';
 import {
   Container,

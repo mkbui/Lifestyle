@@ -6,13 +6,11 @@ import {
   ToastAndroid
 } from 'react-native';
 import {
-  Button,
   Icon,
   Left,
   Right,
   Body,
   Text,
-  CheckBox,
   View,
   ListItem,
   Card,
