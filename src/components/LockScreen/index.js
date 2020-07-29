@@ -75,6 +75,8 @@ class Password extends Component{
                         passwordType = {type}
                         passwordKeychainName = {passwordKeychainName}
                         onSuccess = {this.props.onSuccess}
+                        cancelButton = {this.props.cancelButton}
+                        onFailure = {this.props.onFailure}
                     />
                 }
                 {status === PasswordStatus.enter &&
@@ -86,6 +88,7 @@ class Password extends Component{
                         status = {PasswordStatus.enter}
                         passwordKeychainName = {passwordKeychainName}
                         onSuccess = {this.props.onSuccess}
+                        cancelButton = {this.props.cancelButton}
                         onFailure = {this.props.onFailure}
                     />
                 }
@@ -100,6 +103,7 @@ class Password extends Component{
                     passwordKeychainName = {passwordKeychainName}
                     onSecurityPasswordSuccess = {this.props.onSuccess}
                     onSecurityPasswordFailure = {this.props.onFailure}
+                    
                 />
                 }
             </View>

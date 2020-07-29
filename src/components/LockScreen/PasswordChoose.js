@@ -1,7 +1,7 @@
 import * as Keychain from 'react-native-keychain'
-import PinCode from './PinCode'
-import StringPassword from './StringPassword'
-import PatternCode from './PatternCode'
+import PinCode from '../../screens/LockScreen/PinCode'
+import StringPassword from '../../screens/LockScreen/StringPassword'
+import PatternCode from '../../screens/LockScreen/PatternCode'
 import {PasswordStatus, PasswordType} from './types';
 import React, { Component } from "react";
 import {StyleSheet, Animated} from 'react-native';
@@ -22,7 +22,7 @@ import { connect } from 'react-redux';
 import { activatePassword, setPasswordType, resetAttemptNumber, resetPasswordType, deactivatePassword, updateTimelock } from "../../actions";
 import {securityQnAAsyncStorageName as key} from "./types"
 import AsyncStorage from "@react-native-community/async-storage";
-import SecurityQuestion from "./SecurityQuestion"
+import SecurityQuestion from "../../screens/LockScreen/SecurityQuestion"
 function mapStateToProps(state) {
     return {lockState: state.lockState}
 }
@@ -84,15 +84,23 @@ class PasswordChoose extends Component {
         }
     }
     handleSetSecurityQuestion = () => {
-        console.log("yess")
         if (!!this.props.onSuccess())
         {
             this.props.onSuccess()
         }
     }
+    
+    onChooseCancelButtonPress = () => {
+        this.props.onFailure && this.props.onFailure()
+    }
+    onConfirmCancelButtonPress = () => {
+        this.setState({ 
+            status: PasswordStatus.choose,
+            inputValue: ""
+        })
+    }
     render() {
         const {passwordType} = this.props
-        console.log(passwordType)
         if(this.state.secureQuestionOverlayIsOn){
             return (
                 <View>
@@ -101,6 +109,7 @@ class PasswordChoose extends Component {
                 </View>
             )
         }
+        else{
         if(passwordType === PasswordType.none) return null
         else if (passwordType === PasswordType.pin){
             return(
@@ -111,6 +120,8 @@ class PasswordChoose extends Component {
                         mainTitle = 'Choose Your PIN'
                         subtitle = 'for additional security'
                         endProcess = {this.endChoose}
+                        cancelButton = {this.props.cancelButton}
+                        onCancelButtonPress = {this.onChooseCancelButtonPress}
                     />
                     }
                     {this.state.status === PasswordStatus.confirm && 
@@ -121,6 +132,8 @@ class PasswordChoose extends Component {
                         mainTitleConfirmFailed = 'Incorrect Input'
                         errorSubtitle = 'Please try again'
                         previousPassword={this.state.inputValue}
+                        cancelButton = {this.props.cancelButton}
+                        onCancelButtonPress = {this.onConfirmCancelButtonPress}
                     />
                     }
                 </View>
@@ -135,8 +148,10 @@ class PasswordChoose extends Component {
                     <StringPassword
                         status = {PasswordStatus.choose}
                         mainTitle = 'Choose Your Password'
-                        subtitle = 'for additional security'
+                        subtitle = 'must contain at least one capital, normal and special symbol'
                         endProcess = {this.endChoose}
+                        cancelButton = {this.props.cancelButton}
+                        onCancelButtonPress = {this.onChooseCancelButtonPress}
                     />
                     }
                     {this.state.status === PasswordStatus.confirm && 
@@ -147,6 +162,8 @@ class PasswordChoose extends Component {
                         mainTitleConfirmFailed = 'Incorrect Input'
                         errorSubtitle = 'Please try again'
                         previousPassword={this.state.inputValue}
+                        cancelButton = {this.props.cancelButton}
+                        onCancelButtonPress = {this.onConfirmCancelButtonPress}
                     />
                     }
                 </View>
@@ -162,8 +179,10 @@ class PasswordChoose extends Component {
                     <PatternCode
                         status = {PasswordStatus.choose}
                         mainTitle = 'Choose Your Pattern'
-                        subtitle = 'for additional security'
+                        subtitle = 'please select four or more nodes'
                         endProcess = {this.endChoose}
+                        cancelButton = {this.props.cancelButton}
+                        onCancelButtonPress = {this.onChooseCancelButtonPress}
                     />
                     }
                     {this.state.status === PasswordStatus.confirm && 
@@ -174,12 +193,15 @@ class PasswordChoose extends Component {
                         mainTitleConfirmFailed = 'Incorrect Input'
                         errorSubtitle = 'Please try again'
                         previousPassword={this.state.inputValue}
+                        cancelButton = {this.props.cancelButton}
+                        onCancelButtonPress = {this.onConfirmCancelButtonPress}
                     /> 
                     }
                 </View>
             )
         }
         else return null
+    }
     }
 }
 

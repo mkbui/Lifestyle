@@ -4,8 +4,9 @@ import { Container, Button, Text, Header, Body, Title } from 'native-base';
 const splashBackground = require('../../assets/launchscreen-bg.png');
 const splashLogo = require('../../assets/bootLogo.jpg');
 import {connect} from "react-redux";
-import Password from "./LockScreen/index";
+import Password from "../components/LockScreen/index";
 import BiometricScreen from "./LockScreen/BiometricScreen"
+import {Overlay} from "react-native-elements"
 //const { Dimensions, Platform } = require('react-native');
 //const deviceHeight = Dimensions.get("window").height;
 import { Overlay} from 'react-native-elements'
@@ -49,7 +50,6 @@ class SplashScreen extends Component {
     this.setState({biometricOverlayIsOn: false})
     this.setState({passwordOverlayIsOn: false})
     this.props.navigation.navigate('Home');
-    console.log("dafuhauidhf")
   }
   proceed(){
     const {userInfo} = this.props;
@@ -78,13 +78,15 @@ class SplashScreen extends Component {
         <Overlay
         isVisible = {this.state.passwordOverlayIsOn}
         fullScreen
-        animationType = "slide">
+        animationType = "slide"
+        >
         {
           <Password 
             status = "enter" 
             onSuccess = {this.onEnterPasswordSuccess}
             onFailure = {this.onEnterPasswordFail}
             removePassword = {false}
+            cancelButton = {false}
           />
         }
       </Overlay> 

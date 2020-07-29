@@ -2,7 +2,7 @@ import {question as questionList} from "../../data/question"
 import React, { Component } from "react";
 import { View , Text, Button, Icon, ListItem, Left, Right, Picker, Item } from "native-base";
 import {StyleSheet} from "react-native";
-import { PasswordResultStatus, securityQnAAsyncStorageName } from "./types";
+import { PasswordResultStatus, securityQnAAsyncStorageName } from "../../components/LockScreen/types";
 import AsyncStorage from "@react-native-community/async-storage";
 
 export default class SecurityQuestion extends Component
@@ -82,14 +82,14 @@ export default class SecurityQuestion extends Component
 
             {this.state.QnA_List.map( (qna, k) => {
                 return(
-                    <ListItem>
+                    <ListItem key = {k}>
                         <Left>
                             <Text>Q{k+1}: {qna.question}</Text>
                         </Left>
                         <Right>
                         <Picker
                             mode="dropdown"
-                            style={{ width: 70 }}
+                            style={{ width: 100 }}
                             selectedValue={(k === 0)? this.state.ans1: this.state.ans2}
                             onValueChange={(value) => {
                                 this.setState((k === 0)? {ans1: value}  : {ans2: value})

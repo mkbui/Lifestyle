@@ -96,6 +96,7 @@ function StackNavigator() {
       {/* Old tracker template */}
       <Stack.Screen name = 'HealthTracker' component = {HealthTracker}/>
       <Stack.Screen name = 'FinanceTracker' component = {FinanceTracker}/>
+
     </Stack.Navigator>
   )
 };
