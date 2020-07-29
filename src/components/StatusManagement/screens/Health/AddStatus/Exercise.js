@@ -113,8 +113,7 @@ class Exercise extends Component {
               mode="date"
               placeholder="select date"
               format="DD-MM-YYYY"
-              minDate="01-1-1000"
-              maxDate="01-1-3000"
+              maxDate={moment().format('DD-MM-YYYY')}
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
               customStyles={{

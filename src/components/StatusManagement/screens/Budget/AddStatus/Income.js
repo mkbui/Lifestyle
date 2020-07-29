@@ -173,11 +173,11 @@ class Income extends Component {
             <DatePicker
               style={styles.datepicker}
               date={this.state.date}
+              maxDate={moment().format('DD-MM-YYYY')}
               mode="date"
               placeholder="select date"
               format="DD-MM-YYYY"
-              minDate="01-1-1000"
-              maxDate="01-1-3000"
+             
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
               customStyles={{
