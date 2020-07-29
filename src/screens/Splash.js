@@ -7,9 +7,6 @@ import {connect} from "react-redux";
 import Password from "../components/LockScreen/index";
 import BiometricScreen from "./LockScreen/BiometricScreen"
 import {Overlay} from "react-native-elements"
-//const { Dimensions, Platform } = require('react-native');
-//const deviceHeight = Dimensions.get("window").height;
-import { Overlay} from 'react-native-elements'
 
 
 function mapStateToProps(state) {

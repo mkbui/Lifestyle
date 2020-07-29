@@ -139,7 +139,6 @@ class SettingsScreen extends Component {
       "All notifications removed",
       ToastAndroid.SHORT
     )
-    console.log(this.state.reminder)
     if (this.state.reminder === true) {
       initializeReminders()
     }
@@ -325,7 +324,6 @@ class SettingsScreen extends Component {
                 <Item label="₪" value = "₪"/>
                 <Item label="¥" value = "¥"/>
                 <Item label="₹" value = "₹"/>
-                <Item label="₿" value = "₿"/>
                 
               </Picker>
             </Right>
@@ -470,6 +468,17 @@ class SettingsScreen extends Component {
             
           </Content>
           <Overlay
+            isVisible = {this.state.stage === 'editUser'}
+            fullScreen
+            animationType = "slide"
+          >
+              <PersonalForm 
+                userInfo = {this.props.userInfo} 
+                completeForm = {this.completeForm}
+              />
+          </Overlay>
+
+          <Overlay
               isVisible = {passwordOverlayIsOn}
               fullScreen
               animationType = "slide"
@@ -515,16 +524,14 @@ class PersonalForm extends Component {
   constructor(props){
     super(props);
     const {Info} = this.props.userInfo;
-    //console.log(Info)
     this.state = {
       name: Info.name,
       age: Info.age.toString(),
       height: Info.height.toString(),
       weight: Info.weight.toString(),
       gender: Info.gender,
-      money: Info.money.toString(),
+      money: Info.money,
     }
-    console.log(this.state)
   }
 
   handlePress = () => {
@@ -593,7 +600,7 @@ class PersonalForm extends Component {
         height: parseInt(height, 10),
         weight: parseInt(weight, 10),
         gender: gender,
-        money: parseFloat(money)
+        money: this.state.money,
       }
       this.props.completeForm(name, userInfo);
     }}}}}
@@ -640,14 +647,6 @@ class PersonalForm extends Component {
               defaultValue = {this.state.weight}
               onChangeText = { (text) => this.setState({weight: text})}
               maxLength = {4}
-            />
-          </Item>
-          <Item stackedLabel>
-            <Label>Current account</Label>
-            <Input 
-              defaultValue = {this.state.money}
-              onChangeText = { (text) => this.setState({money: text})}
-              maxLength = {20}
             />
           </Item>
 

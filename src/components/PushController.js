@@ -11,7 +11,6 @@ PushNotification.configure({
   onAction: function (notification) {
     console.log("ACTION:", notification.action);
     console.log("NOTIFICATION:", notification);
-
     // process the action
   },
   popInitialNotification: true,
@@ -82,7 +81,7 @@ export const ScheduledAlarmNotification = (activity, weekDay) => {
 
 
 
-export const DailyReminder = (reminder) => {
+export const DailyRemind = (reminder) => {
   var title, time, hour, min, date, message;
   var now = new Date(); var year = now.getFullYear(); var month = now.getMonth(); var day = now.getDate();
   if (reminder){
@@ -144,7 +143,6 @@ export const ScheduledNotification = (time) => {
 export const CancelAllNotification = () => {
 
   PushNotification.cancelAllLocalNotifications();
-  console.log("Canceling")
   ToastAndroid.show(
     "All notifications removed",
     ToastAndroid.SHORT

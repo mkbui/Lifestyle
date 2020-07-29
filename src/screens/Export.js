@@ -22,14 +22,6 @@ import {
 import { Overlay} from 'react-native-elements'
 //import { ViewShot, captureRef, captureScreen } from "react-native-view-shot";
 
-/*
-captureRef(viewRef, {
-  format: "jpg",
-  quality: 0.8
-}).then(
-  uri => console.log("Image saved to", uri),
-  error => console.error("Oops, snapshot failed", error)
-);*/
 
 import {connect} from "react-redux";
 import {createNewDaily} from "../actions";
@@ -90,7 +82,6 @@ class ExportScreen extends Component {
 
 
   takeScreenShot = () => {
-    console.log("Taking screenshot")
     //handler to take screnshot
     captureScreen({
       //either png or jpg or webm (Android). Defaults to png
@@ -102,7 +93,6 @@ class ExportScreen extends Component {
       //callback function to get the result URL of the screnshot
       uri => {
         this.setState({ imageURI : uri });
-        console.log(uri);
       },
       error => console.error("Oops, Something Went Wrong", error)
     );

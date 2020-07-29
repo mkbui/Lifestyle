@@ -7,7 +7,7 @@ import {reminderList} from './data/reminder'
 import {
   ScheduledAlarmNotification,
   CancelNotification, 
-  DailyReminder,
+  DailyRemind,
 } from './components/PushController'
 
 /* transform React Date() format to dd-mm-yyyy */
@@ -35,31 +35,13 @@ export function removeAlarmNoti(activity){
   let rep = activity.repeat
   for (i = 0; i < 7; i++) {
     if (rep[i].value === true){
-      index = activity.id*10 + i//new Date(activity.id.getTime() + i)
-      //console.log(index)
+      index = activity.id*10 + i
       CancelNotification(index);
       index = activity.id * 10 + i
       CancelNotification(index)
     }
   }
 }
-
-/*
-{
-"DailyRecord":{
-  "Finance": {"date": "16/6/2020", "earned": 0, "spent": 0}, 
-  "Fitness": {"date": "16/6/2020", "energyBurned": 0, "energyConsumed": 0, "waterConsumed": 0, "weight": "79"}, 
-  "date": "16/6/2020"}, 
-"FinanceRecord": 
-  [null, {"date": "14/6/2020", "earned": 0, "spent": 0}], 
-"FitnessRecord": 
-  [
-    {"date": "13/6/2020", "energyBurned": 0, "energyConsumed": 0, "waterConsumed": 0, "weight": 100}, 
-    {"date": "14/6/2020", "energyBurned": 0, "energyConsumed": 0, "waterConsumed": 0, "weight": "79"}
-  ], 
-"Info": {"age": "22", "gender": "male", "height": "180", "name": "$¢@√€πG£®", "registered": true, "weight": "79"}, 
-"Measure": {"BMI": 24.382716049382715, "BMR": 2534}}
-*/
 
 /* looping through filter list to see if the item does match */
 export function checkFilter(name, filterList) {
@@ -73,7 +55,7 @@ export function checkFilter(name, filterList) {
 /* Initialize all reminders and suggestion for user daily (called when register/ reset notif) */
 export function initializeReminders(){
   reminderList.map(reminder => {
-    DailyReminder(reminder)
+    DailyRemind(reminder)
   })
 }
 
@@ -198,29 +180,6 @@ export function warningPresent(info, measure){
 
 }
 
-/*
-export function suggestFood(info, list, pFood){
-  
-  let chosenId = Math.floor(Math.random()*list.length);
-  let cur = 0;
-  list.map(item => {
-    if (cur == chosenId) {
-      var food = {
-        name: item.name,
-        category: item.category,
-        image: item.image,
-      };
-      pFood.name = item.name;
-      pFood.category = item.category;
-      pFood.image = item.image;
-      console.log(food);
-      return food;
-    }
-    //console.log(food);
-    cur = cur + 1;
-  })
-  
-}*/
 
 const styles = StyleSheet.create({
   script: {

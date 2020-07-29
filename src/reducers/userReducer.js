@@ -64,7 +64,6 @@ const User = {
       spent: {
         sum: 0,
         detail: [
-
         ]
       },
       earned: {
@@ -91,7 +90,9 @@ export function userAccess(state = User, action){
         }
       }*/
       return Object.assign({}, state, {
+        ...state,
         Info: {
+          ...state.Info,
           name: action.name,
           age: action.initInfo.age,
           height: action.initInfo.height,
@@ -120,8 +121,6 @@ export function userAccess(state = User, action){
       })
 
     case CREATE_NEW_DAILY:
-      console.log(state.Info.money);
-      console.log(state.DailyRecord.Finance.earned);
       const todays = getDateString();
       return Object.assign({}, state, {
         Info: {
@@ -239,6 +238,8 @@ export function userAccess(state = User, action){
       
     case ADD_INCOME_RECORD:
       const iRecord = action.iRecord;
+      prevDetail = []
+      if (state.DailyRecord.Finance.earned.detail) prevDetail = state.DailyRecord.Finance.earned.detail
       if (iRecord.amount > 0) return Object.assign({}, state, {
         ...state,
         DailyRecord: {
@@ -248,7 +249,7 @@ export function userAccess(state = User, action){
             earned: {
               sum: state.DailyRecord.Finance.earned.sum + parseInt(iRecord.amount, 10),
               detail: [
-                ...state.DailyRecord.Finance.earned.detail,
+                ...prevDetail,
                 {
                   amount: iRecord.amount,
                   note: iRecord.note,
@@ -260,67 +261,69 @@ export function userAccess(state = User, action){
         }
       })
 
-      case DELETE_INCOME_RECORD:
+    case DELETE_INCOME_RECORD:
+    return Object.assign({}, state, {
+      ...state,
+      DailyRecord: {
+        ...state.DailyRecord,
+        Finance: {
+          ...state.DailyRecord.Finance,
+          earned: {
+            sum: state.DailyRecord.Finance.earned.sum - parseInt(action.iRecord.amount, 10),
+            
+            detail: state.DailyRecord.Finance.earned.detail.filter(iRecord =>{
+                iRecord.id !== action.iRecord.id
+              })
+              
+            
+          }
+        },
+      }
+    })
+
+    
+    case ADD_EXPENSE_RECORD:
+      const eRecord = action.eRecord;
+      prevDetail = []
+      if (state.DailyRecord.Finance.spent.detail) prevDetail = state.DailyRecord.Finance.spent.detail
+      if (eRecord.amount > 0) return Object.assign({}, state, {
+        ...state,
+        DailyRecord: {
+          ...state.DailyRecord,
+          Finance: {
+            ...state.DailyRecord.Finance,
+            spent: {
+              sum: state.DailyRecord.Finance.spent.sum + parseInt(eRecord.amount, 10),
+              detail: [,
+                {
+                  ...prevDetail,
+                  amount: eRecord.amount,
+                  note: eRecord.note,
+                  category: eRecord.category,
+                }
+              ]
+            }
+          },
+        }
+      })
+
+    case DELETE_EXPENSE_RECORD:
       return Object.assign({}, state, {
         ...state,
         DailyRecord: {
           ...state.DailyRecord,
           Finance: {
             ...state.DailyRecord.Finance,
-            earned: {
-              sum: state.DailyRecord.Finance.earned.sum - parseInt(action.iRecord.amount, 10),
+            spent: {
+              sum: state.DailyRecord.Finance.spent.sum - parseInt(action.iRecord.amount, 10),
               
-              detail:state.DailyRecord.Finance.earned.detail.filter(iRecord =>{
+              detail:state.DailyRecord.Finance.spent.detail.filter(iRecord =>{
                   iRecord.id !== action.iRecord.id
                 })
-                
-              
             }
           },
         }
       })
-
-      
-      case ADD_EXPENSE_RECORD:
-        const eRecord = action.eRecord;
-        if (eRecord.amount > 0) return Object.assign({}, state, {
-          ...state,
-          DailyRecord: {
-            ...state.DailyRecord,
-            Finance: {
-              ...state.DailyRecord.Finance,
-              spent: {
-                sum: state.DailyRecord.Finance.spent.sum + parseInt(eRecord.amount, 10),
-                detail: [
-                  ...state.DailyRecord.Finance.spent.detail,
-                  {
-                    amount: eRecord.amount,
-                    note: eRecord.note,
-                    category: eRecord.category,
-                  }
-                ]
-              }
-            },
-          }
-        })
-
-        case DELETE_EXPENSE_RECORD:
-          return Object.assign({}, state, {
-            ...state,
-            DailyRecord: {
-              ...state.DailyRecord,
-              Finance: {
-                ...state.DailyRecord.Finance,
-                spent: {
-                  sum: state.DailyRecord.Finance.spent.sum - parseInt(action.iRecord.amount, 10),
-                  
-                  detail:state.DailyRecord.Finance.spent.detail.filter(iRecord =>{
-                      iRecord.id !== action.iRecord.id
-                    })
-                }
-              },
-            }
-          })
 
     default:
       return state;

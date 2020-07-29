@@ -1,5 +1,8 @@
 import * as ActionType  from "./ActionType"
 
+/* List of actions for dispatch/ modifying with store data */
+
+/* Specify action macros for reducer usage */
 // List Display
 export const ADD_FOOD = 'ADD_FOOD'
 export const REMOVE_FOOD = 'REMOVE_FOOD'
@@ -18,19 +21,16 @@ export const ACTIVATE_ACTIVITY = 'ACTIVATE_ACTIVITY'
 export const MODIFY_ACTIVITY_NAME = 'MODIFY_ACTIVITY_NAME'
 export const MODIFY_ACTIVITY_TIME = 'MODIFY_ACTIVITY_TIME'
 export const MODIFY_ACTIVITY_REPEAT = 'MODIFY_ACTIVITY_REPEAT'
-
+// Record Management
 export const ADD_INCOME_RECORD = 'ADD_INCOME_RECORD'
 export const ADD_EXPENSE_RECORD = 'ADD_EXPENSE_RECORD'
 export const ADD_CONSUME_RECORD = 'ADD_FITNESS_RECORD'
 export const ADD_EXERCISE_RECORD = 'ADD_EXERCISE_RECORD'
 export const ADD_WATER_RECORD = ' ADD_WATER_RECORD'
-
 export const DELETE_INCOME_RECORD = 'DELETE_INCOME_RECORD'
 export const DELETE_EXPENSE_RECORD = 'DELETE_EXPENSE_RECORD'
 export const DELETE_EXERCISE_RECORD = 'DELETE_EXERCISE_RECORD'
 export const DELETE_CONSUME_RECORD = 'DELETE_CONSUME_RECORD'
-
-
 // Budget
 export const SUBMIT = "SUBMIT";
 export const DELETE = "DELETE";
@@ -44,8 +44,6 @@ export const SUBMIT_M = "SUBMIT_M";
 export const DELETE_M = "DELETE_M";
 export const EDIT_M = "EDIT_M";
 export const SUBMIT_W = "SUBMIT_W";
-// //water
-// export const SUBMIT_W = "SUBMIT_W";
 // Lock
 export const ACTIVATE_PASSWORD    ="ACTIVATE_PASSWORD";
 export const DEACTIVATE_PASSWORD  = "DEACTIVATE_PASSWORD";
@@ -58,8 +56,9 @@ export const RESET_ATTEMPT_NUMBER = "RESET_ATTEMPT_NUMBER";
 export const ACTIVATE_BIOMETRIC   = "ACTIVATE_BIOMETRIC";
 export const DEACTIVATE_BIOMETRIC = "DEACTIVATE_BIOMETRIC";
 
+/* Importable actions for components/ view call */
+
 export function createUser(name, initInfo){
-  
   return { type: CREATE_USER, name, initInfo }
 }
 
