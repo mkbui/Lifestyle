@@ -504,13 +504,13 @@ export default class PatternCode extends Component{
                 <View style = {{
                     position: "absolute",
                     top: 550, 
-                    left: 160
+                    left: 140
                 }}>
                 {
                 this.props.cancelButton &&
                 <Button
                 style = {{
-                    width: 90,
+                    width: 130,
                     height: 30,
                     justifyContent:"center"
                 }}
