@@ -23,15 +23,17 @@ class SplashScreen extends Component {
     super(props)
     this.state = {
       passwordOverlayIsOn: false,
-      hasSetBiometric: false
+      biometricOverlayIsOn: false
     }
   }
   
   componentDidMount(){
     // Only show the splash screen for maximum 5s
     setTimeout(()=>{
-      this.proceed();
-    }, 5000);
+      if (!this.state.biometricOverlayIsOn && !this.state.passwordOverlayIsOn){
+        this.proceed();
+      }
+    }, 3000);
   }
 
   onEnterPasswordSuccess = () => {
@@ -43,11 +45,11 @@ class SplashScreen extends Component {
 
   onBiometricFail = () => {
     this.setState({biometricOverlayIsOn: false})
+    this.setState({passwordOverlayIsOn: true})
   }
 
   onBiometricSuccess = () => {
     this.setState({biometricOverlayIsOn: false})
-    this.setState({passwordOverlayIsOn: false})
     this.props.navigation.navigate('Home');
   }
 
@@ -59,7 +61,7 @@ class SplashScreen extends Component {
     if(isBiometricSet){
       this.setState({biometricOverlayIsOn: true})
     }
-    if (registered === true && isPasswordSet) 
+    else if (registered === true && isPasswordSet) 
       {
         this.setState({passwordOverlayIsOn: true})
       }
@@ -73,7 +75,8 @@ class SplashScreen extends Component {
          {this.state.biometricOverlayIsOn && 
           <BiometricScreen 
           onSuccess = {this.onBiometricSuccess}
-          onFailure = {this.onEnterPasswordFail}
+          onFailure = {this.onBiometricFail}
+          onCancel = {this.onCancel}
           />}
         <Overlay
         isVisible = {this.state.passwordOverlayIsOn}

@@ -411,9 +411,8 @@ export default class PatternCode extends Component{
         await sleep(200);
         this.setState({ showError: true});
         await sleep(2000);
+        await this.props.endProcess(this.state.inputValue, isErrorValidation);
         this.setState({ showError: false, inputValue: "" });
-        await sleep(500);
-        this.props.endProcess(this.state.inputValue, isErrorValidation);
     };
 
     render() {

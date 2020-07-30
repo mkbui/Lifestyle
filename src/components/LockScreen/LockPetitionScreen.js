@@ -66,7 +66,6 @@ class LockPetitionScreen extends Component
     onSecurityQuestionSuccess = async () => {
         this.resetLockStatus()
         this.removePassword()
-        this.setState({passwordOverlayIsOn: false})
         
         if(this.props.lockState.isBiometricSet){
             this.props.deactivateBiometric()
