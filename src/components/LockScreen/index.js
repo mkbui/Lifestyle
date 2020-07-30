@@ -66,7 +66,7 @@ class Password extends Component{
     }
 
     onSecurityPasswordSuccess = () => {
-        this.setState({resetPassword: true})
+        this.setState({resetPassword: true, isLocked: false})
     }
     render(){
         const {status, passwordType} = this.props;

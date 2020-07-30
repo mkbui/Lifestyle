@@ -256,15 +256,9 @@ class SettingsScreen extends Component {
   }
 
   render() {
-<<<<<<< HEAD
     const {passwordOverlayIsOn, passwordIsSet, showMenu} = this.state
       return (
           <Container style={styles.container}>
-=======
-    const {passwordOverlayIsOn, passwordIsSet} = this.state;
-    return (
-        <Container style={styles.container}>
->>>>>>> 905da9bbdf567f4ea925dda3ea9f17859f0748e0
           
           <Header>
           <Left style = {{flex: 1}}>

@@ -434,14 +434,14 @@ export default class PinCode extends Component{
                 </View>
                 <View style = {{
                     position: "absolute",
-                    top: 610, 
-                    left: 150
+                    top: 600, 
+                    left: 130
                 }}>
                 {
                 this.props.cancelButton &&
                 <Button
                 style = {{
-                    width: 90,
+                    width: 130,
                     height: 30,
                     justifyContent:"center"
                 }}

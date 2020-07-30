@@ -8,6 +8,10 @@ export const question = [
         id: 2
     },
     {
+        q: "How old is your sibling?",
+        id: 6
+    },
+    {
         q: "How old is your younger sibling?",
         id: 3
     },
@@ -18,10 +22,6 @@ export const question = [
     {
         q: "What is your birth-month?",
         id: 5
-    },
-    {
-        q: "How old is your sibling?",
-        id: 6
     },
     {
         q: "How many sport did you play in school?",

@@ -224,14 +224,14 @@ export default class StringPassword extends Component{
 
                 <View style = {{
                     position: "absolute",
-                    top: 310, 
-                    left: 150
+                    top: 350, 
+                    left: 135
                 }}>
                 {
                 this.props.cancelButton &&
                 <Button
                 style = {{
-                    width: 90,
+                    width: 130,
                     height: 30,
                     justifyContent:"center"
                 }}
