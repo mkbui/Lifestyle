@@ -187,13 +187,6 @@ android {
 
         }
     }
-    
-    dexOptions {
-            javaMaxHeapSize "4g"
-    }
-    aaptOptions {
-        cruncherEnabled = false
-    }
 
 }
 
