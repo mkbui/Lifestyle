@@ -418,7 +418,7 @@ class SettingsScreen extends Component {
           {this.state.showMenu && 
           <Separator bordered style = {{height: 5}}/>
           } 
-          <ListItem style = {styles.row} icon >
+          <ListItem style = {styles.row} icon onPress = {this.onHandleSetBiometric} >
             <Left>
               <Button 
               style={{ backgroundColor: "black" }}

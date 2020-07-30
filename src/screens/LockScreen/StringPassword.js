@@ -48,9 +48,6 @@ export default class StringPassword extends Component{
         ) {
           this.setState({ inputValue: "" });
         }
-        if (!this.ref.isFocused()){
-            this.ref.focus()
-        }
     }
 
     handleChangeText = async (text) => {

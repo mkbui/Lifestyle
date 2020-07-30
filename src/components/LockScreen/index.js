@@ -66,7 +66,7 @@ class Password extends Component{
     }
 
     onSecurityPasswordSuccess = () => {
-        this.setState({resetPassword: true, isLocked: false})
+        this.setState({isLocked: false})
     }
     render(){
         const {status, passwordType} = this.props;
@@ -81,6 +81,7 @@ class Password extends Component{
                         onSuccess = {this.props.onSuccess}
                         cancelButton = {this.props.cancelButton && !resetPassword}
                         onFailure = {this.props.onFailure}
+                        resetPassword = {resetPassword}
                     />
                 }
                 {status === PasswordStatus.enter && !resetPassword &&
@@ -105,7 +106,7 @@ class Password extends Component{
                     timeLock = {300000}
                     changeInternalStatus={this.changeInternalStatus}
                     passwordKeychainName = {passwordKeychainName}
-                    onSecurityPasswordSuccess = {this.onSecurityPasswordSuccess}
+                    onSecurityPasswordSuccess = {this.props.onSuccess}
                     onSecurityPasswordFailure = {this.props.onFailure}
                     
                 />
