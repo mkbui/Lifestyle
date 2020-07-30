@@ -31,7 +31,6 @@ import {userAccess} from "../reducers/userReducer"
 /* Image importing section */
 const default_image = require("../../assets/default_image.png");
 const default_background = require("../../assets/defaultBackground.jpg")
-const splashLogo = require('../../assets/bootLogo.jpg');
 const heart = require("../../assets/heart.png");
 const finance = require("../../assets/finance.png");
 

@@ -1,7 +1,7 @@
 import PushNotification from 'react-native-push-notification'
 import {View, ToastAndroid} from 'react-native';
 import {initializeReminders} from '../utils';
-const splashLogo = require('../../assets/bootLogo.jpg');
+const splashLogo = require('../../assets/bootLogo.png');
 
 PushNotification.configure({
   // (required) Called when a remote or local notification is opened or received
