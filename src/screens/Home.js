@@ -18,26 +18,13 @@ import {
   CardItem,
   Thumbnail,
 } from "native-base";
-import { Overlay} from 'react-native-elements'
-
-/*
-captureRef(viewRef, {
-  format: "jpg",
-  quality: 0.8
-}).then(
-  uri => console.log("Image saved to", uri),
-  error => console.error("Oops, snapshot failed", error)
-);*/
-
 import {connect} from "react-redux";
 import {createNewDaily} from "../actions";
-
-import {userAccess} from "../reducers/userReducer"
 
 /* Image importing section */
 const default_image = require("../../assets/default_image.png");
 const default_background = require("../../assets/defaultBackground.jpg")
-const splashLogo = require('../../assets/bootLogo.jpg');
+const splashLogo = require('../../assets/bootLogo.png');
 const heart = require("../../assets/heart.png");
 const finance = require("../../assets/finance.png");
 
@@ -75,7 +62,6 @@ class HomeScreen extends Component {
       background: backgrounds[id],
       viewAbout: false,
     }
-    //console.log(this.props.userInfo);
     let lastRecordDate = this.props.userInfo.DailyRecord.date;
     if (today !== lastRecordDate) {
       console.log('Initiating new daily record...');
@@ -90,32 +76,30 @@ class HomeScreen extends Component {
     });
 
   }
-
-  handleNotification = () => {
-    console.log('New notification triggered')
-  }
   
 
   render() {
     const {userInfo, budgetList, mealList} = this.props;
     const {DailyRecord, Info, Currency} = this.props.userInfo;
-    var incomeTotal = 0, expenseTotal = 0, totalConsumed = 0;
     var money = Info.money
     /* calculate total expense and income today */
+    var incomeTotal = DailyRecord.Finance.earned.sum, expenseTotal = DailyRecord.Finance.spent.sum, 
+    /*
     budgetList.map(budget => {
       if (budget.date === today) {
         if (budget.type === 'Income') incomeTotal += Number(budget.amount);
         else expenseTotal += Number(budget.amount);
       }
     });
+    */
+
     /* calculate total energy consumed today */
+    totalConsumed = 0;
     mealList.map(meal => {
       if (meal.date === today) {
         totalConsumed += meal.carb*4 + meal.protein*4 + meal.fat*9;
       }
     });
-    console.log("DailyRecord.Fitness.waterConsumed",DailyRecord.Fitness.waterConsumed)
-    console.log("DailyRecord.Fitness.energyConsumed",DailyRecord.Fitness.energyConsumed)
     return (
       <Container style={styles.container}>
         <Header>
@@ -144,7 +128,7 @@ class HomeScreen extends Component {
             <View style = {styles.formView}>
               <Text style = {styles.formTitleText}>About Our Project</Text>
               <Text style = {styles.aboutScript}>Lifestyle Monitoring Software</Text>
-              <Text style = {styles.aboutScript}>Release Date: 23/07/2020</Text>
+              <Text style = {styles.aboutScript}>Release Date: 29/07/2020</Text>
               <Text style = {styles.aboutScript}>This portable mobile app aims to improve user lifestyle via daily tracking, 
                 advisory and recommendation</Text>
               <Button style = {styles.button} onPress = {() => this.setState({viewAbout: false,})}>
@@ -290,7 +274,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 90,
 
-    margin: 30,
+    margin: 20,
     backgroundColor: "#00fa9a",
     borderRadius: 20,
     borderWidth: 2,
@@ -314,6 +298,7 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 20,
     borderWidth: 1,
+    alignSelf: 'center'
   }
 });
 

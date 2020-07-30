@@ -132,13 +132,12 @@ class SettingsScreen extends Component {
   }
 
   cancelNotification(){
-    console.log("Removsing notifications")
+    console.log("Removing notifications")
     CancelAllNotification()
     ToastAndroid.show(
       "All notifications removed",
       ToastAndroid.SHORT
     )
-    console.log(this.state.reminder)
     if (this.state.reminder === true) {
       initializeReminders()
     }
@@ -256,15 +255,9 @@ class SettingsScreen extends Component {
   }
 
   render() {
-<<<<<<< HEAD
-    const {passwordOverlayIsOn, passwordIsSet, showMenu} = this.state
-      return (
-          <Container style={styles.container}>
-=======
     const {passwordOverlayIsOn, passwordIsSet} = this.state;
     return (
         <Container style={styles.container}>
->>>>>>> 905da9bbdf567f4ea925dda3ea9f17859f0748e0
           
           <Header>
           <Left style = {{flex: 1}}>
@@ -330,7 +323,6 @@ class SettingsScreen extends Component {
                 <Item label="₪" value = "₪"/>
                 <Item label="¥" value = "¥"/>
                 <Item label="₹" value = "₹"/>
-                <Item label="₿" value = "₿"/>
                 
               </Picker>
             </Right>
@@ -475,6 +467,17 @@ class SettingsScreen extends Component {
             
           </Content>
           <Overlay
+            isVisible = {this.state.stage === 'editUser'}
+            fullScreen
+            animationType = "slide"
+          >
+              <PersonalForm 
+                userInfo = {this.props.userInfo} 
+                completeForm = {this.completeForm}
+              />
+          </Overlay>
+
+          <Overlay
               isVisible = {passwordOverlayIsOn}
               fullScreen
               animationType = "slide"
@@ -520,16 +523,14 @@ class PersonalForm extends Component {
   constructor(props){
     super(props);
     const {Info} = this.props.userInfo;
-    //console.log(Info)
     this.state = {
       name: Info.name,
       age: Info.age.toString(),
       height: Info.height.toString(),
       weight: Info.weight.toString(),
       gender: Info.gender,
-      money: Info.money.toString(),
+      money: Info.money,
     }
-    console.log(this.state)
   }
 
   handlePress = () => {
@@ -598,7 +599,7 @@ class PersonalForm extends Component {
         height: parseInt(height, 10),
         weight: parseInt(weight, 10),
         gender: gender,
-        money: parseFloat(money)
+        money: this.state.money,
       }
       this.props.completeForm(name, userInfo);
     }}}}}
@@ -645,14 +646,6 @@ class PersonalForm extends Component {
               defaultValue = {this.state.weight}
               onChangeText = { (text) => this.setState({weight: text})}
               maxLength = {4}
-            />
-          </Item>
-          <Item stackedLabel>
-            <Label>Current account</Label>
-            <Input 
-              defaultValue = {this.state.money}
-              onChangeText = { (text) => this.setState({money: text})}
-              maxLength = {20}
             />
           </Item>
 

@@ -14,6 +14,8 @@ const mapDispatchToProps = dispatch => ({
   modifyActivityTime: (id, hour, min) => dispatch(modifyActivityTime(id, hour, min)),
   activateActivity: (id, bool) => dispatch(activateActivity(id, bool)),
 })
+
+
 class ModifyTimeModal extends Component {
   constructor(props){
     super(props);

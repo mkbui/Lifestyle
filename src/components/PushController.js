@@ -1,7 +1,7 @@
 import PushNotification from 'react-native-push-notification'
 import {View, ToastAndroid} from 'react-native';
 import {initializeReminders} from '../utils';
-const splashLogo = require('../../assets/bootLogo.jpg');
+const splashLogo = require('../../assets/bootLogo.png');
 
 PushNotification.configure({
   // (required) Called when a remote or local notification is opened or received
@@ -11,7 +11,6 @@ PushNotification.configure({
   onAction: function (notification) {
     console.log("ACTION:", notification.action);
     console.log("NOTIFICATION:", notification);
-
     // process the action
   },
   popInitialNotification: true,
@@ -58,6 +57,7 @@ export const ScheduledAlarmNotification = (activity, weekDay) => {
     if (((hour * 60 + min) < (now.getHours() * 60 + now.getMinutes())) && (day === now.getDate()))
       day += 7
     date = new Date(parseInt(year), parseInt(month), day, hour, min, 3);
+
   }
   return PushNotification.localNotificationSchedule({
     id: `${id}`,
@@ -81,7 +81,7 @@ export const ScheduledAlarmNotification = (activity, weekDay) => {
 
 
 
-export const DailyReminder = (reminder) => {
+export const DailyRemind = (reminder) => {
   var title, time, hour, min, date, message;
   var now = new Date(); var year = now.getFullYear(); var month = now.getMonth(); var day = now.getDate();
   if (reminder){
@@ -143,7 +143,6 @@ export const ScheduledNotification = (time) => {
 export const CancelAllNotification = () => {
 
   PushNotification.cancelAllLocalNotifications();
-  console.log("Canceling")
   ToastAndroid.show(
     "All notifications removed",
     ToastAndroid.SHORT

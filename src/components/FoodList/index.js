@@ -102,7 +102,6 @@ class FoodList extends Component {
               </Body>
               <Right>
                 <Button transparent>
-                  <Icon style = {styles.iconView} type = "FontAwesome5" name = "glasses"/>
                   <Icon style = {styles.iconView} name = "trash" onPress = {() => {this.removeItem(data)}} />
                 </Button> 
               </Right>

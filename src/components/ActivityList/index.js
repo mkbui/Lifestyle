@@ -18,7 +18,8 @@ import {
 } from "native-base";
 import {connect} from "react-redux";
 import {removeActivity, activateActivity} from "../../actions";
-import {addAlarmNoti, removeAlarmNoti} from '../../utils';
+import {addAlarmNoti, removeAlarmNoti} from "../../utils";
+
 function mapStateToProps(state) {
   return {activityList: state.activityList}
 }
@@ -27,6 +28,7 @@ const mapDispatchToProps = dispatch => ({
   activateActivity: (id, bool) => dispatch(activateActivity(id, bool)),
 })
 
+/* Render and manage list of alarmed activities on Schedule Screen */
 class ActivityList extends Component {
   constructor(props){
     super(props)
@@ -133,7 +135,7 @@ class ActivityList extends Component {
               </Right>
           </CardItem>
         </Card>
-      ) : <View><Text>No activity</Text></View>
+      ) : <View><Text style = {{alignSelf: 'center', fontSize: 20, marginTop: 20}}>No activity</Text></View>
     )
   }
 }

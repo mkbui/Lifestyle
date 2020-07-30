@@ -69,6 +69,7 @@ class AddActivityModal extends Component {
       name : 'Activity',
     };
   }
+  
   onChangeTime = (event, selectedDate) => {
     if (event.type == "set") {
       const currentDate = selectedDate || this.state.date;
