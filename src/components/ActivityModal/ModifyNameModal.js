@@ -10,19 +10,17 @@ import {
   View,
 } from "native-base";
 import {connect} from "react-redux";
-import {modifyActivityName} from "../../actions";
-
+import {modifyActivityName, activateActivity} from "../../actions";
+import {addAlarmNoti} from '../../utils';
 
 const mapDispatchToProps = dispatch => ({
-    modifyActivityName: (id, name) => dispatch(modifyActivityName(id, name))
+    modifyActivityName: (id, name) => dispatch(modifyActivityName(id, name)),
+    activateActivity: (id, bool) => dispatch(activateActivity(id, bool)),
 })
 class ModifyNameModal extends Component {
   constructor(props){
     super(props);
-    this.activity = {
-      id: this.props.id,  
-      name : this.props.name,
-    };
+    this.activity = this.props.activity
   }
 
   onChangeName = (textChange) => {
@@ -32,6 +30,8 @@ class ModifyNameModal extends Component {
   modifyName = () => {
     const {id, name} = this.activity
     this.props.modifyActivityName(id, name)
+    addAlarmNoti(this.activity)
+    this.props.activateActivity(this.activity.id, true)
     this.props.completeChange()
   };
 
@@ -55,14 +55,15 @@ class ModifyNameModal extends Component {
                   <View style={styles.modalButton}>
                     <TouchableHighlight
                       style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                      onPress={() => {this.props.completeChange()}}
-                    >
+                      onPress={() => {
+                        this.props.completeChange()
+                        addAlarmNoti(this.activity)
+                      }}>
                       <Text style={styles.textStyle}>Cancel</Text>
                     </TouchableHighlight>
                     <TouchableHighlight
                       style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                      onPress={() => {this.modifyName()}}
-                    >
+                      onPress={() => {this.modifyName()}}>
                       <Text style={styles.textStyle}>OK</Text>
                     </TouchableHighlight>
                   </View>
@@ -75,18 +76,6 @@ class ModifyNameModal extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#FFF"
-  },
-  headerText: {
-    fontWeight: 'bold',
-  },
-  buttonContainer: {
-    fontWeight : 'bold',
-    fontSize : 15,
-    color : 'white'
-  },
-
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -105,7 +94,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 5, 
+    width: 270,
+    height: 300
   },
   openButton: {
     backgroundColor: "#F194FF",
@@ -128,25 +119,5 @@ const styles = StyleSheet.create({
     alignItems :"center",
     justifyContent : "space-evenly",
   },
-  activityView: {
-    marginLeft : 1,
-    backgroundColor: "white",
-    borderRadius: 5,
-    padding: 5,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5
-  },
-  timeText: {
-    fontSize : 25,
-  },
-  dateText: {
-    fontSize: 5,
-  }
 });
 export default connect(null, mapDispatchToProps)(ModifyNameModal);

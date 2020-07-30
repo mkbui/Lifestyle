@@ -16,13 +16,6 @@ import {
 import {connect} from "react-redux";
 import {viewFilter, removeExercise} from "../../actions";
 import {checkFilter} from "../../utils";
-/*
-const showVisibleList = (food, filter) => {
-  switch (filter) {
-    case ViewFilter.SHOW_ALL: return food
-  }
-}
-*/
 
 /* store data used: exercise list */
 const mapStateToProps = (state) => ({
@@ -34,6 +27,7 @@ const mapDispatchToProps = dispatch => ({
   removeExercise: (id) => dispatch(removeExercise(id))
 })
 
+/* Render exercise list items and management */
 class ExerciseList extends Component {
 
   /* dispatch function call along with a toast */
@@ -57,33 +51,6 @@ class ExerciseList extends Component {
         (!isFilter || checkFilter(data.category, filter) === true)
       )
     )
-    /*
-    return(
-      <List 
-        dataArray = {exerciseList}
-        renderRow = { data =>
-          <ListItem thumbnail>
-            <Left>
-              <Thumbnail square source={data.image} />
-            </Left>
-            <Body>
-              <Text>
-                {data.name}
-              </Text>
-              <Text numberOfLines={1} note>
-                {data.category}
-              </Text>
-            </Body>
-            <Right>
-              <Button transparent>
-                <Text>Add</Text>
-              </Button>
-            </Right>
-          </ListItem>
-        }
-        keyExtractor = {item => item.id}
-      />
-    )*/
     return(
       renderList.map( data =>
         <ListItem thumbnail key = {data.id}>
@@ -100,7 +67,6 @@ class ExerciseList extends Component {
             </Body>
             <Right>
                 <Button transparent>
-                  <Icon style = {styles.iconView} type = "FontAwesome5" name = "glasses"/>
                   <Icon style = {styles.iconView} name = "trash" onPress = {()=>{this.removeItem(data)} } />
                 </Button> 
             </Right>

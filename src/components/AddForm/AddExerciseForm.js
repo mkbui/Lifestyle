@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {StyleSheet, ToastAndroid} from "react-native";
+import {StyleSheet, ToastAndroid, Alert} from "react-native";
 import {
   Container,
   View,
@@ -46,17 +46,26 @@ class AddExerciseForm extends Component {
   /* Dispatch call and state reset, along with a toast */
   handlePress(){
     const {name, category} = this.state;
-    this.props.addExercise(name, category);
-    this.setState({name: '', category: 'null'});
-    /*Toast.show({
-      text: "Exercise added successfully!",
-      type: "success",
-    })*/
-    this.props.completeForm();
-    ToastAndroid.show(
-      "Exercise added successfully!",
-      ToastAndroid.SHORT
-    )
+    if (name === '' || category === 'null') {
+      Alert.alert(
+        "Warning",
+        "Please enter sufficient name and category",
+        [
+          { text: "OK"}
+        ],
+        { cancelable: false }
+      );
+    }
+    else {
+      this.props.addExercise(name, category);
+      this.setState({name: '', category: 'null'});
+      this.props.completeForm();
+      ToastAndroid.show(
+        "Exercise added successfully!",
+        ToastAndroid.SHORT
+      )
+    }
+
   }
 
   render(){

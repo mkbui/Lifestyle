@@ -5,7 +5,7 @@ import {
 } from '../actions';
 
 import uuid from "react-native-uuid";
-
+import {exercises} from '../data/suggestions'
 const default_image = require("../../assets/default_image.png");
 /* Icon credit */
 // Icons made by <a href="https://www.flaticon.com/authors/ultimatearm" 
@@ -16,42 +16,7 @@ const default_image = require("../../assets/default_image.png");
 /* Initial food list, could be read from a json or database file instead */
 const initialState = {
   exercises: [
-    {
-      name: 'Sit-up',
-      category: 'Abs',
-      image: require("../../assets/exercise/situp.png"),
-      id: 1,
-    },
-    {
-      name: 'Sit-down',
-      category: 'Relax',
-      image: require("../../assets/exercise/relax.png"),
-      id: 2,
-    },
-    {
-      name: 'Plank',
-      category: 'Abs',
-      image: require("../../assets/exercise/plank.png"),
-      id: 3,
-    },
-    {
-      name: 'Pull-up',
-      category: 'Arms',
-      image: require("../../assets/exercise/pullup.png"),
-      id: 4,
-    },
-    {
-      name: 'Squat',
-      category: 'Legs',
-      image: require("../../assets/exercise/squat.png"),
-      id: 5,
-    },
-    {
-      name: 'Jump Rope',
-      category: 'Overall',
-      image: require("../../assets/exercise/jumprope.png"),
-      id: 6,
-    }
+    ...exercises,
   ],
 }
 

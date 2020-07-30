@@ -230,7 +230,6 @@ class ViewStatus extends Component {
 
           
           {/*  Row Item  */}
-          {/* Chưa có btn edit delete */}
           {mealList
             .filter(meal => meal.date === this.state.date)
             .map(meal => {
@@ -239,6 +238,12 @@ class ViewStatus extends Component {
                 key={meal.id}
                   onPress={() => {
                     this.props.editMeal(meal);
+                    console.log("meal.date",meal.date)
+                    {
+                      meal.date === moment().format('DD-MM-YYYY')
+                      ?  this.props.editRecord(meal)
+                      : null
+                   }
                     this.props.navigation.push('Meal');
                   }}>
                   <View style={styles.viewItemRow}>
@@ -269,7 +274,15 @@ class ViewStatus extends Component {
                       {calCalo(meal.carb, meal.protein, meal.fat)}
                     </Text>
 
-                  <TouchableOpacity  onPress={() => {this.props.deleteMeal(meal), this.props.deleteConsumeRecord(meal.carb*4+ meal.protein*4 + meal.fat*9)}}>
+                  <TouchableOpacity  
+                  onPress={() => {
+                    this.props.deleteMeal(meal), 
+                   
+                    meal.date === moment().format('DD-MM-YYYY')
+                    ?   this.props.deleteConsumeRecord(meal)
+                    : null
+                    
+                    }}>
                       <View>
                         <Image source={require("../../../../../../assets/close.png")} style={{height:20, width:20, marginRight:30, marginLeft:50}} />
                       </View>
@@ -302,7 +315,6 @@ class ViewStatus extends Component {
           </View>
 
           {/*  Row Item  */}
-          {/* Chưa có btn edit delete */}
           {exerciseList
             .filter(exercise => exercise.date === this.state.date)
             .map(exercise => {
@@ -311,6 +323,11 @@ class ViewStatus extends Component {
                 key={exercise.id}
                   onPress={() => {
                     this.props.editExercise(exercise);
+                    {
+                      exercise.date === moment().format('DD-MM-YYYY')
+                      ?  this.props.editRecord(exercise)
+                      : null
+                   }
                      this.props.navigation.push('Exercise');
                 
                    
@@ -322,7 +339,15 @@ class ViewStatus extends Component {
                         {exercise.duration} m
                       </Text>
                     </Right>
-                    <TouchableOpacity  onPress={()=>{this.props.deleteExercise(exercise), this.props.deleteExerciseRecord(exercise.duration * 5)}}>
+                    <TouchableOpacity  
+                    onPress={()=>{
+                      this.props.deleteExercise(exercise),  
+                     
+                      exercise.date === moment().format('DD-MM-YYYY')
+                      ?  this.props.deleteExerciseRecord(exercise)
+                      : null
+                    
+                      }}>
                       <View>
                         <Image source={require("../../../../../../assets/close.png")} style={{height:20, width:20, marginRight:15, marginLeft:20}} />
                       </View>
@@ -346,8 +371,8 @@ const mapDispatchToProps = dispatch => {
     deleteMeal: meal => {
       dispatch(actions.actDeleteMeal(meal));
     },
-    deleteConsumeRecord: consume =>{
-      dispatch(actions.deleteConsumeRecord(consume));
+    deleteConsumeRecord: meal =>{
+      dispatch(actions.deleteConsumeRecord(meal));
     },
     
     editExercise: exercise => { 
@@ -357,16 +382,19 @@ const mapDispatchToProps = dispatch => {
     deleteExercise: exercise => {
       dispatch(actions.actDeleteExercise(exercise));
     },
-    deleteExerciseRecord: burn =>{
-      dispatch(actions.deleteExerciseRecord(burn));
+    deleteExerciseRecord: exercise =>{
+      dispatch(actions.deleteExerciseRecord(exercise));
     },
-
     submitWater: water => {
       dispatch(actions.actSubmitWater(water));
     },
     submitWaterRecord: water =>{
       dispatch(actions.addWaterRecord(water));
-    }
+    },
+    editRecord: (edit) => {
+      dispatch(actions.editRecord(edit));
+    },
+    
     
     
   };

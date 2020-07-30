@@ -1,7 +1,7 @@
 import PushNotification from 'react-native-push-notification'
 import {View, ToastAndroid} from 'react-native';
 import {initializeReminders} from '../utils';
-const splashLogo = require('../../assets/bootLogo.jpg');
+const splashLogo = require('../../assets/bootLogo.png');
 
 PushNotification.configure({
   // (required) Called when a remote or local notification is opened or received
@@ -11,7 +11,6 @@ PushNotification.configure({
   onAction: function (notification) {
     console.log("ACTION:", notification.action);
     console.log("NOTIFICATION:", notification);
-
     // process the action
   },
   popInitialNotification: true,
@@ -34,6 +33,7 @@ export const LocalNotification = () => {
   })
 }
 
+
 /* Scheduled notification as weekly alarm */
 export const ScheduledAlarmNotification = (activity, weekDay) => {
   
@@ -45,26 +45,23 @@ export const ScheduledAlarmNotification = (activity, weekDay) => {
   var now = new Date();
   var today = now.getDay();
   var year, month, day; year = now.getFullYear(); month = now.getMonth(); day = now.getDate();
-  
+
   if (activity){
-    id = new Date(activity.id.getTime() + weekDay) //activity.id + weekDay // concatenate id with weekday for unique id\
-    console.log(id)
+    id = activity.id * 10 + weekDay //activity.id + weekDay // concatenate id with weekday for unique id\
     title = activity.name;
     if (activity.hour) hour = activity.hour;
     if (activity.min) min = activity.min;
     overhead = weekDay - today;
     if (overhead < 0) overhead += 7;
     day = parseInt(day) + parseInt(overhead);
+    if (((hour * 60 + min) < (now.getHours() * 60 + now.getMinutes())) && (day === now.getDate()))
+      day += 7
     date = new Date(parseInt(year), parseInt(month), day, hour, min, 3);
-    console.log(date)
+
   }
-
-  
-
-  //console.log((date - Date.now())/1000);
-
   return PushNotification.localNotificationSchedule({
-    id: id,
+    id: `${id}`,
+    userInfo: {id: id},
     autoCancel: true,
     largeIcon: splashLogo,
     bigText: 'LIFESTYLE NOTIFICATION',
@@ -80,10 +77,11 @@ export const ScheduledAlarmNotification = (activity, weekDay) => {
     date: date,
     repeatType: 'week',
   })
-
 }
 
-export const DailyReminder = (reminder) => {
+
+
+export const DailyRemind = (reminder) => {
   var title, time, hour, min, date, message;
   var now = new Date(); var year = now.getFullYear(); var month = now.getMonth(); var day = now.getDate();
   if (reminder){
@@ -145,7 +143,6 @@ export const ScheduledNotification = (time) => {
 export const CancelAllNotification = () => {
 
   PushNotification.cancelAllLocalNotifications();
-  console.log("Canceling")
   ToastAndroid.show(
     "All notifications removed",
     ToastAndroid.SHORT
@@ -153,5 +150,5 @@ export const CancelAllNotification = () => {
 }
 
 export const CancelNotification = (id) => {
-  PushNotification.cancelLocalNotifications({id: id});
+  PushNotification.cancelLocalNotifications({id: `${id}`});
 }

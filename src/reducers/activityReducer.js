@@ -27,7 +27,7 @@ export function activityOperate(state = initialState.activity, action){
         )
     case ACTIVATE_ACTIVITY:
       return state.map(item =>
-          item.id === action.id ? {...item, activate: !item.activate} : item
+          item.id === action.id ? {...item, activate: action.bool} : item
         )
     case MODIFY_ACTIVITY_NAME:
       return state.map(item =>

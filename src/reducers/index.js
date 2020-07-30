@@ -11,7 +11,7 @@ import exerciseReducer from "./exerciseReducer"
 import lockReducer from "./lockReducer"
 /* make a combination reducer for all sep. type */
 /* This will be the store reference for mapStateToProps when accessing data */
-const appReducer = combineReducers({
+const AppReducer = combineReducers({
   foodList: foodOperate,
   exerciseList: exerciseOperate,
   user: userAccess,
@@ -22,7 +22,7 @@ const appReducer = combineReducers({
   lockState: lockReducer
 })
 
-export default appReducer;
+export default AppReducer;
 
 
 /*

@@ -31,8 +31,6 @@ import ViewStatus_Health from '../components/StatusManagement/screens/Health/Vie
 import Exercise from './StatusManagement/screens/Health/AddStatus/Exercise';
 import Meal from './StatusManagement/screens/Health/AddStatus/Meal';
 
-import FinanceTracker from '../components/TrackerScreens/FinanceTracker';
-import HealthTracker from '../components/TrackerScreens/HealthTracker';
 //import ExportPersonalDocumentScreen from '../screens/ExportPersonalDocument';
 /* Drawer navigator containing side list of main screens and stack navigator itself */
 const Drawer = createDrawerNavigator();
@@ -92,15 +90,12 @@ function StackNavigator() {
 
       <Stack.Screen name = 'Budget' component = {Budget}/>
       <Stack.Screen name = 'Health' component = {Health}/>
-      
-      {/* Old tracker template */}
-      <Stack.Screen name = 'HealthTracker' component = {HealthTracker}/>
-      <Stack.Screen name = 'FinanceTracker' component = {FinanceTracker}/>
 
     </Stack.Navigator>
   )
 };
 
+/* Subnavigator for Tracker Screens, which composed of a lot of presentational components */
 function TrackerNavigator() {
   return (
     <Stack.Navigator initialRouteName="MainTracker" headerMode="none">
@@ -120,7 +115,7 @@ function TrackerNavigator() {
 }
 
 /* Main Container with Drawer Navigator as root navigator */
-function AppContainer() {
+function AppNavigator() {
   return (
     <NavigationContainer >
       <DrawerNavigator/>
@@ -131,7 +126,7 @@ function AppContainer() {
 export default () =>
   <PaperProvider>
     <Root>
-        <AppContainer />
+        <AppNavigator />
     </Root>
   </PaperProvider>
  
