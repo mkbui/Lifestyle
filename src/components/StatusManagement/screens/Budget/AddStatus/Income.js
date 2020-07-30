@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
     width: 52,
   },
   title: {
-    fontSize: 10,
+    fontSize: 9.5,
     textAlign: 'center',
     margin: 5,
   },

@@ -113,7 +113,7 @@ class HomeScreen extends Component {
           </Body>
           <Right style = {{flex: 0.5}}>
             <Button 
-              onPress={() => this.setState({viewAbout: true}) }>
+              onPress={() => this.props.createNewDaily()/*this.setState({viewAbout: true})*/ }>
               <Icon name = "paper-plane" />
             </Button>
           </Right>

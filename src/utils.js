@@ -67,7 +67,7 @@ export function removeReminders(){
 
 /* Simple rating on user health and finance */
 export function rateHealth(userInfo){
-  coef = Math.abs(userInfo.measure - 22)
+  coef = Math.abs(userInfo.Measure.BMI - 22)
   if (coef < 4) return 0.8 + (4 - coef)/20.0;
   else if (coef < 8) return 0.3 + (8 - coef)/8.0;
   else return 0.2;
