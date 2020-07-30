@@ -129,7 +129,7 @@ export default class StringPassword extends Component{
           failAttempt: true,
           
         });
-        await sleep(2000);
+        await sleep(1000);
         this.newAttempt();
     };
     
@@ -182,10 +182,8 @@ export default class StringPassword extends Component{
         await sleep(200);
         this.setState({ showError: true});
         await sleep(2000);
+        await this.props.endProcess(this.state.inputValue, isErrorValidation);
         this.setState({ showError: false, inputValue: "" });
-        await sleep(500);
-        this.props.endProcess(this.state.inputValue, isErrorValidation);
-        
     };
 
     render() {
@@ -241,11 +239,8 @@ export default class StringPassword extends Component{
                 onPress = {this.props.onCancelButtonPress}
                 disabled = {this.state.failAttempt || this.state.showError}
                 >
-                    <Text 
-                    style = {{textDecorationLine:"underline", color:"black"}}>
-                        {(this.props.status === PasswordStatus.choose ||
-                    this.props.status === PasswordStatus.enter)? "cancel":"back"}
-                    </Text>
+                    <Text style = {{textDecorationLine:"underline"}}>{(this.props.status === PasswordStatus.choose ||
+                    this.props.status === PasswordStatus.enter)? "cancel":"back"}</Text>
                 </Button>
                 }
                 </View>

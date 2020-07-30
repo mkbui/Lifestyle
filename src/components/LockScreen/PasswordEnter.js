@@ -98,28 +98,30 @@ class PasswordEnter extends Component {
                     this.props.updateTimeLock()
                 }
                 else {
-                    
-                    //add number of attempt
-                    this.props.increaseAttemptNumber()
-                    this.props.onFailure()
-                    this.setState({passwordResultStatus: PasswordResultStatus.failure})
                     this.props.changeInternalStatus(PasswordResultStatus.failure)
+                    this.setState({passwordResultStatus: PasswordResultStatus.failure}, ()=>{
+                        //add number of attempt
+                        this.props.increaseAttemptNumber()
+                        this.props.onFailure()
+                    })
                 }
             }
         })
     }
     onCancelButtonPress = () => {
         this.props.onFailure && this.props.onFailure()
+        
     }
     render() {
         const {passwordType} = this.props
+        const {passwordAttempt} = this.props.lockState
         if(passwordType === PasswordType.none) return null
         else if (passwordType === PasswordType.pin){
             return(
                 <PinCode
                     status = {PasswordStatus.enter}
                     mainTitle = 'Enter Your PIN'
-                    subtitle = ''
+                    subtitle = {(3-passwordAttempt) + ' attempt(s) left'}
                     endProcess = {this.endProcess}
                     mainTitleFailed = 'Please try again'
                     errorSubtitle = 'Your entries did not match'
@@ -137,7 +139,7 @@ class PasswordEnter extends Component {
                 <PatternCode
                     status = {PasswordStatus.enter}
                     mainTitle = 'Enter Your Pattern'
-                    subtitle = ''
+                    subtitle = {(3-passwordAttempt) + ' attempt(s) left'}
                     endProcess = {this.endProcess}
                     mainTitleFailed = 'Please try again'
                     errorSubtitle = 'Your entries did not match'
@@ -155,7 +157,7 @@ class PasswordEnter extends Component {
                 <StringPassword
                     status = {PasswordStatus.enter}
                     mainTitle = 'Enter Your Password'
-                    subtitle = ''
+                    subtitle = {(3-passwordAttempt) + ' attempt(s) left'}
                     endProcess = {this.endProcess}
                     mainTitleFailed = 'Please try again'
                     errorSubtitle = 'Your entries did not match'

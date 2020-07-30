@@ -155,7 +155,7 @@ export default class PinCode extends Component{
           
         });
         this.doShake();
-        await sleep(2000);
+        await sleep(1000);
         this.newAttempt();
     };
     
@@ -328,10 +328,8 @@ export default class PinCode extends Component{
         this.setState({ showError: true});
         this.doShake();
         await sleep(2000);
+        await this.props.endProcess(this.state.inputValue, isErrorValidation);
         this.setState({ showError: false, inputValue: "" });
-        await sleep(500);
-        this.props.endProcess(this.state.inputValue, isErrorValidation);
-        
     };
 
     render() {
@@ -445,20 +443,18 @@ export default class PinCode extends Component{
                 style = {{
                     width: 90,
                     height: 30,
-                    justifyContent:"center",
-                    
+                    justifyContent:"center"
                 }}
-                onPress = {this.props.onCancelButtonPress}
                 transparent
-                underlined
+                onPress = {this.props.onCancelButtonPress}
                 disabled = {this.state.failAttempt || this.state.showError}
                 >
-                    <Text style = {{textDecorationLine:"underline", color:"black"}}>{(this.props.status === PasswordStatus.choose ||
+                    <Text style = {{textDecorationLine:"underline"}}>{(this.props.status === PasswordStatus.choose ||
                     this.props.status === PasswordStatus.enter)? "cancel":"back"}</Text>
                 </Button>
                 }
                 </View>
-            </View>                
+                </View>              
         );
     }
 }
