@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
-import { View, StyleSheet, Platform, ImageBackground, StatusBar } from 'react-native';
+import { View, StyleSheet, Platform, ImageBackground, StatusBar, Dimensions } from 'react-native';
 import { Container, Button, Text, Header, Body, Title } from 'native-base';
-const splashBackground = require('../../assets/launchscreen-bg.png');
-const splashLogo = require('../../assets/bootLogo.jpg');
+const splashBackground = require('../../assets/launchscreen-bg.jpg');
+const splashLogo = require('../../assets/bootLogo.png');
 import {connect} from "react-redux";
 import Password from "../components/LockScreen/index";
 import BiometricScreen from "./LockScreen/BiometricScreen"
 import {Overlay} from "react-native-elements"
-//const { Dimensions, Platform } = require('react-native');
-//const deviceHeight = Dimensions.get("window").height;
+
+let deviceWidth = Dimensions.get('window').width
 
 function mapStateToProps(state) {
   return {
@@ -27,6 +27,7 @@ class SplashScreen extends Component {
       biometricOverlayIsOn: false
     }
   }
+  
   componentDidMount(){
     // Only show the splash screen for maximum 5s
     setTimeout(()=>{
@@ -40,6 +41,7 @@ class SplashScreen extends Component {
     this.setState({passwordOverlayIsOn: false})
     this.props.navigation.navigate('Home');
   }
+
   onEnterPasswordFail = () => console.log("login fail")
 
   onBiometricFail = () => {
@@ -56,7 +58,9 @@ class SplashScreen extends Component {
     this.setState({biometricOverlayIsOn: false})
     this.setState({passwordOverlayIsOn: true})
   }
+
   proceed(){
+    
     const {userInfo} = this.props;
     let registered = userInfo.Info.registered; 
     let isPasswordSet = this.props.lockState.isPasswordSet
@@ -70,6 +74,7 @@ class SplashScreen extends Component {
       }
     else if (registered === false) this.props.navigation.navigate('Firstform');
     else this.props.navigation.navigate('Home');
+    
   }
 
   render(){
@@ -104,7 +109,7 @@ class SplashScreen extends Component {
           <View
             style={{
               alignItems: "center",
-              marginBottom: 60,
+              marginBottom: 40,
               backgroundColor: "transparent"
             }}
           >
@@ -115,10 +120,10 @@ class SplashScreen extends Component {
           </View>
           <View style={{ marginBottom: 80 }}>
             <Button
-              style={{ backgroundColor: "purple", alignSelf: "center" }}
+              style={{ backgroundColor: "red", alignSelf: "center" }}
               onPress={() => this.proceed()}
             >
-              <Text>Proceed</Text>
+              <Text >Proceed</Text>
             </Button>
           </View>
         </ImageBackground>
@@ -138,18 +143,18 @@ const styles = StyleSheet.create({
   logoContainer: {
     flex: 1,
     marginTop: 25,
-    marginBottom: 20
+    marginBottom: 10
   },
   logo: {
     position: "absolute",
-    left: 135,
+    left: (deviceWidth-175)/2,
     top: 125,
-    width: 150,
-    height: 150
+    width: 175,
+    height: 175
   },
   text: {
-    color: "#D8D8D8",
-    fontSize: 15,
+    color: "black",//"#D8D8D8",
+    fontSize: 17,
     fontWeight: 'bold',
     bottom: 6,
     marginTop: 5

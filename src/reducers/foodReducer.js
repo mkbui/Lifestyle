@@ -7,45 +7,15 @@ import {
 import { combineReducers } from 'redux';
 import uuid from "react-native-uuid";
 const default_image = require("../../assets/default_image.png");
-
+import { food } from '../data/suggestions'
 
 
 import data from "../data/data.json"
 
-
 /* Initial food list, could be read from json or database file instead */
 const initialState = {
-  food: /*data.food*/[
-    {
-      name: 'Egg',
-      category: 'Protein',
-      image: require("../../assets/food/egg.png"),
-      id: 1,
-    },
-    {
-      name: 'Potato',
-      category: 'Grains',
-      image: require("../../assets/food/potato.png"),
-      id: 2,
-    },
-    {
-      name: 'Salmon',
-      category: 'Protein',
-      image: require("../../assets/food/salmon.png"),
-      id: 3,
-    },
-    {
-      name: 'Spinach',
-      category: 'Vegetable',
-      image: require("../../assets/food/spinach.png"),
-      id: 4,
-    },
-    {
-      name: 'Orange',
-      category: 'Fruit',
-      image: require("../../assets/food/orange.png"),
-      id: 5,
-    }
+  food: [
+    ...food,
   ],
 }
 

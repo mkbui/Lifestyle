@@ -88,7 +88,6 @@ class WarningSuggest extends Component {
     const food = foodList[foodCur];
     const exercise = exerciseList[exerCur];
 
-    //console.log(chosenFood);
     return(
       <Container style={styles.container}>
 

@@ -104,8 +104,6 @@ class FitnessForm extends Component {
     const {age, height, weight, gender, money} = this.state;
     ageN = parseFloat(age); heightN = parseFloat(height); weightN = parseFloat(weight);
     moneyN = parseFloat(money);
-    console.log(Number.isInteger(heightN));
-    console.log(heightN)
     if (Number.isInteger(ageN) === false || ageN < 0 || isNaN(ageN)){
       Alert.alert(
         "Warning",
@@ -249,6 +247,7 @@ class FirstformScreen extends Component {
         weight: 100,
         age: 10,
         gender: '',
+        money: 0.0,
       },
     };
   
