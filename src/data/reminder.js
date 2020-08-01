@@ -13,8 +13,8 @@ export const reminderList = [
     title: 'Remember to drink water and recorded to Lifestyle to track your health',
     message: 'You should fill in about 2L of water by the end of the day!',
     time: {
-      hour: 21,
-      min: 30,
+      hour: 20,
+      min: 0,
     }
   },
   {
@@ -33,6 +33,24 @@ export const reminderList = [
     time: {
       hour: 9,
       min: 0,
+    }
+  },
+  {
+    id: 104,
+    title: 'Remember to drink water and recorded to Lifestyle to track your health',
+    message: 'You should fill in about 1.5L of water by afternoon!',
+    time: {
+      hour: 18,
+      min: 0,
+    }
+  },
+  {
+    id: 105,
+    title: 'Could we give you some exercise suggestions in this trying time?',
+    message: 'Checkout Lifestyle latest lists of healthy additions to your daily routines.',
+    time: {
+      hour: 16,
+      min: 30,
     }
   },
 ];

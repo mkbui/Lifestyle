@@ -293,6 +293,7 @@ class SettingsScreen extends Component {
             </Body>
             <Right>
               <Radio
+                color = 'black'
                 selected = {this.state.reminder}
                 onPress = {this.toggleReminder.bind(this)}
               />
@@ -435,6 +436,7 @@ class SettingsScreen extends Component {
             </Body>
             <Right>
               <Radio
+                color = 'black'
                 selected = {this.state.isBiometricSet}
                 onPress = {this.onHandleSetBiometric}
               />

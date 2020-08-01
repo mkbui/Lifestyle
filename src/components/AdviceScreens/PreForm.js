@@ -63,7 +63,17 @@ class PreForm extends Component {
   proceed(){
     const {DailyRecord} = this.props.userInfo;
     const {checkFinance, checkFitness, checkGeneral} = this.state;
-    if (checkFitness && !DailyRecord.Fitness.updated){
+    if (!checkFitness && !checkFinance && !checkGeneral ){
+      Alert.alert(
+        "Warning",
+        "Please choose a section to receive advice!",
+        [
+          { text: "OK"},
+        ],
+        { cancelable: false }
+      );
+    }
+    else if (checkFitness && !DailyRecord.Fitness.updated){
       Alert.alert(
         "Warning",
         "You have not updated your fitness record",
@@ -137,7 +147,7 @@ class PreForm extends Component {
               <Text>Health and Fitness</Text>
             </Body>
           </ListItem>
-          <ListItem button onPress={() => this.toggleFinance()}>
+          <ListItem style = {styles.choosingList} button onPress={() => this.toggleFinance()}>
             <CheckBox
               color="red"
               checked={this.state.checkFinance}
@@ -147,7 +157,7 @@ class PreForm extends Component {
               <Text>Finance and Budget</Text>
             </Body>
           </ListItem>
-          <ListItem button onPress={() => this.toggleGeneral()}>
+          <ListItem style = {styles.choosingList} button onPress={() => this.toggleGeneral()}>
             <CheckBox
               color="green"
               checked={this.state.checkGeneral}
@@ -195,6 +205,7 @@ const styles = StyleSheet.create({
   },
   choosingText: {
     fontSize: 18,
+    fontStyle: 'italic',
     textAlign: 'center',
     paddingBottom: 15,
   },
@@ -212,5 +223,8 @@ const styles = StyleSheet.create({
   }, 
   progressBar: {
     paddingLeft: 15,
-  }
+  },
+  choosingList: {
+    height: 50
+  },  
 });
