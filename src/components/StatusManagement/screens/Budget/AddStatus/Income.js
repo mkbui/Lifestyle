@@ -105,8 +105,10 @@ class Income extends Component {
       alert('Amount must not be empty !!!');
     } else if (this.state.checkedIndex === '') {
       alert('Please choose category !!!');
-    }else if (isNaN(Number(this.state.amount))) {
+    } else if (isNaN(Number(this.state.amount))) {
       alert('Amount must be a number !!!');
+    } else if (Number(this.state.amount) <= 0){
+      alert('Amount must be positive !!!');
     } else {
       var currentDate = moment().format('DD-MM-YYYY');
       this.props.onSubmit(this.state);

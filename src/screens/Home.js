@@ -113,7 +113,7 @@ class HomeScreen extends Component {
           </Body>
           <Right style = {{flex: 0.5}}>
             <Button 
-              onPress={() => this.props.createNewDaily()/*this.setState({viewAbout: true})*/ }>
+              onPress={() => this.setState({viewAbout: true}) }>
               <Icon name = "paper-plane" />
             </Button>
           </Right>
@@ -128,7 +128,7 @@ class HomeScreen extends Component {
             <View style = {styles.formView}>
               <Text style = {styles.formTitleText}>About Our Project</Text>
               <Text style = {styles.aboutScript}>Lifestyle Monitoring Software</Text>
-              <Text style = {styles.aboutScript}>Release Date: 29/07/2020</Text>
+              <Text style = {styles.aboutScript}>Release Date: 30/07/2020</Text>
               <Text style = {styles.aboutScript}>This portable mobile app aims to improve user lifestyle via daily tracking, 
                 advisory and recommendation</Text>
               <Button style = {styles.button} onPress = {() => this.setState({viewAbout: false,})}>

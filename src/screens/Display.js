@@ -152,6 +152,7 @@ class FilterForm extends Component {
               style = {{marginLeft: 5, marginBottom: 8, marginTop: 8, width: 200, height: 25}}
             >
               <CheckBox 
+                style = {{width: 25, height: 25,}}
                 checked = {this.state.isCat[item.id].checked}
                 onPress={() => { 
                   let isCat = [...this.state.isCat];
@@ -162,13 +163,13 @@ class FilterForm extends Component {
                   }
                 }
               />
-              <Text>         {item.name}</Text>
+              <Text style = {{fontSize: 17}}>        {item.name}</Text>
             </Item>
           } 
         />
         <Button 
           block  
-          style={{ margin: 10, marginTop: 30 }}
+          style={{ margin: 15, marginTop: 30 }}
           onPress = {this.handlePress.bind(this)}  
         >
           <Text>OK</Text>
@@ -176,7 +177,7 @@ class FilterForm extends Component {
         <Button 
           block  
           backgroundColor='red'
-          style={{ margin: 15, marginTop: 15 }}
+          style={{ margin: 15, marginTop: 13 }}
           onPress = {this.cancel.bind(this)}  
         >
           <Text>CANCEL</Text>

@@ -116,7 +116,9 @@ class Expense extends Component {
       alert('Please choose category !!!');
     } else if (isNaN(Number(this.state.amount))) {
       alert('Amount must be a number !!!');
-    }else {
+    } else if (Number(this.state.amount) <= 0){
+      alert('Amount must be positive !!!');
+    } else {
       var currentDate = moment().format('DD-MM-YYYY');
       
       this.props.onSubmit(this.state);

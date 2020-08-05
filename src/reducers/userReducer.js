@@ -385,7 +385,7 @@ export function userAccess(state = User, action){
             Finance: {
               ...state.DailyRecord.Finance,
               spent: {
-                sum: state.DailyRecord.Finance.spent.sum - parseInt(action.iRecord.amount, 10),
+                sum: state.DailyRecord.Finance.spent.sum - parseInt(action.eRecord.amount, 10),
                 
                 detail:state.DailyRecord.Finance.spent.detail.filter(iRecord =>{
                     iRecord.id !== action.iRecord.id
