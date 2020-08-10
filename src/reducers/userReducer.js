@@ -13,8 +13,8 @@ import {
   DELETE_EXPENSE_RECORD,
   DELETE_EXERCISE_RECORD,
   DELETE_CONSUME_RECORD,
-  EDIT_RECORD
- 
+  EDIT_RECORD,
+  SAVE_REMINDER,
 } from "../actions";
 import {getDateString} from "../utils"
 
@@ -36,7 +36,7 @@ const User = {
   },
 
   Currency: '₫',
-
+  reminder: true,
   Measure: {
     BMI: 20.0,
     BMR: 1600.0,
@@ -170,6 +170,12 @@ export function userAccess(state = User, action){
             updated: true,
           }
         }
+      })
+
+    case SAVE_REMINDER:
+      return Object.assign({}, state, {
+        ...state,
+        reminder: action.reminder,
       })
 
     case  ADD_WATER_RECORD:

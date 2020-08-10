@@ -25,13 +25,17 @@ const initialState = {
 export function exerciseOperate(state = initialState.exercises, action){
   switch (action.type){
     case ADD_EXERCISE:
-      const newId = uuid.v4()//state.length + 1;
+      const newId = Math.floor(Math.random() * Math.floor(99999999));
+      console.log("Uploading: ", action.isUpload)
+      var image;
+      if (action.isUpload) image = {uri: action.filePath.uri};
+      else image = default_image
       return [
           ...state,
           {
             name: action.name,
             category: action.category,
-            image: default_image,
+            image: image,
             id: newId,
           }
         ]
