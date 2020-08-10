@@ -14,6 +14,8 @@ export const CALCULATE_INFO = 'CALCULATE_INFO'
 export const SAVE_CURRENCY = 'SAVE_CURRENCY'
 export const CREATE_NEW_DAILY = 'CREATE_NEW_DAILY'
 export const UPDATE_DAILY_RECORD = 'UPDATE_DAILY_RECORD'
+export const SAVE_REMINDER = 'SAVE_REMINDER'
+export const REMOVE_SCHEDULE = 'REMOVE_SCHEDULE'
 // Schedule Management
 export const ADD_ACTIVITY = 'ADD_ACTIVITY'
 export const REMOVE_ACTIVITY = 'REMOVE_ACTIVITY'
@@ -80,16 +82,24 @@ export function updateDailyRecord(){
   return { type: UPDATE_DAILY_RECORD }
 }
 
-export function addFood(name, category){
-  return { type: ADD_FOOD, name, category };
+export function saveReminderState(reminder){
+  return { type: SAVE_REMINDER, reminder}
+}
+
+export function removeAllSchedule(){
+  return { type: REMOVE_SCHEDULE}
+}
+
+export function addFood(name, category, filePath, isUpload){
+  return { type: ADD_FOOD, name, category, filePath, isUpload };
 }
 
 export function removeFood(id){
   return { type: REMOVE_FOOD, id };
 }
 
-export function addExercise(name, category){
-  return {type: ADD_EXERCISE, name, category};
+export function addExercise(name, category, filePath, isUpload){
+  return {type: ADD_EXERCISE, name, category, filePath, isUpload};
 }
 
 export function removeExercise(id){

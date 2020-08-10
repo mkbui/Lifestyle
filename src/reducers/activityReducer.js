@@ -4,7 +4,8 @@ import {
   ACTIVATE_ACTIVITY,
   MODIFY_ACTIVITY_NAME,
   MODIFY_ACTIVITY_TIME,
-  MODIFY_ACTIVITY_REPEAT
+  MODIFY_ACTIVITY_REPEAT,
+  REMOVE_SCHEDULE,
 } from '../actions';
 
 
@@ -41,6 +42,11 @@ export function activityOperate(state = initialState.activity, action){
       return state.map(item =>
           item.id === action.id ? {...item, repeat: action.repeat} : item
         )
+    
+    case REMOVE_SCHEDULE:
+      console.log("Removing activities")
+      return Object.assign({}, state, [])
+
     default: 
       return state
   }
