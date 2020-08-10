@@ -63,6 +63,7 @@ class Meal extends Component {
       });
     }
   }
+
   chooseFile = () => {
     var options = {
       title: 'Select Image',
@@ -74,12 +75,14 @@ class Meal extends Component {
         path: './',
       },
     };
+
     ImagePicker.showImagePicker(options, response => {
       console.log('Response = ', response);
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
+        alert("Failed to load image! This might be due to incompatible device access permission.")
       } else if (response.customButton) {
         const source = response.customButton;
         this.setState({
@@ -94,8 +97,8 @@ class Meal extends Component {
         });
       }
     });
-
   };
+
   showImage = () => {
     //console.log("isUpload", this.state.isUpload)
     if (this.state.isUpload === true) {
