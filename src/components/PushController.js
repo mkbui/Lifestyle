@@ -88,7 +88,9 @@ export const DailyRemind = (reminder) => {
     title = reminder.title;
     if (reminder.message) message = reminder.message;
     time = reminder.time; hour = time.hour; min = time.min;
-    date = new Date(year, month, day + 1, hour, min, 0);
+    off = 0;
+    if (hour < now.getHours() || (hour === now.getHours() && min <= now.getMinutes())) off = 1
+    date = new Date(year, month, day + off, hour, min, 0);
   }
   console.log(date);
   var id = reminder.id;

@@ -33,13 +33,16 @@ export function foodOperate(state = initialState.food, action){
   const {food} = state; 
   switch (action.type){
     case ADD_FOOD:
-      const newId = state.length + 1;
+      const newId = Math.floor(Math.random() * Math.floor(99999999));
+      var image;
+      if (action.isUpload) image = {uri: action.filePath.uri};
+      else image = default_image
       return [
           ...state,
           {
             name: action.name,
             category: action.category,
-            image: default_image,
+            image: image,
             id: newId,
           }
         ] 

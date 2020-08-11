@@ -35,6 +35,8 @@ import {
   createUser,
   calculateInfo,
   saveCurrency,
+  saveReminderState,
+  removeAllSchedule,
   setPasswordType, 
   removeTimeLock,
   resetAttemptNumber,
@@ -62,6 +64,8 @@ const mapDispatchToProps = dispatch => ({
   createUser: (name, initInfo) => dispatch(createUser(name, initInfo)),
   calculateInfo: (info) => dispatch(calculateInfo(info)),
   saveCurrency: (cur) => dispatch(saveCurrency(cur)),
+  removeAllSchedule: () => dispatch(removeAllSchedule()),
+  saveReminderState: (reminder) => dispatch(saveReminderState(reminder)),
   setPasswordType: (passwordType) => dispatch(setPasswordType(passwordType)),
   removeTimeLock: () => dispatch(removeTimeLock()),
   resetAttemptNumber: () => dispatch(resetAttemptNumber()),
@@ -77,7 +81,7 @@ class SettingsScreen extends Component {
     super(props);
     this.state = {
       darkMode: false,
-      reminder: true,
+      reminder: this.props.userInfo.reminder,
       stage: 'main',  // main, setpin, editUser
       currency: this.props.userInfo.Currency,
       passwordOverlayIsOn: false,
@@ -103,7 +107,7 @@ class SettingsScreen extends Component {
   toggleReminder(){
     if (this.state.reminder === true) removeReminders()
     else initializeReminders()
-
+    this.props.saveReminderState(!this.state.reminder)
     this.setState({
       reminder: !this.state.reminder
     })
@@ -132,15 +136,31 @@ class SettingsScreen extends Component {
   }
 
   cancelNotification(){
+    Alert.alert(
+      "Warning",
+      "Are you sure you want to remove all notifications? Every scheduled activity will be removed",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => this.removeNotification() }
+      ],
+      { cancelable: false }
+    );   
+  }
+  removeNotification(){
     console.log("Removing notifications")
-    CancelAllNotification()
-    ToastAndroid.show(
-      "All notifications removed",
-      ToastAndroid.SHORT
-    )
-    if (this.state.reminder === true) {
-      initializeReminders()
-    }
+      CancelAllNotification()
+      ToastAndroid.show(
+        "All notifications removed",
+        ToastAndroid.SHORT
+      )
+      this.props.removeAllSchedule();
+      if (this.state.reminder === true) {
+        initializeReminders()
+      }
   }
 
   onSetPasswordSuccess = () => {

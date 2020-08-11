@@ -44,7 +44,7 @@ class UsernameForm extends Component {
   handlePress = () => {
     const {saveUsername} = this.props;
     const {userText} = this.state;
-    if (userText === ''){
+    if (!userText.trim().length/*userText === ''*/){
       Alert.alert(
         "Warning",
         "Your name should not be a blank string",

@@ -148,7 +148,6 @@ class ViewStatus extends Component {
         <ScrollView style={{ flex: 1 }}>
 
           {/* WATER */}
-          {/* Chưa xong */}
           <View style={styles.viewTitle}>
             <Text style={styles.textTitle}>WATER</Text>
             <View style={styles.viewValueTotal}>
