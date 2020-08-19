@@ -33,6 +33,13 @@ Simple analysis provides overall health and financial advice for users, presente
 - Notification management
 - External storage document export (summarising user's records and information)
 
+*Some Feature Screenshot of Application (as of v2.3.0):*
+![Demo](https://github.com/mkbui/Lifestyle/blob/master/doc/Demo_Image.png?raw=true)
+
+Group Poster for Course conclusion can be found in /doc/Poster.pdf: [Poster](https://github.com/mkbui/Lifestyle/blob/master/doc/Poster.pdf)
+
+For more information about our project, please read the official course report (updated August 2020): [Report](https://github.com/mkbui/Lifestyle/blob/master/doc/SE_REPORT.pdf)
+
 ## Installation
 This installation is important to accurately set up and run the project without error.
 
