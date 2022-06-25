@@ -26,7 +26,7 @@
     "lodash": "^4.17.21",
     "logkitty": "^0.7.1",
     "native-base": "^2.13.13",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "node-notifier": "^8.0.1",
     "react": "16.13.1",
     "react-datepicker": "^3.0.0",
